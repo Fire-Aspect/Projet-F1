@@ -4,11 +4,10 @@
 
 int main() {
     int i, n, a ;
-    time_t t;
 
     n = 3;
 
-    srand((unsigned) time(&t));
+    srand(time(0));
 
     for (i = 0; i < n; i++) {
         a = rand()%(45-25+1)+25;
