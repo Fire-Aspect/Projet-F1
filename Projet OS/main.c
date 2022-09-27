@@ -42,7 +42,7 @@ int main() {
                 break;
         }
     }
-    printf("P1:\n")
+    printf("P1:\n");
     printf("Temps S1: %d secondes.\n", v1.tps[0]);
     printf("Temps S2: %d secondes.\n", v1.tps[1]);
     printf("Temps S3: %d secondes.\n", v1.tps[2]);
