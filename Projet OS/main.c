@@ -42,11 +42,12 @@ int main() {
                 break;
         }
     }
-    printf("%d\n", v1.tps[0]);
-    printf("%d\n", v1.tps[1]);
-    printf("%d\n", v1.tps[2]);
-    printf("%d\n", v1.tTour[0]);
-    printf("%d\n", v1.tTour[1]);
+    printf("P1:\n")
+    printf("Temps S1: %d secondes.\n", v1.tps[0]);
+    printf("Temps S2: %d secondes.\n", v1.tps[1]);
+    printf("Temps S3: %d secondes.\n", v1.tps[2]);
+    printf("Temps total: %d minute(s) ", v1.tTour[0]);
+    printf("%d secondes.\n", v1.tTour[1]);
 
     return 0;
 }
