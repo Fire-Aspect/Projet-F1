@@ -17,7 +17,7 @@ int main()
 
 int sortArray(int arr[]) {
     int temp = 0; 
-
+//
     //calcul de la longueur de l'array arr    
  
     int length = sizeof(arr)/sizeof(arr[0]);
