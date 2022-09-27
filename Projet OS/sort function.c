@@ -20,7 +20,7 @@ int sortArray(int arr[]) {
 //
     //calcul de la longueur de l'array arr    
  
-    int length = sizeof(arr);
+    int length = sizeof(arr)/sizeof(arr[0]);
     
     //affichage des éléments de l'array   
     printf("éléments de l'array: \n");    
