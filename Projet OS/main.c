@@ -18,6 +18,11 @@ int main() {
     result = sortArray(arr, longueur);
      */
     // printf("%d ", result);
+    int BS1[3]= [0,0,0];
+    int BS2[3]= [0,0,0];
+    int BS3[3]= [0,0,0];
+    int BT[3]= [0,0,0];
+    
     Voiture v1;
     v1.vId = 01;
     int temps[4] = {};
