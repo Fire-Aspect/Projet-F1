@@ -3,9 +3,11 @@
 #include "sortArray.h"
 #include "timeGen.h"
 
-typedef struct Voiture{
+typedef struct {
     int vId;
-    int tps[3];
+    int s1;
+    int s2;
+    int s3;
     int tTour[2];
 }Voiture;
 
@@ -18,41 +20,42 @@ int main() {
     result = sortArray(arr, longueur);
      */
     // printf("%d ", result);
-    int BS1[3]= [0,0,0];
-    int BS2[3]= [0,0,0];
-    int BS3[3]= [0,0,0];
-    int BT[3]= [0,0,0];
-    
-    Voiture v1;
-    v1.vId = 01;
+
+    int numeroVoiture[10]= {44, 63, 1, 11, 55, 16, 4, 3, 14, 31};
+    int BS1[3]= {0,0,0};
+    int BS2[3]= {0,0,0};
+    int BS3[3]= {0,0,0};
+    int BT[3]= {0,0,0};
+
+    Voiture v[1];
+    v[0].vId = 69;
     int temps[4] = {};
 
     timeGenerator(temps);
     for (int i = 0; i < 5; i++) {
         switch (i) {
             case 0:
-                v1.tps[0] = temps[0];
+                v[0].s1 = temps[0];
                 break;
             case 1:
-                v1.tps[1] = temps[1];
+                v[0].s2 = temps[1];
                 break;
             case 2:
-                v1.tps[2] = temps[2];
+                v[0].s3 = temps[2];
                 break;
             case 3:
-                v1.tTour[0] = temps[3];
+                v[0].tTour[0] = temps[3];
                 break;
             case 4:
-                v1.tTour[1] = temps[4];
+                v[0].tTour[1] = temps[4];
                 break;
         }
     }
-    printf("P1:\n");
-    printf("Temps S1: %d secondes.\n", v1.tps[0]);
-    printf("Temps S2: %d secondes.\n", v1.tps[1]);
-    printf("Temps S3: %d secondes.\n", v1.tps[2]);
-    printf("Temps total: %d minute(s) ", v1.tTour[0]);
-    printf("%d secondes.\n", v1.tTour[1]);
+    printf("%d\n", v[0].s1);
+    printf("%d\n", v[0].s2);
+    printf("%d\n", v[0].s3);
+    printf("%d\n", v[0].tTour[0]);
+    printf("%d\n", v[0].tTour[1]);
 
     return 0;
 }
