@@ -15,7 +15,7 @@ int timeGenerator(int temps[]) {
     int minut = 0;
     int sec = 0;
 
-    srand(time(0));
+
 
     for (int i = 0; i < n; i++) {
         nbrRand = rand()%(45-25+1)+25;
