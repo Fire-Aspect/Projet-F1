@@ -2,10 +2,6 @@
 #include <stdlib.h>
 #include "showOutput.h"
 
-#ifndef MAX
-#define MAX 10
-#endif
-
 int showOutput(Voiture v[], size_t len) {
 
     char *rowC[] = {"Numero", "Secteur 1", "Secteur 2", "Secteur 3", "Temps"};
