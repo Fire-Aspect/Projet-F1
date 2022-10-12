@@ -18,7 +18,7 @@ void faireTourner(int nbrVoiture, int nbrtour) {
     int BT[3]= {0,0,0};
 
     Voiture v[nbrVoiture];
-    int temps[5] = {};
+    float temps[5] = {};
     size_t length = sizeof(v)/sizeof(v[0]);
 
     for (int n = 1; n <= nbrtour; n++ ) {
