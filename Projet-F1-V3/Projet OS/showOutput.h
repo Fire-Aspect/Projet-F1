@@ -5,12 +5,12 @@
 
 typedef struct {
     int vId;
-    int s1;
-    int s2;
-    int s3;
-    int tTour[2];
+    float s1;
+    float s2;
+    float s3;
+    float tTour[2];
 }Voiture;
 
 int showOutput(Voiture v[], size_t len);
 
-#endif //PROJET_FORMULE_1_SHOWOUTPUT_H
+#endif //PROJET_FORMULE_1_SHOWOUTPUT_HPUT_H
