@@ -8,22 +8,33 @@
 #include <stdlib.h>
 #include <math.h>
 
-int timeGenerator(int temps[]) {
-    int nbrRand = 0;
+int timeGenerator(float temps[]) {
+    float nbrRand = 0;
     const int n = 3;
-    int somme = 0;
-    int minut = 0;
-    int sec = 0;
-
-
+    float somme = 0;
+    float minut = 0;
+    float sec = 0;
+    
+    float rest = 0;
+    float temp = 0;
+    int j = 0; 
 
     for (int i = 0; i < n; i++) {
-        nbrRand = rand()%(45-25+1)+25;
+        nbrRand = ((float)rand()/RAND_MAX)*(float)(45.0-25.0+1.0)+25.0;    
         temps[i] = nbrRand;
     }
     somme = temps[0]+temps[1]+temps[2];
-    minut = floor(somme/60);
-    sec = somme % 60;
+    
+    temp = somme;
+    
+    for (int j = 0; temp > 60; j++) {
+   	 if (temp > 60) {
+    		temp = temp-60;
+    		rest = rest + 1;
+    	}
+    }
+    minut = rest;
+    sec = temp;
     temps[3] = minut;
     temps[4] = sec;
 
