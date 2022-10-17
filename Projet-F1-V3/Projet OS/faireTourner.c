@@ -8,6 +8,7 @@
 #include "tri.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "structVoiture.h"
 
 void faireTourner(int nbrVoiture, int nbrtour) {
 
