@@ -1,16 +1,28 @@
-#include "timeGen.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/ipc.h>
+#include <sys/shm.h>
+#include "timeGen.h"
 #include "structVoiture.h"
 #include "sortObj.h"
 
 
 void faireTourner(int nbrVoiture, int nbrtour) {
 
-    int numeroVoiture[10]= {44, 63, 1, 11, 55, 16, 4, 3, 14, 31};
+    int numeroVoiture[20]= {44, 63, 1, 11, 55, 16, 4, 3, 14, 31, 10, 22, 5, 18, 6, 23, 77, 24, 47, 9};
+
+    
     Voiture v[nbrVoiture];
     
+    int shmid;
 
+    Voiture *circuit;
+    
+    shmid = shmget(69, 20*sizeof(Voiture), IPC_CREAT | 0666);
+    
+    printf("%d \n", shmid);
+    
+    circuit = shmat(69, 0, 0);
     
     float temps[5] = {};
     size_t length = sizeof(v)/sizeof(v[0]);
@@ -47,7 +59,7 @@ void faireTourner(int nbrVoiture, int nbrtour) {
             }
         }
 
-        showOutput(v, length);
+        //showOutput(v, length);
         sortObj(v, length);
         showOutput(v, length);
     }

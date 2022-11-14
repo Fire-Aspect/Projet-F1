@@ -7,9 +7,8 @@
 int main() {
 
     srand(time(0));
-
-    faireTourner(10,1);
+   
+    faireTourner(20,1);
     
-
     return 0;
 }
