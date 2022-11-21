@@ -7,25 +7,26 @@
 #include "sortObj.h"
 
 
-void faireTourner(int nbrVoiture, int nbrtour) {
 
-    int numeroVoiture[20]= {44, 63, 1, 11, 55, 16, 4, 3, 14, 31, 10, 22, 5, 18, 6, 23, 77, 24, 47, 9};
+void faireTourner(int nbrtour) {
 
-    
-    Voiture v[nbrVoiture];
-    
+    int numeroVoiture[21]= {44, 63, 1, 11, 55, 16, 4, 3, 14, 31, 10, 22, 5, 18, 6, 23, 77, 24, 47, 9, 999};
+
+
+    Voiture v[21];
+
     int shmid;
 
     Voiture *circuit;
-    
-    shmid = shmget(69, 20*sizeof(Voiture), IPC_CREAT | 0666);
-    
+
+    shmid = shmget(69, 21*sizeof(Voiture), IPC_CREAT | 0666);
+
     printf("%d \n", shmid);
-    
+
     circuit = shmat(69, 0, 0);
-    
+
     float temps[5] = {};
-    size_t length = sizeof(v)/sizeof(v[0]);
+    size_t length = (sizeof(v)/sizeof(v[0]))-1;
 
     for (int n = 1; n <= nbrtour; n++ ) {
 
@@ -52,8 +53,8 @@ void faireTourner(int nbrVoiture, int nbrtour) {
                         v[k].vId = numeroVoiture[k];
                         break;
                     case 6:
-                    	v[k].total = temps[0] + temps[1] + temps[2];
-                    	break;
+                        v[k].total = temps[0] + temps[1] + temps[2];
+                        break;
 
                 }
             }
@@ -64,5 +65,6 @@ void faireTourner(int nbrVoiture, int nbrtour) {
         showOutput(v, length);
     }
 }
+
 
 
