@@ -1,4 +1,5 @@
 #include<stdio.h>
+#include <unistd.h>
 
 int main(){
 
@@ -14,4 +15,19 @@ int main(){
     for(int i=0;i<5;i++) // loop will run n times (n=5)
         wait(NULL);
 
+}
+int main(){
+    int timeLimiter() {
+
+        for (int i = 0; i < 60; i++) {
+            sleep(1);
+            printf("%d\n", i);
+
+        }
+
+    }
+
+    timeLimiter();
+
+    return 0;
 }
