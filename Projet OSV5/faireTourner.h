@@ -8,7 +8,7 @@
 
 
 
-void faireTourner(int nbrtour) {
+int faireTourner(int nbrtour) {
 
     int numeroVoiture[21]= {44, 63, 1, 11, 55, 16, 4, 3, 14, 31, 10, 22, 5, 18, 6, 23, 77, 24, 47, 9, 999};
 
@@ -59,10 +59,9 @@ void faireTourner(int nbrtour) {
                 }
             }
         }
-
         //showOutput(v, length);
-        sortObj(v, length);
-        showOutput(v, length);
+        //sortObj(v, length);
+        //showOutput(v, length);
     }
 }
 
