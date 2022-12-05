@@ -5,7 +5,7 @@
 
 
 void sortObj(Voiture v[], int len) {
-    int i,j;
+    int i, j;
     Voiture temp;
     //tri de la structure
     for (i = 0; i < len - 1; i++) {
@@ -17,6 +17,6 @@ void sortObj(Voiture v[], int len) {
             }
         }
     }
-	//showOutput(v, len);
+    //showOutput(v, len);
 }
 
