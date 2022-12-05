@@ -30,32 +30,16 @@ int faireTourner(int tempsSession) {
     circuit[20].s3 = 999;
     circuit[20].total = 999;
 
-    int compteurFini = 0;
-
     size_t length = (sizeof(v) / sizeof(v[0])) - 1;
-    int pidPere = getpid();
-
 
     for (int k = 0; k < length; k++) {
-        if (getpid() == pidPere) {
-            //père
-            if (fork() == 0) {
-                //fils
-                int pidFils = getpid();
-                vieVoiture(circuit[k], k, pidFils, tempsSession);
-                compteurFini++;
-                exit(0);
-            }
-        } else { k--; }
+        if (fork() == 0) {
+            //fils
+            int pidFils = getpid();
+            vieVoiture(circuit[k], k, pidFils, tempsSession);
+        }
     }
 
-    while (1){
-        if (compteurFini >= 20){
-            break;
-        }
-        printf("%d", compteurFini);
-    }
-    printf("Bien fini tous les fils");
 
     //showOutput(v, length);
     //sortObj(v, length);
