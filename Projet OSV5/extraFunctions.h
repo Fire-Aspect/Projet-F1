@@ -10,7 +10,6 @@ int vieVoiture(Voiture caseV, int numCase, int pid, int tempsSess) {
     time_t secondeDepart;
     time_t secondePendant;
     secondeDepart = time(NULL);
-    printf("%d",secondeDepart);
 
     do {
         timeGenerator(temps);
@@ -43,10 +42,12 @@ int vieVoiture(Voiture caseV, int numCase, int pid, int tempsSess) {
 
             }
         }
+        secondePendant = time(NULL);
         //for (int j = 0; j <= 4; j++){
 //
 //       }
     } while (secondePendant <= secondeDepart + tempsSess);
+    printf("%s\n", "Fini");
 
     exit(0);
 }
