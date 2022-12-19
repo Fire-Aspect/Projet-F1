@@ -1,14 +1,15 @@
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <math.h>
 
 int timeGenerator(float temps[]) {
-    float nbrRand = 0;
+    float nbrRand;
     const int n = 3;
-    float somme = 0;
-    float minut = 0;
-    float sec = 0;
+    float somme;
+    float minut;
+    float sec;
     
     float rest = 0;
     float temp = 0;
@@ -35,3 +36,4 @@ int timeGenerator(float temps[]) {
 
     return (0);
 }
+

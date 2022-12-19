@@ -2,16 +2,15 @@
 #include <stdlib.h>
 #include <sys/ipc.h>
 #include <sys/shm.h>
-#include "timeGen.h"
+#include <time.h>
 #include "structVoiture.h"
 #include "sortObj.h"
+#include "extraFunctions.h"
 
 
+int faireTourner(int tempsSession) {
 
-int faireTourner(int nbrtour) {
-
-    int numeroVoiture[21]= {44, 63, 1, 11, 55, 16, 4, 3, 14, 31, 10, 22, 5, 18, 6, 23, 77, 24, 47, 9, 999};
-
+    int numeroVoiture[21] = {44, 63, 1, 11, 55, 16, 4, 3, 14, 31, 10, 22, 5, 18, 6, 23, 77, 24, 47, 9, 999};
 
     Voiture v[21];
 
@@ -19,50 +18,43 @@ int faireTourner(int nbrtour) {
 
     Voiture *circuit;
 
-    shmid = shmget(69, 21*sizeof(Voiture), IPC_CREAT | 0666);
+    shmid = shmget(69, 21 * sizeof(Voiture), IPC_CREAT | 0666);
 
     printf("%d \n", shmid);
 
-    circuit = shmat(69, 0, 0);
+    circuit = shmat(shmid, 0, 0);
 
-    float temps[5] = {};
-    size_t length = (sizeof(v)/sizeof(v[0]))-1;
+    circuit[20].vId = 999;
+    circuit[20].s1 = 999;
+    circuit[20].s2 = 999;
+    circuit[20].s3 = 999;
+    circuit[20].total = 999;
 
-    for (int n = 1; n <= nbrtour; n++ ) {
+    size_t length = (sizeof(v) / sizeof(v[0])) - 1;
 
-        for (int k = 0; k < length; k++) {
-            timeGenerator(temps);
-            for (int i = 0; i <= 7; i++) {
-                switch (i) {
-                    case 0:
-                        v[k].s1 = temps[0];
-                        break;
-                    case 1:
-                        v[k].s2 = temps[1];
-                        break;
-                    case 2:
-                        v[k].s3 = temps[2];
-                        break;
-                    case 3:
-                        v[k].tTour[0] = temps[3];
-                        break;
-                    case 4:
-                        v[k].tTour[1] = temps[4];
-                        break;
-                    case 5:
-                        v[k].vId = numeroVoiture[k];
-                        break;
-                    case 6:
-                        v[k].total = temps[0] + temps[1] + temps[2];
-                        break;
+    for (int k = 0; k < length; k++) {
+        if (fork() == 0) {
+            //fils
+            int pidFils = getpid();
+            vieVoiture(circuit[k], k, pidFils, tempsSession);
 
-                }
-            }
         }
-        //showOutput(v, length);
-        //sortObj(v, length);
-        //showOutput(v, length);
     }
+
+    time_t secondeDepart;
+    time_t secondePendant;
+    secondeDepart = time(NULL);
+    do{
+        secondePendant = time(NULL);
+        //affichage
+    }
+    while (secondePendant <= secondeDepart + tempsSession+1) ;
+
+
+    //showOutput(v, length);
+    //sortObj(v, length);
+    //showOutput(v, length);
+
 }
 
 

@@ -10,7 +10,8 @@ typedef struct {
     float s3;
     float total;
     float tTour[2];
-    
-}Voiture;
+    int pidFils;
+
+} Voiture;
 
 #endif //PROJET_FORMULE_1_STRUCTVOITURE_HPUT_H
