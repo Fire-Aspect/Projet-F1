@@ -31,7 +31,6 @@ int faireTourner(int tempsSession) {
     circuit[20].total = 999;
 
     size_t length = (sizeof(v) / sizeof(v[0])) - 1;
-    printf("%d\n", length);
 
     for (int k = 0; k < length; k++) {
         if (fork() == 0) {
