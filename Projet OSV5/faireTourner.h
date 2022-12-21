@@ -15,6 +15,7 @@
 
 int faireTourner(int tempsSession) {
 
+    //ID des différentes voitures
     int numeroVoiture[21] = {44, 63, 1, 11, 55, 16, 4, 3, 14, 31, 10, 22, 5, 18, 6, 23, 77, 24, 47, 9, 999};
 
     Voiture v[21];
