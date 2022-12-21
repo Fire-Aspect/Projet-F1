@@ -16,18 +16,25 @@
 int faireTourner(int tempsSession) {
 
     //ID des différentes voitures
+    //Dernière case pour les meilleures temps
     int numeroVoiture[21] = {44, 63, 1, 11, 55, 16, 4, 3, 14, 31, 10, 22, 5, 18, 6, 23, 77, 24, 47, 9, 999};
 
+    //Création d'un tableau de 21 cases
     Voiture v[21];
 
     int shmid;
 
+    //Création d'un pointeur circuit
     Voiture *circuit;
 
+    //Création de la mémoire partagée
+    //Taille : 21 voitures
     shmid = shmget(69, 21 * sizeof(Voiture), IPC_CREAT | 0666);
 
+    //Outil de debug
     printf("%d \n", shmid);
 
+    //Liaison de la mémoire partagée à Circuit
     circuit = shmat(shmid, 0, 0);
 
     circuit[20].vId = 999;
