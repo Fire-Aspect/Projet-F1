@@ -1,8 +1,15 @@
+//Mis à jour le 21/12/2022
+
+//Différents includes
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <math.h>
+
+
+//Fonction timeGenerator (param : temps ==> temps du générateur)
+//But : Générer un temps entre 25 et 45 secondes
 
 int timeGenerator(float temps[]) {
     float nbrRand;
