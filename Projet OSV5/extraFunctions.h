@@ -17,6 +17,7 @@ int vieVoiture(Voiture caseV, int numCase, int pid, int tempsSess) {
     time_t secondePendant;
     secondeDepart = time(NULL);
 
+    //Boucle de remplissage de tableau
     do {
         timeGenerator(temps);
         for (int i = 0; i <= 8; i++) {
