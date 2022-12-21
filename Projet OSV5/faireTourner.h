@@ -50,13 +50,14 @@ int faireTourner(int tempsSession) {
     //Boucle de création de fils (20)
     for (int k = 0; k < length; k++) {
         if (fork() == 0) {
-            //fils
+            //Fils
             int pidFils = getpid();
             vieVoiture(circuit[k], k, pidFils, tempsSession);
 
         }
     }
 
+    //Fonction d'affichage future
     time_t secondeDepart;
     time_t secondePendant;
     secondeDepart = time(NULL);
