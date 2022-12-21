@@ -34,7 +34,7 @@ int timeGenerator(float temps[]) {
     
     temp = somme;
 
-    //Boucle de conversion de temps (secondes) en un temps en minutes et secondes
+    //Boucle de conversion de la somme des temps (secondes) en un temps en minutes et secondes
     for (int j = 0; temp > 60; j++) {
    	 if (temp > 60) {
     		temp = temp-60;
