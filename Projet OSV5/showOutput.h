@@ -1,3 +1,6 @@
+//Mis à jour le 21/12/2022
+
+//Différents includes
 #include <stdio.h>
 #include <stdlib.h>
 //#include "showBest.h"
@@ -5,6 +8,9 @@
 
 #define COLOR_CYAN  "\033[0;36m"
 #define COLOR_CYAN_OFF   "\033[0m"
+
+//Fonction showOutput (param : structure voiture et longueur de voiture)
+//But : Afficher un tableau avec les temps d'une voiture dans différents secteurs de piste
 
 int showOutput(Voiture v[], size_t len) {
     char *rowC[] = {"Numero", "Secteur 1", "Secteur 2", "Secteur 3", "Temps par tour"};
