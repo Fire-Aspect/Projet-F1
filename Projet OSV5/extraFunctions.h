@@ -6,6 +6,9 @@
 #include "structVoiture.h"
 #include "timeGen.h"
 
+//Fonction vieVoiture (param : )
+//But : Compléter un tableau de 8 cases représentant les temps de tour d'une voiture
+
 int vieVoiture(Voiture caseV, int numCase, int pid, int tempsSess) {
 
     int numeroVoiture[21] = {44, 63, 1, 11, 55, 16, 4, 3, 14, 31, 10, 22, 5, 18, 6, 23, 77, 24, 47, 9, 999};
