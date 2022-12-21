@@ -1,9 +1,13 @@
+//Mis à jour le 21/12/2022
+
+//Différents includes
 #include <stdio.h>
 #include <stdlib.h>
 #include "structVoiture.h"
 #include "showOutput.h"
 
-
+//Fonction sortObj (param : structure Voiture et Longueur)
+//But : trier les temps de tours dans différents secteurs d'une voiture
 void sortObj(Voiture v[], int len) {
     int i, j;
     Voiture temp;
@@ -20,3 +24,4 @@ void sortObj(Voiture v[], int len) {
     //showOutput(v, len);
 }
 
+//à améliorer plus tard
