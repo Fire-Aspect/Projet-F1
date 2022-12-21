@@ -12,6 +12,8 @@
 //But : Générer un temps entre 25 et 45 secondes
 
 int timeGenerator(float temps[]) {
+
+    //Introduction de variables
     float nbrRand;
     const int n = 3;
     float somme;
@@ -20,8 +22,10 @@ int timeGenerator(float temps[]) {
     
     float rest = 0;
     float temp = 0;
-    int j = 0; 
+    int j = 0; //variable inutilisé
 
+
+    //Boucle de génération aléatoire de 3 temps
     for (int i = 0; i < n; i++) {
         nbrRand = ((float)rand()/RAND_MAX)*(float)(45.0-25.0+1.0)+25.0;    
         temps[i] = nbrRand;
@@ -29,7 +33,8 @@ int timeGenerator(float temps[]) {
     somme = temps[0]+temps[1]+temps[2];
     
     temp = somme;
-    
+
+    //Boucle de conversion de temps (secondes) en un temps en minutes et secondes
     for (int j = 0; temp > 60; j++) {
    	 if (temp > 60) {
     		temp = temp-60;
