@@ -1,5 +1,4 @@
-//Fonction faireTourner
-//But :
+//Mis à jour le 21/12/2022
 
 //Différents includes
 #include <stdio.h>
@@ -11,6 +10,8 @@
 #include "sortObj.h"
 #include "extraFunctions.h"
 
+//Fonction faireTourner (param : tempsSession ==> temps de session)
+//But : Faire tourner une voiture
 
 int faireTourner(int tempsSession) {
 
