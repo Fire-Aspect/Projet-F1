@@ -24,7 +24,7 @@ int faireTourner(int tempsSession) {
 
     int shmid;
 
-    //Création d'un pointeur circuit
+    //Création d'une voiture qui est un pointeur Circuit
     Voiture *circuit;
 
     //Création de la mémoire partagée
@@ -37,14 +37,17 @@ int faireTourner(int tempsSession) {
     //Liaison de la mémoire partagée à Circuit
     circuit = shmat(shmid, 0, 0);
 
+    //Assignation à la dernière voiture de valeurs différentes de 0
     circuit[20].vId = 999;
     circuit[20].s1 = 999;
     circuit[20].s2 = 999;
     circuit[20].s3 = 999;
     circuit[20].total = 999;
 
+    //Enregistrement de la longueur d'une voiture
     size_t length = (sizeof(v) / sizeof(v[0])) - 1;
 
+    //Boucle de création de fils (20)
     for (int k = 0; k < length; k++) {
         if (fork() == 0) {
             //fils
