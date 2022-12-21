@@ -7,7 +7,7 @@
 //               - MOENS PENNEWAERT ANTOINE
 
 
-//différents includes
+//Différents includes
 #include <stdlib.h>
 #include <time.h>
 #include "faireTourner.h"
