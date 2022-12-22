@@ -1,7 +1,13 @@
+//Mis à jour le 21/12/2022
+
+//Différents includes
 #include<stdio.h>
 #include <unistd.h>
 #include "structVoiture.h"
 #include "timeGen.h"
+
+//Fonction vieVoiture (param : )
+//But : Compléter un tableau de 8 cases représentant les temps de tour d'une voiture
 
 int vieVoiture(Voiture caseV, int numCase, int pid, int tempsSess) {
 
@@ -11,6 +17,7 @@ int vieVoiture(Voiture caseV, int numCase, int pid, int tempsSess) {
     time_t secondePendant;
     secondeDepart = time(NULL);
 
+    //Boucle de remplissage de tableau
     do {
         timeGenerator(temps);
         for (int i = 0; i <= 8; i++) {
