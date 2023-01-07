@@ -19,10 +19,6 @@ void showOutput(Voiture* array, int len) {
     //Fonction de tri
     Voiture classement[21];
     memcpy(classement, array, len * sizeof(Voiture));
-    //Voiture *classement = array;
-
-
-
 
     char *rowC[] = {"Numéro", "Secteur 1", "Secteur 2", "Secteur 3", "Temps par tour", "Différence de temps"};
 
@@ -31,7 +27,6 @@ void showOutput(Voiture* array, int len) {
            -6, rowC[0], -12, rowC[1], -12, rowC[2], -12, rowC[3], -15, rowC[4], -18, rowC[5]);
     printf("+%*s+%*s+%*s+%*s+%*s+%*s+\n", -3, "--------", 12, "--------------", 12, "--------------", 12, "--------------",
            -15, "-----------------", 18, "---------------------");
-
 
     for (int i = 0; i < len-1; ++i) {
         

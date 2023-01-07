@@ -17,10 +17,6 @@
 
 int faireTourner(int tempsSession) {
 
-    //ID des différentes voitures
-    //Dernière case pour les meilleurs temps
-    //int numeroVoiture[21] = {44, 63, 1, 11, 55, 16, 4, 3, 14, 31, 10, 22, 5, 18, 6, 23, 77, 24, 47, 9, 999};
-
     srand(time(0));
 
     int shmid;
@@ -58,7 +54,6 @@ int faireTourner(int tempsSession) {
         printf("\033[2J"); // Clear the terminal window
         sortObj(circuit, 21);
         showOutput(circuit, 21);
-        //printf("%.3f %.3f %.3f %.3f %.3f %.3f\n", circuit[0].total, circuit[1].total, circuit[2].total, circuit[3].total, circuit[4].total, circuit[5].total);
         //Patiente 2 secondes avant de ré-afficher
         sleep(2);
     }

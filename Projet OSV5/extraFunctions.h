@@ -5,13 +5,9 @@
 #include <unistd.h>
 #include <time.h>
 #include "structVoiture.h"
-//#include "timeGen.h"
-
 
 //Fonction vieVoiture (param : )
 //But : Compléter un tableau de 8 cases représentant les temps de tour d'une voiture
-
-
 
 int vieVoiture(Voiture* array, int numCase, int pid, int tempsSess) {
 
@@ -62,7 +58,6 @@ int vieVoiture(Voiture* array, int numCase, int pid, int tempsSess) {
         secondePendant = time(NULL);
 
     } while (secondePendant <= secondeDepart + tempsSess);
-    //printf("%s\n", "Fini");
 
     exit(0);
 }
