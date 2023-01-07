@@ -2,40 +2,35 @@
 
 //Différents includes
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 #include <sys/ipc.h>
 #include <sys/shm.h>
-#include <time.h>
+#include "timeGen.h"
 #include "structVoiture.h"
-#include "sortObj.h"
 #include "extraFunctions.h"
+#include "showOutput.h"
+
 
 //Fonction faireTourner (param : tempsSession ==> temps de session)
 //But : Faire tourner une voiture
 
 int faireTourner(int tempsSession) {
+    srand(time(0));
 
-    //ID des différentes voitures
-    //Dernière case pour les meilleures temps
-    int numeroVoiture[21] = {44, 63, 1, 11, 55, 16, 4, 3, 14, 31, 10, 22, 5, 18, 6, 23, 77, 24, 47, 9, 999};
-
-    //Création d'un tableau de 21 cases
-    Voiture v[21];
+    char session;
+    printf("%s","Veuillez taper quelle session démarrer:\n -P1 = 1\n -P2 = 2\n -P3 = 3\n -Q1 = 4\n -Q2 = 5\n -Q3 = 6\n"
+                " -Course = 7\n -Course Sprint = 8\n");
+    scanf("%s", &session);
 
     int shmid;
+    Voiture *circuit;    //Création d'un tableau contenant des voitures
+    shmid = shmget(69, 21 * sizeof(Voiture), IPC_CREAT | 0666); //Création de la mémoire partagée
+    circuit = (Voiture *)shmat(shmid, 0, 0);     //Liaison de la mémoire partagée à Circuit
 
-    //Création d'une voiture qui est un pointeur Circuit
-    Voiture *circuit;
+    float test[5] = {};
 
-    //Création de la mémoire partagée
-    //Taille : 21 voitures
-    shmid = shmget(69, 21 * sizeof(Voiture), IPC_CREAT | 0666);
-
-    //Outil de debug
-    printf("%d \n", shmid);
-
-    //Liaison de la mémoire partagée à Circuit
-    circuit = shmat(shmid, 0, 0);
+    printf("%d \n", shmid);     //Outil de debug
 
     //Assignation à la dernière voiture de valeurs différentes de 0
     circuit[20].vId = 999;
@@ -44,16 +39,13 @@ int faireTourner(int tempsSession) {
     circuit[20].s3 = 999;
     circuit[20].total = 999;
 
-    //Enregistrement de la longueur d'une voiture
-    size_t length = (sizeof(v) / sizeof(v[0])) - 1;
-
     //Boucle de création de fils (20)
-    for (int k = 0; k < length; k++) {
+    for (int k = 0; k < 20; k++) {
+        timeGenerator(test);
         if (fork() == 0) {
             //Fils
             int pidFils = getpid();
-            vieVoiture(circuit[k], k, pidFils, tempsSession);
-
+            vieVoiture(circuit, k, pidFils, tempsSession);
         }
     }
 
@@ -63,16 +55,23 @@ int faireTourner(int tempsSession) {
     secondeDepart = time(NULL);
     do{
         secondePendant = time(NULL);
-        //affichage
+        printf("\033[2J"); // Clear the terminal window
+        showOutput(sortObj(circuit, 21, session), 21);
+        //Patiente 2 secondes avant de ré-afficher
+        sleep(2);
     }
-    while (secondePendant <= secondeDepart + tempsSession+1) ;
+    while (secondePendant <= secondeDepart + tempsSession+1);
 
 
-    //showOutput(v, length);
-    //sortObj(v, length);
-    //showOutput(v, length);
+    //ecritureFichier();
+    shmdt(circuit);
+    shmctl(shmid, IPC_RMID, NULL);
+
+    printf("%s\n","Père Fini");
+
+
+
+
 
 }
-
-
 

@@ -5,6 +5,7 @@
 
 //Différents includes
 #include <stdlib.h>
+#include <stdbool.h>
 
 //Création de la structure Voiture
 typedef struct {
@@ -15,7 +16,10 @@ typedef struct {
     float total;
     float tTour[2];
     int pidFils;
+    int idBest[3];
+    bool out;
 
 } Voiture;
+
 
 #endif //PROJET_FORMULE_1_STRUCTVOITURE_HPUT_H

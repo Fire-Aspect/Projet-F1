@@ -4,24 +4,54 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "structVoiture.h"
-#include "showOutput.h"
 
-//Fonction sortObj (param : structure Voiture et Longueur)
+//Fonction sortObj (param : pointeur vers un tableau et Longueur)
 //But : trier les temps de tours dans différents secteurs d'une voiture
-void sortObj(Voiture v[], int len) {
+Voiture *sortObj(Voiture* array, int len, char session) {
+    switch (session) {
+        case '1':
+        case '2':
+        case '3':
+            printf("%s","P\n");
+            break;
+        case '4':
+            printf("%s","Q1\n");
+            break;
+        case '5':
+            printf("%s","Q2\n");
+            break;
+        case '6':
+            printf("%s","Q3\n");
+            break;
+        case '7':
+            printf("%s","Course\n");
+            break;
+        case '8':
+            printf("%s","Course Sprint\n");
+            break;
+        default:
+            printf("%s", "stop it get some help - Michael Jordan");
+
+    }
+
+
+    static Voiture copie_array[21];
+    memcpy(copie_array, array, len * sizeof(Voiture));
+
     int i, j;
-    Voiture temp;
-    //tri de la structure
+    Voiture temp[21];               // Structure Voiture temporaire pour faire le tri
+
+    //fonction tri de la structure
     for (i = 0; i < len - 1; i++) {
         for (j = i + 1; j < len; j++) {
-            if (v[i].total > v[j].total) {
-                temp = v[i];
-                v[i] = v[j];
-                v[j] = temp;
+            if (copie_array[i].total > copie_array[j].total) {
+                temp[20] = copie_array[i];
+                copie_array[i] = copie_array[j];
+                copie_array[j] = temp[20];
             }
         }
     }
-    //showOutput(v, len);
+    return copie_array;
 }
 
 //à améliorer plus tard

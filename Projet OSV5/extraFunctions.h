@@ -3,15 +3,15 @@
 //Différents includes
 #include<stdio.h>
 #include <unistd.h>
+#include <time.h>
 #include "structVoiture.h"
-#include "timeGen.h"
 
 //Fonction vieVoiture (param : )
 //But : Compléter un tableau de 8 cases représentant les temps de tour d'une voiture
 
-int vieVoiture(Voiture caseV, int numCase, int pid, int tempsSess) {
+int vieVoiture(Voiture* array, int numCase, int pid, int tempsSess) {
 
-    int numeroVoiture[21] = {44, 63, 1, 11, 55, 16, 4, 3, 14, 31, 10, 22, 5, 18, 6, 23, 77, 24, 47, 9, 999};
+    int numero_Voiture[21] = {44, 63, 1, 11, 55, 16, 4, 3, 14, 31, 10, 22, 5, 18, 6, 23, 77, 24, 47, 9, 999};
     float temps[5] = {};
     time_t secondeDepart;
     time_t secondePendant;
@@ -19,42 +19,154 @@ int vieVoiture(Voiture caseV, int numCase, int pid, int tempsSess) {
 
     //Boucle de remplissage de tableau
     do {
-        timeGenerator(temps);
-        for (int i = 0; i <= 8; i++) {
+        for (int j = 0; j < 20; j++){
+            timeGenerator(temps);
+        }
+        //Patiente 1 sec avant de refaire un temps
+        sleep(1);
+        for (int i = 0; i <= 9; i++) {
             switch (i) {
                 case 0:
-                    caseV.s1 = temps[0];
+                    array[numCase].s1 = temps[0];
                     break;
                 case 1:
-                    caseV.s2 = temps[1];
+                    array[numCase].s2 = temps[1];
                     break;
+
                 case 2:
-                    caseV.s3 = temps[2];
+                    array[numCase].s3 = temps[2];
                     break;
                 case 3:
-                    caseV.tTour[0] = temps[3];
+                    array[numCase].tTour[0] = temps[3];
                     break;
                 case 4:
-                    caseV.tTour[1] = temps[4];
+                    array[numCase].tTour[1] = temps[4];
                     break;
                 case 5:
-                    caseV.vId = numeroVoiture[numCase];
+                    array[numCase].vId = numero_Voiture[numCase];
                     break;
                 case 6:
-                    caseV.total = temps[0] + temps[1] + temps[2];
+                    array[numCase].total = temps[0] + temps[1] + temps[2];
                     break;
                 case 7 :
-                    caseV.pidFils = pid;
+                    array[numCase].pidFils = pid;
                     break;
-
+                case 8 :
+                    array[numCase].out = false;
+                    break;
             }
         }
+
         secondePendant = time(NULL);
-        //for (int j = 0; j <= 4; j++){
-//
-//       }
+
     } while (secondePendant <= secondeDepart + tempsSess);
-    printf("%s\n", "Fini");
 
     exit(0);
+}
+
+
+//Fonction pour écrire en fichier PROTOTYPE A AMELIORER param : pointeur vers array
+
+int ecritureFichier(char * tour, int* classementFinal) {
+
+    // Buffer qui servira a stocker les données d'une période pour ensuite être reécrite
+    char buffer[1024];
+    FILE * f;
+
+    //Si le tour est identifié comme P1, renvoie une valeur nulle
+    if(strcmp(tour , "P1") == 0){
+        //Si il n'arrive pas à ouvrir le fichier, il le créé et il l'ouvre
+        if(!(f = fopen("P1.txt","w")))
+            system("touch P1.txt");
+            f = fopen("P1.txt", "w");
+    }
+
+    //Vérification de la bonne ouverture du fichier sinon erreur
+    if (f == NULL) {
+        printf("Impossible d'ouvrir le fichier\n");
+        exit(-1);
+    }
+
+    //Boucle pour écrire dans le fichier chaque donnée du classement final
+    for (int i = 0; i < 20; i++) {
+        //sauvegarde des données dans un buffer local
+        sprintf(buffer, "%d\n", classementFinal[i]);
+        //a partir de ce buffer, écriture en fichier
+        fwrite(buffer, 1, sizeof(buffer), f);
+    }
+    //Ferme le fichier
+    fclose(f);
+    if (fclose(f) == EOF){
+        printf("Impossible de fermer le fichier\n");
+        exit(-1);
+    }
+}
+
+//Fonction pour lire en fichier PROTOTYPE A AMELIORER
+
+int lectureFichier(char * tour, int* classementFinal ) {
+    FILE *f;
+    char *newClassement;
+    char* str = malloc(sizeof(char)*500);
+    int position[20];
+    //char buffer[1024];
+
+    //si le tour est tel ou tel secteur, il continue
+    if (strcmp(tour, "Q2") == 0 || strcmp(tour, "Q3") == 0 || strcmp(tour, "C1") == 0) {
+
+        if (strcmp(tour,"Q2") == 0) {
+            //Si c'est le secteur Q2 il ouvre le fichier de Q1
+            f = fopen("Q1.txt", "r");
+            for (int i = 15; i < 20; i++) {
+                //Voiture[i].status = "O"; explication : on élimine les 5 dernières voitures
+                // Statut passe de en course à out
+            }
+        }
+
+        else if (strcmp(tour, "Q3") == 0) {
+            //Si c'est le secteur Q3 il ouvre le fichier de Q2
+            f = fopen("Q2.txt", "r");
+            for (int i = 10; i < 20; i++) {
+                //Voiture[i].status = "O"; explication : on élimine les 10 dernières voitures
+                // Statut passe de en course à out
+            }
+        }
+        else {
+            //Sinon il ouvre le fichier de Q3
+            f = fopen("Q3.txt", "r");
+        }
+
+        // Vérifie si l'ouverture du fichier a réussi
+        if (f == NULL) {
+            printf("Impossible d'ouvrir le fichier\n");
+            exit(-1);
+        }
+
+        //fread(buffer, 1, sizeof(buffer), f);
+        //Pour le moment inutilisé, à voir plus tard
+
+        // Lit et sépare les données du fichier ligne par ligne
+        newClassement = strtok(str, "\n");
+
+        //Tant que il y a des lignes, conversion de chaines de caractères en nombre
+        int i = 0;
+        while (newClassement != NULL) {
+            position[i] = atoi(newClassement);
+            newClassement = strtok(NULL, "\n");
+            i++;
+        }
+        //Boucle qui permet d'attribuer la position de départ à une voiture grâce à son id
+        for(int k = 0; k<20; k++){
+
+            //Voiture[k].vId = pos[k]; //demandez le soucis
+
+        }
+
+        // Ferme le fichier + génération d'erreur au cas où
+        fclose(f);
+        if (fclose(f) == EOF) {
+            printf("Impossible de fermer le fichier\n");
+            exit(-1);
+        }
+    }
 }
