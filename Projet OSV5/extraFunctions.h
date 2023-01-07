@@ -63,57 +63,108 @@ int vieVoiture(Voiture* array, int numCase, int pid, int tempsSess) {
 }
 
 
-// Fonction qui renvoie le contenu de la dernière case d'une structure.
-/*
-int affichePre () {
-       int copie =
-
-};*/
-
-
-
 //Fonction pour écrire en fichier PROTOTYPE A AMELIORER param : pointeur vers array
 
-/*
-int ecritureFichier(int* classementFinal) {
-    FILE *fp;
+int ecritureFichier(char * tour, int* classementFinal) {
 
-    // Ouvre le fichier en écriture
-    fp = fopen("formule.txt", "w");
+    // Buffer qui servira a stocker les données d'une période pour ensuite être reécrite
+    char buffer[1024];
+    FILE * f;
+
+    //Si le tour est identifié comme P1, renvoie une valeur nulle
+    if(strcmp(tour , "P1") == 0){
+        //Si il n'arrive pas à ouvrir le fichier, il le créé et il l'ouvre
+        if(!(f = fopen("P1.txt","w")))
+            system("touch P1.txt");
+            f = fopen("P1.txt", "w");
+    }
+
+    //Vérification de la bonne ouverture du fichier sinon erreur
+    if (f == NULL) {
+        printf("Impossible d'ouvrir le fichier\n");
+        exit(-1);
+    }
 
     //Boucle pour écrire dans le fichier chaque donnée du classement final
-    for (int i = 0; i < sizeof(classementFinal); i++) {
-        fprintf(fp, "%d", classementFinal[i]);
+    for (int i = 0; i < 20; i++) {
+        //sauvegarde des données dans un buffer local
+        sprintf(buffer, "%d\n", classementFinal[i]);
+        //a partir de ce buffer, écriture en fichier
+        fwrite(buffer, 1, sizeof(buffer), f);
     }
     //Ferme le fichier
-    fclose(fp);
-
-    return 0;
+    fclose(f);
+    if (fclose(f) == EOF){
+        printf("Impossible de fermer le fichier\n");
+        exit(-1);
+    }
 }
-*/
 
+//Fonction pour lire en fichier PROTOTYPE A AMELIORER
 
-int lectureFichier()
-{
-    // Ouvre le fichier en lecture
-    FILE* file = fopen("formule.txt", "r");
+int lectureFichier(char * tour, int* classementFinal ) {
+    FILE *f;
+    char *newClassement;
+    char* str = malloc(sizeof(char)*500);
+    int position[20];
+    //char buffer[1024];
 
-    // Vérifie si l'ouverture du fichier a réussi
-    if (file == NULL)
-    {
-        printf("Impossible d'ouvrir le fichier\n");
-        return 1;
+    //si le tour est tel ou tel secteur, il continue
+    if (strcmp(tour, "Q2") == 0 || strcmp(tour, "Q3") == 0 || strcmp(tour, "C1") == 0) {
+
+        if (strcmp(tour,"Q2") == 0) {
+            //Si c'est le secteur Q2 il ouvre le fichier de Q1
+            f = fopen("Q1.txt", "r");
+            for (int i = 15; i < 20; i++) {
+                //Voiture[i].status = "O"; explication : on élimine les 5 dernières voitures
+                // Statut passe de en course à out
+            }
+        }
+
+        else if (strcmp(tour, "Q3") == 0) {
+            //Si c'est le secteur Q3 il ouvre le fichier de Q2
+            f = fopen("Q2.txt", "r");
+            for (int i = 10; i < 20; i++) {
+                //Voiture[i].status = "O"; explication : on élimine les 10 dernières voitures
+                // Statut passe de en course à out
+            }
+        }
+        else {
+            //Sinon il ouvre le fichier de Q3
+            f = fopen("Q3.txt", "r");
+        }
+
+        // Vérifie si l'ouverture du fichier a réussi
+        if (f == NULL) {
+            printf("Impossible d'ouvrir le fichier\n");
+            exit(-1);
+        }
+
+        //fread(buffer, 1, sizeof(buffer), f);
+        //Pour le moment inutilisé, à voir plus tard
+
+        // Lit et sépare les données du fichier ligne par ligne
+        newClassement = strtok(str, "\n");
+
+        //Tant que il y a des lignes, conversion de chaines de caractères en nombre
+        int i = 0;
+        while (newClassement != NULL) {
+            position[i] = atoi(newClassement);
+            newClassement = strtok(NULL, "\n");
+            i++;
+        }
+        //Boucle qui permet d'attribuer la position de départ à une voiture grâce à son id
+        for(int k = 0; k<20; k++){
+
+            //Voiture[k].vId = pos[k]; //demandez le soucis
+
+        }
+
+        // Ferme le fichier + génération d'erreur au cas où
+        fclose(f);
+        if (fclose(f) == EOF) {
+            printf("Impossible de fermer le fichier\n");
+            exit(-1);
+        }
     }
-
-    // Lit et affiche les données du fichier ligne par ligne
-    int value;
-    while (fscanf(file, "%d", &value) == 1)
-    {
-        printf("%d\n", value);
-    }
-
-    // Ferme le fichier
-    fclose(file);
-
-    return 0;
 }
