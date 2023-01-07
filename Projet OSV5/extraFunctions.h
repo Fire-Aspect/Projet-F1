@@ -24,7 +24,7 @@ int vieVoiture(Voiture* array, int numCase, int pid, int tempsSess) {
         }
         //Patiente 1 sec avant de refaire un temps
         sleep(1);
-        for (int i = 0; i <= 8; i++) {
+        for (int i = 0; i <= 9; i++) {
             switch (i) {
                 case 0:
                     array[numCase].s1 = temps[0];
@@ -51,7 +51,9 @@ int vieVoiture(Voiture* array, int numCase, int pid, int tempsSess) {
                 case 7 :
                     array[numCase].pidFils = pid;
                     break;
-
+                case 8 :
+                    array[numCase].out = false;
+                    break;
             }
         }
 

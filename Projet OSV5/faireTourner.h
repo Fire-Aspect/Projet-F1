@@ -16,7 +16,6 @@
 //But : Faire tourner une voiture
 
 int faireTourner(int tempsSession) {
-
     srand(time(0));
 
     int shmid;
@@ -52,8 +51,7 @@ int faireTourner(int tempsSession) {
     do{
         secondePendant = time(NULL);
         printf("\033[2J"); // Clear the terminal window
-        sortObj(circuit, 21);
-        showOutput(circuit, 21);
+        showOutput(sortObj(circuit, 21, session), 21);
         //Patiente 2 secondes avant de ré-afficher
         sleep(2);
     }
