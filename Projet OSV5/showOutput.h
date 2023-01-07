@@ -6,9 +6,6 @@
 #include "structVoiture.h"
 #include "sortObj.h"
 
-#define COLOR_CYAN  "\033[0;36m"
-#define COLOR_CYAN_OFF   "\033[0m"
-
 //Fonction showOutput (param : structure voiture et longueur de voiture)
 //But : Afficher un tableau avec les temps d'une voiture dans différents secteurs de piste
 

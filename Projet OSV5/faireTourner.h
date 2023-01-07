@@ -18,6 +18,11 @@
 int faireTourner(int tempsSession) {
     srand(time(0));
 
+    char session;
+    printf("%s","Veuillez taper quelle session démarrer:\n -P1 = 1\n -P2 = 2\n -P3 = 3\n -Q1 = 4\n -Q2 = 5\n -Q3 = 6\n"
+                " -Course = 7\n -Course Sprint = 8\n");
+    scanf("%s", &session);
+
     int shmid;
     Voiture *circuit;    //Création d'un tableau contenant des voitures
     shmid = shmget(69, 21 * sizeof(Voiture), IPC_CREAT | 0666); //Création de la mémoire partagée
