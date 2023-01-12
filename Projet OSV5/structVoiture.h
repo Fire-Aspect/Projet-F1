@@ -1,4 +1,4 @@
-//Mis à jour le 21/12/2022
+//Mis à jour le 12/01/2023
 
 #ifndef PROJET_FORMULE_1_STRUCTVOITURE_H
 #define PROJET_FORMULE_1_STRUCTVOITURE_H
@@ -17,7 +17,7 @@ typedef struct {
     float tTour[2];
     int pidFils;
     int idBest[3];
-    bool out;
+    int status;
 
 } Voiture;
 
