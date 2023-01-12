@@ -8,6 +8,7 @@
 //Fonction sortObj (param : pointeur vers un tableau et Longueur)
 //But : trier les temps de tours dans différents secteurs d'une voiture
 Voiture *sortObj(Voiture* array, int len, char session) {
+    static Voiture copie_array[21];
     switch (session) {
         case '1':
         case '2':
@@ -29,7 +30,21 @@ Voiture *sortObj(Voiture* array, int len, char session) {
             return copie_array;
             break;
         case '4':
-            printf("%s","Q1\n");
+            memcpy(copie_array, array, len * sizeof(Voiture));
+            int k, r;
+            Voiture tempQ1[21];               // Structure Voiture temporaire pour faire le tri
+
+            //fonction tri de la structure
+            for (k = 0; k < len - 1; k++) {
+                for (r = k + 1; r < len; r++) {
+                    if (copie_array[k].total > copie_array[r].total) {
+                        temp[20] = copie_array[k];
+                        copie_array[k] = copie_array[r];
+                        copie_array[r] = tempQ1[20];
+                    }
+                }
+            }
+            return copie_array;
             break;
         case '5':
             printf("%s","Q2\n");
@@ -49,7 +64,7 @@ Voiture *sortObj(Voiture* array, int len, char session) {
     }
 
 
-    static Voiture copie_array[21];
+   /* static Voiture copie_array[21];
     memcpy(copie_array, array, len * sizeof(Voiture));
 
     int i, j;
@@ -66,6 +81,7 @@ Voiture *sortObj(Voiture* array, int len, char session) {
         }
     }
     return copie_array;
+    */
 }
 
 //à améliorer plus tard

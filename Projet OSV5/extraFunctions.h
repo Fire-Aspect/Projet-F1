@@ -32,7 +32,6 @@ int vieVoiture(Voiture* array, int numCase, int pid, int tempsSess) {
                 case 1:
                     array[numCase].s2 = temps[1];
                     break;
-
                 case 2:
                     array[numCase].s3 = temps[2];
                     break;
@@ -52,8 +51,14 @@ int vieVoiture(Voiture* array, int numCase, int pid, int tempsSess) {
                     array[numCase].pidFils = pid;
                     break;
                 case 8 :
-                    array[numCase].out = false;
+                    //statut de la voiture : 0 COURSE 1 PIT-STANDS 2 OUT
+                    array[numCase].status = 0;
+
                     break;
+            }
+            //aux stands
+            if (array[numCase].status == 1){
+                array[numCase].total += 25;
             }
         }
 
@@ -65,20 +70,51 @@ int vieVoiture(Voiture* array, int numCase, int pid, int tempsSess) {
 }
 
 
-//Fonction pour écrire en fichier PROTOTYPE A AMELIORER param : pointeur vers array
+//Fonction pour écrire en fichier PROTOTYPE À AMÉLIORER param : pointeur vers array
 
-int ecritureFichier(char * tour, int* classementFinal) {
+int ecritureFichier(char* nomFichier, int* classementFinal, char session) {
 
-    // Buffer qui servira a stocker les données d'une période pour ensuite être reécrite
+    // Buffer qui servira à stocker les données d'une période pour ensuite être re-écrite
     char buffer[1024];
     FILE * f;
 
-    //Si le tour est identifié comme P1, renvoie une valeur nulle
-    if(strcmp(tour , "P1") == 0){
-        //Si il n'arrive pas à ouvrir le fichier, il le créé et il l'ouvre
-        if(!(f = fopen("P1.txt","w")))
-            system("touch P1.txt");
-            f = fopen("P1.txt", "w");
+    //Si il n'arrive pas à ouvrir le fichier, il le créé et il l'ouvre
+    f = fopen(nomFichier,"w+");
+
+    //Vérification de la bonne ouverture du fichier sinon erreur
+    if (f == NULL) {
+        printf("Impossible d'ouvrir le fichier\n");
+        exit(-1);
+    }
+
+    switch (session) {
+        case '1':
+        case '2':
+        case '3':
+            //période d'essais
+            //écriture en fichier
+            fwrite(classementFinal,sizeof(Voiture), 21, f);
+            break;
+        case '4':
+            //Q1
+            //élimination des 5 dernières voitures
+            for(int i = 15; i < 20; i ++){
+            }
+            break;
+        case '5':
+            //Q2
+            //élimination des 10 dernières voitures
+            for(int i = 10; i < 20; i ++){
+            }
+
+            break;
+        case '6':
+            //Q3
+            break;
+        case '7':
+            break;
+        case '8':
+            break;
     }
 
     //Ferme le fichier + erreur de fermeture fichier
@@ -106,7 +142,7 @@ int lectureFichier(char * tour, int* classementFinal ) {
             f = fopen("Q1.txt", "r");
             for (int i = 15; i < 20; i++) {
                 //Voiture[i].status = "O"; explication : on élimine les 5 dernières voitures
-                // Statut passe de en course à out
+                // Statut passe de : en course à out
             }
         }
 
@@ -135,7 +171,7 @@ int lectureFichier(char * tour, int* classementFinal ) {
         // Lit et sépare les données du fichier ligne par ligne
         newClassement = strtok(str, "\n");
 
-        //Tant que il y a des lignes, conversion de chaines de caractères en nombre
+        //Tant qu'il y a des lignes, conversion de chaines de caractères en nombre
         int i = 0;
         while (newClassement != NULL) {
             position[i] = atoi(newClassement);
