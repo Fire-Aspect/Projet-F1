@@ -81,20 +81,7 @@ int ecritureFichier(char * tour, int* classementFinal) {
             f = fopen("P1.txt", "w");
     }
 
-    //Vérification de la bonne ouverture du fichier sinon erreur
-    if (f == NULL) {
-        printf("Impossible d'ouvrir le fichier\n");
-        exit(-1);
-    }
-
-    //Boucle pour écrire dans le fichier chaque donnée du classement final
-    for (int i = 0; i < 20; i++) {
-        //sauvegarde des données dans un buffer local
-        sprintf(buffer, "%d\n", classementFinal[i]);
-        //a partir de ce buffer, écriture en fichier
-        fwrite(buffer, 1, sizeof(buffer), f);
-    }
-    //Ferme le fichier
+    //Ferme le fichier + erreur de fermeture fichier
     fclose(f);
     if (fclose(f) == EOF){
         printf("Impossible de fermer le fichier\n");

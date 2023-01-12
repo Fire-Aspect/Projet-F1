@@ -64,6 +64,34 @@ int faireTourner(int tempsSession) {
 
 
     //ecritureFichier();
+    static char nomFichier[20];
+    switch (session) {
+        case '1':
+            strcpy(nomFichier, "P1.txt");
+            break;
+        case '2':
+            strcpy(nomFichier, "P2.txt");
+            break;
+        case '3':
+            strcpy(nomFichier, "P3.txt");
+            break;
+        case '4':
+            strcpy(nomFichier, "Q1.txt");
+            break;
+        case '5':
+            strcpy(nomFichier, "Q2.txt");
+            break;
+        case '6':
+            strcpy(nomFichier, "Q3.txt");
+            break;
+        case '7':
+            strcpy(nomFichier, "Course.txt");
+            break;
+        case '8':
+            strcpy(nomFichier, "CourseSprint.txt");
+            break;
+    }
+    ecritureFichier(nomFichier,sortObj(circuit, 21, session),session);
     shmdt(circuit);
     shmctl(shmid, IPC_RMID, NULL);
 
