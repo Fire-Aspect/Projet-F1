@@ -25,7 +25,7 @@ int vieVoiture(Voiture* array, int numCase, int pid, int tempsSess) {
         }
         //Patiente 1 sec avant de refaire un temps
         sleep(1);
-        for (int i = 0; i <= 9; i++) {
+        for (int i = 0; i <= 10; i++) {
             switch (i) {
                 case 0:
                     array[numCase].s1 = temps[0];
@@ -55,7 +55,22 @@ int vieVoiture(Voiture* array, int numCase, int pid, int tempsSess) {
                     //statut de la voiture : 0 COURSE 1 PIT-STANDS 2 OUT
                     array[numCase].status = 0;
                     break;
+                case 9:
+                    if (array[numCase].s1 < array[20].s1) {
+                        array[20].s1 = array[numCase].s1;
+                        array[20].idBest[0] = array[numCase].vId;
+                    }
+                    if (array[numCase].s2 < array[20].s2) {
+                        array[20].s2 = array[numCase].s2;
+                        array[20].idBest[1] = array[numCase].vId;
+                    }
+                    if (array[numCase].s3 < array[20].s3) {
+                        array[20].s3 = array[numCase].s3;
+                        array[20].idBest[2] = array[numCase].vId;
+                    }
+                    break;
             }
+
             //aux stands
             if (array[numCase].status == 1){
                 array[numCase].total += 25;

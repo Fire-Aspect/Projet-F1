@@ -38,7 +38,7 @@ Voiture *sortObj(Voiture* array, int len, char session) {
             for (k = 0; k < len - 1; k++) {
                 for (r = k + 1; r < len; r++) {
                     if (copie_array[k].total > copie_array[r].total) {
-                        temp[20] = copie_array[k];
+                        tempQ1[20] = copie_array[k];
                         copie_array[k] = copie_array[r];
                         copie_array[r] = tempQ1[20];
                     }

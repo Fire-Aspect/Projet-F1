@@ -9,7 +9,7 @@
 //But : Afficher un tableau avec les temps d'une voiture dans différents secteurs de piste
 
 void showOutput(Voiture* array, int len) {
-    fflush(stdout);
+    system("clear");
     int kTemp;
 
     //Fonction de tri
@@ -25,21 +25,7 @@ void showOutput(Voiture* array, int len) {
            -15, "-----------------", 18, "---------------------", 7, "---------");
 
     for (int i = 0; i < len-1; ++i) {
-        
-        for (int k = 0; k < 20; k++) {
-            if (classement[20].s1 > classement[k].s1) {
-                classement[20].s1 = classement[k].s1;
-                classement[20].idBest[0] = classement[k].vId;
-            }
-            if (classement[20].s2 > classement[k].s2) {
-                classement[20].s2 = classement[k].s2;
-                classement[20].idBest[1] = classement[k].vId;
-            }
-            if (classement[20].s3 > classement[k].s3) {
-                classement[20].s3 = classement[k].s3;
-                classement[20].idBest[2] = classement[k].vId;
-            }
-        }
+
         if(i == 0){
             printf("| %-6d | %-12.3f | %-12.3f | %-12.3f | %.0f%s%-13.3f |                     | %-7d |\n", classement[i].vId,
                    classement[i].s1, classement[i].s2, classement[i].s3, classement[i].tTour[0], ".",

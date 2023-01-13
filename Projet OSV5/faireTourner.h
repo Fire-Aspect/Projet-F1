@@ -55,7 +55,6 @@ int faireTourner(int tempsSession) {
     secondeDepart = time(NULL);
     do{
         secondePendant = time(NULL);
-        printf("\033[2J"); // Clear the terminal window
         showOutput(sortObj(circuit, 21, session), 21);
         //Patiente 2 secondes avant de ré-afficher
         sleep(2);
