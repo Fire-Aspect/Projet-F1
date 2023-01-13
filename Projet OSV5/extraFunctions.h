@@ -115,8 +115,8 @@ int ecritureFichier(char* nomFichier, Voiture* classementFinal, char session) {
 
     //Vérification de la bonne ouverture du fichier sinon erreur
     if (f == NULL) {
-        printf("Impossible d'ouvrir le fichier\n");
-        exit(-1);
+        printf("\nImpossible d'ouvrir le fichier\n");
+        return -1;
     }
 
     switch (session) {
@@ -132,7 +132,7 @@ int ecritureFichier(char* nomFichier, Voiture* classementFinal, char session) {
             break;
 
         case '4':
-            //Q1
+            //écriture en fichier pour Q1
             //élimination des 5 dernières voitures
             for(int i = 15; i < 20; i ++){
                 classPourOrdi[i][8] = 2;
@@ -144,7 +144,7 @@ int ecritureFichier(char* nomFichier, Voiture* classementFinal, char session) {
             break;
 
         case '5':
-            //Q2
+            //écriture en fichier pour Q2
             //élimination des 10 dernières voitures
             for(int i = 10; i < 20; i ++){
                 classPourOrdi[i][8] = 2;
@@ -156,8 +156,6 @@ int ecritureFichier(char* nomFichier, Voiture* classementFinal, char session) {
             break;
 
         case '6':
-            //Q3
-            break;
         case '7':
         case '8':
             freopen(fichierAffi, "w", stdout);
@@ -169,77 +167,75 @@ int ecritureFichier(char* nomFichier, Voiture* classementFinal, char session) {
 
     //Ferme le fichier + erreur de fermeture fichier
     fclose(f);
-    if (fclose(f) == EOF){
-        printf("Impossible de fermer le fichier\n");
-        exit(-1);
+
+    // Libération de la mémoire allouée
+    for (int i = 0; i < 20; i++) {
+        free(classPourOrdi[i]);
     }
+    free(classPourOrdi);
 }
+
 
 //Fonction pour lire en fichier PROTOTYPE A AMELIORER
 
-int lectureFichier(char * tour, int* classementFinal ) {
-    FILE *f;
-    char *newClassement;
-    char* str = malloc(sizeof(char)*500);
+int lectureFichier(char* nomFichier, Voiture* classementFinal , char session ) {
+
+    char taille[2048] = "";
     int position[20];
-    //char buffer[1024];
+    FILE *f = fopen(nomFichier, "r");
 
-    //si le tour est tel ou tel secteur, il continue
-    if (strcmp(tour, "Q2") == 0 || strcmp(tour, "Q3") == 0 || strcmp(tour, "C1") == 0) {
+    // Si l'ouverture du fichier a réussi, on continue sinon erreur
+    if (f != NULL) {
 
-        if (strcmp(tour,"Q2") == 0) {
-            //Si c'est le secteur Q2 il ouvre le fichier de Q1
-            f = fopen("Q1.txt", "r");
-            for (int i = 15; i < 20; i++) {
-                //Voiture[i].status = "O"; explication : on élimine les 5 dernières voitures
-                // Statut passe de : en course à out
-            }
+        switch (session) {
+            case '4':
+                //on lit le classement de Q1 + positionnement des 5 dernières voitures
+
+                while (fgets(taille, 2048, f) != NULL) {
+
+                    printf("%s", taille);
+
+                }
+
+                for(int i = 15; i < 20; i ++){
+                    position[i] = classementFinal[i].vId;
+                }
+
+                break;
+            case '5':
+                //on lit le classement de Q2 + positionnement des 10 autres voitures
+
+                while (fgets(taille, 2048, f) != NULL) {
+
+                    printf("%s", taille);
+
+                }
+
+                for(int i = 10; i < 20; i ++){
+                    position[i] = classementFinal[i].vId;
+                }
+
+                break;
+            case '6':
+                //on lit le classement de Q3
+            case '7':
+
+            case '8':
+
+                while (fgets(taille, 2048, f) != NULL) {
+
+                    printf("%s", taille);
+
+                }
+                break;
         }
 
-        else if (strcmp(tour, "Q3") == 0) {
-            //Si c'est le secteur Q3 il ouvre le fichier de Q2
-            f = fopen("Q2.txt", "r");
-            for (int i = 10; i < 20; i++) {
-                //Voiture[i].status = "O"; explication : on élimine les 10 dernières voitures
-                // Statut passe de en course à out
-            }
-        }
-        else {
-            //Sinon il ouvre le fichier de Q3
-            f = fopen("Q3.txt", "r");
-        }
-
-        // Vérifie si l'ouverture du fichier a réussi
-        if (f == NULL) {
-            printf("Impossible d'ouvrir le fichier\n");
-            exit(-1);
-        }
-
-        //fread(buffer, 1, sizeof(buffer), f);
-        //Pour le moment inutilisé, à voir plus tard
-
-        // Lit et sépare les données du fichier ligne par ligne
-        newClassement = strtok(str, "\n");
-
-        //Tant qu'il y a des lignes, conversion de chaines de caractères en nombre
-        int i = 0;
-        while (newClassement != NULL) {
-            position[i] = atoi(newClassement);
-            newClassement = strtok(NULL, "\n");
-            i++;
-        }
-        //Boucle qui permet d'attribuer la position de départ à une voiture grâce à son id
-        for(int k = 0; k<20; k++){
-
-            //Voiture[k].vId = pos[k]; //demandez le soucis
-
-        }
-
-        // Ferme le fichier + génération d'erreur au cas où
-        fclose(f);
+        // Fermeture fichier + vérification erreur
         if (fclose(f) == EOF) {
-            printf("Impossible de fermer le fichier\n");
-            exit(-1);
+            printf("Fermeture du fichier impossible \n");
+            return -1;
         }
     }
 }
+
+//session différente , nomdefichier ==> read
