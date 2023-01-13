@@ -1,10 +1,11 @@
 //Mis à jour le 12/01/2023
 
 //Différents includes
-#include<stdio.h>
+#include <stdio.h>
 #include <unistd.h>
 #include <time.h>
 #include "structVoiture.h"
+#include "showOutput.h"
 
 //Fonction vieVoiture (param : )
 //But : Compléter un tableau de 8 cases représentant les temps de tour d'une voiture
@@ -53,7 +54,6 @@ int vieVoiture(Voiture* array, int numCase, int pid, int tempsSess) {
                 case 8 :
                     //statut de la voiture : 0 COURSE 1 PIT-STANDS 2 OUT
                     array[numCase].status = 0;
-
                     break;
             }
             //aux stands
@@ -71,15 +71,32 @@ int vieVoiture(Voiture* array, int numCase, int pid, int tempsSess) {
 
 
 //Fonction pour écrire en fichier PROTOTYPE À AMÉLIORER param : pointeur vers array
+int ecritureFichier(char* nomFichier, Voiture* classementFinal, char session) {
 
-int ecritureFichier(char* nomFichier, int* classementFinal, char session) {
+    int **classPourOrdi;
+    classPourOrdi = (int **) malloc(20 * sizeof(int *));
+    for (int i = 0; i < 20; i++) {
+        classPourOrdi[i] = (int *) malloc(2 * sizeof(int ));
+    }
+    // Initialisation des valeurs
+    for (int i = 0; i < 20; i++) {
+        for (int j = 0; j < 2; j++) {
+            switch (j) {
+                case 0:
+                    classPourOrdi[i][j] = classementFinal[i].vId;
+                    break;
+                case 1:
+                    classPourOrdi[i][j] = classementFinal[i].status;
+                    break;
+            }
+        }
+    }
 
-    // Buffer qui servira à stocker les données d'une période pour ensuite être re-écrite
-    char buffer[1024];
-    FILE * f;
-
+    char fichierAffi[15];
+    sprintf(fichierAffi, "A_%s", nomFichier);
+    //Ouverture du fichier
     //Si il n'arrive pas à ouvrir le fichier, il le créé et il l'ouvre
-    f = fopen(nomFichier,"w+");
+    FILE *f = fopen(nomFichier,"w");
 
     //Vérification de la bonne ouverture du fichier sinon erreur
     if (f == NULL) {
@@ -91,29 +108,47 @@ int ecritureFichier(char* nomFichier, int* classementFinal, char session) {
         case '1':
         case '2':
         case '3':
-            //période d'essais
-            //écriture en fichier
-            fwrite(classementFinal,sizeof(Voiture), 21, f);
+            //écriture en fichier pour P1, P2 et P3
+            freopen(fichierAffi, "w", stdout);
+            showOutput(classementFinal, 21);
+            fclose(stdout);
+            fwrite(classPourOrdi,sizeof(Voiture), 21, f);
+
             break;
+
         case '4':
             //Q1
             //élimination des 5 dernières voitures
             for(int i = 15; i < 20; i ++){
+                classPourOrdi[i][8] = 2;
             }
+            freopen(fichierAffi, "w", stdout);
+            showOutput(classementFinal, 21);
+            fclose(stdout);
+            fwrite(classPourOrdi,sizeof(Voiture), 21, f);
             break;
+
         case '5':
             //Q2
             //élimination des 10 dernières voitures
             for(int i = 10; i < 20; i ++){
+                classPourOrdi[i][8] = 2;
             }
-
+            freopen(fichierAffi, "w", stdout);
+            showOutput(classementFinal, 21);
+            fclose(stdout);
+            fwrite(classPourOrdi,sizeof(Voiture), 21, f);
             break;
+
         case '6':
             //Q3
             break;
         case '7':
-            break;
         case '8':
+            freopen(fichierAffi, "w", stdout);
+            showOutput(classementFinal, 21);
+            fclose(stdout);
+            fwrite(classPourOrdi,sizeof(Voiture), 21, f);
             break;
     }
 

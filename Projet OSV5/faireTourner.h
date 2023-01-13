@@ -9,7 +9,7 @@
 #include "timeGen.h"
 #include "structVoiture.h"
 #include "extraFunctions.h"
-#include "showOutput.h"
+#include "sortObj.h"
 
 
 //Fonction faireTourner (param : tempsSession ==> temps de session)
@@ -64,10 +64,10 @@ int faireTourner(int tempsSession) {
 
 
     //ecritureFichier();
-    static char nomFichier[20];
+    char* nomFichier;
     switch (session) {
         case '1':
-            strcpy(nomFichier, "P1.txt");
+            nomFichier = "P1.txt";
             break;
         case '2':
             strcpy(nomFichier, "P2.txt");

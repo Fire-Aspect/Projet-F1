@@ -19,7 +19,7 @@ int main() {
     srand(time(0));
 
 
-    faireTourner(2);
+    faireTourner(5);
 
     return 0;
 }

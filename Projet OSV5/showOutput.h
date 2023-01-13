@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "structVoiture.h"
-#include "sortObj.h"
 
 //Fonction showOutput (param : structure voiture et longueur de voiture)
 //But : Afficher un tableau avec les temps d'une voiture dans différents secteurs de piste
