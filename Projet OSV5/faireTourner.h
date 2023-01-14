@@ -7,8 +7,6 @@
 #include <sys/ipc.h>
 #include <sys/shm.h>
 #include "timeGen.h"
-#include "structVoiture.h"
-#include "extraFunctions.h"
 #include "sortObj.h"
 
 
@@ -61,6 +59,8 @@ int faireTourner(int tempsSession) {
     }
     while (secondePendant <= secondeDepart + tempsSession+1);
 
+    lectureFichier(5);
+
 
     //ecritureFichier();
     char* nomFichier;
@@ -69,13 +69,13 @@ int faireTourner(int tempsSession) {
             nomFichier = "P1.txt";
             break;
         case '2':
-            strcpy(nomFichier, "P2.txt");
+            nomFichier = "P2.txt";
             break;
         case '3':
-            strcpy(nomFichier, "P3.txt");
+            nomFichier = "P3.txt";
             break;
         case '4':
-            strcpy(nomFichier, "Q1.txt");
+            nomFichier = "Q1.txt";
             break;
         case '5':
             strcpy(nomFichier, "Q2.txt");
@@ -87,9 +87,10 @@ int faireTourner(int tempsSession) {
             strcpy(nomFichier, "Course.txt");
             break;
         case '8':
-            strcpy(nomFichier, "CourseSprint.txt");
+            nomFichier = "CourseSprint.txt";
             break;
     }
+
     ecritureFichier(nomFichier,sortObj(circuit, 21, session),session);
     shmdt(circuit);
     shmctl(shmid, IPC_RMID, NULL);

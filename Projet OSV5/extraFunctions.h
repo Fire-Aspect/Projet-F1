@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <time.h>
-#include "structVoiture.h"
 #include "showOutput.h"
 
 //Fonction vieVoiture (param : )
@@ -101,7 +100,7 @@ int ecritureFichier(char* nomFichier, Voiture* classementFinal, char session) {
                     classPourOrdi[i][j] = classementFinal[i].vId;
                     break;
                 case 1:
-                    classPourOrdi[i][j] = classementFinal[i].status;
+                    classPourOrdi[i][j] = classementFinal[i].eliminated;
                     break;
             }
         }
@@ -127,7 +126,7 @@ int ecritureFichier(char* nomFichier, Voiture* classementFinal, char session) {
             freopen(fichierAffi, "w", stdout);
             showOutput(classementFinal, 21);
             fclose(stdout);
-            fwrite(classPourOrdi,sizeof(Voiture), 21, f);
+            fwrite(classPourOrdi,sizeof(Voiture), 20, f);
 
             break;
 
@@ -135,24 +134,24 @@ int ecritureFichier(char* nomFichier, Voiture* classementFinal, char session) {
             //écriture en fichier pour Q1
             //élimination des 5 dernières voitures
             for(int i = 15; i < 20; i ++){
-                classPourOrdi[i][8] = 2;
+                classPourOrdi[i][1] = 1;
             }
             freopen(fichierAffi, "w", stdout);
             showOutput(classementFinal, 21);
             fclose(stdout);
-            fwrite(classPourOrdi,sizeof(Voiture), 21, f);
+            fwrite(classPourOrdi,sizeof(Voiture), 20, f);
             break;
 
         case '5':
             //écriture en fichier pour Q2
             //élimination des 10 dernières voitures
             for(int i = 10; i < 20; i ++){
-                classPourOrdi[i][8] = 2;
+                classPourOrdi[i][1] = 1;
             }
             freopen(fichierAffi, "w", stdout);
             showOutput(classementFinal, 21);
             fclose(stdout);
-            fwrite(classPourOrdi,sizeof(Voiture), 21, f);
+            fwrite(classPourOrdi,sizeof(Voiture), 20, f);
             break;
 
         case '6':
@@ -161,7 +160,7 @@ int ecritureFichier(char* nomFichier, Voiture* classementFinal, char session) {
             freopen(fichierAffi, "w", stdout);
             showOutput(classementFinal, 21);
             fclose(stdout);
-            fwrite(classPourOrdi,sizeof(Voiture), 21, f);
+            fwrite(classPourOrdi,sizeof(Voiture), 20, f);
             break;
     }
 
@@ -178,64 +177,54 @@ int ecritureFichier(char* nomFichier, Voiture* classementFinal, char session) {
 
 //Fonction pour lire en fichier PROTOTYPE A AMELIORER
 
-int lectureFichier(char* nomFichier, Voiture* classementFinal , char session ) {
+int **lectureFichier(char session ) {
 
-    char taille[2048] = "";
-    int position[20];
+    char *nomFichier;
+    switch (session) {
+        case 5:
+            nomFichier ="Q1.txt";
+            break;
+        case 6:
+            nomFichier = "Q2.txt";
+            break;
+        case 7:
+            nomFichier ="Q3.txt";
+            break;
+        case 8:
+            nomFichier = "Q3.txt";
+            break;
+    }
+
     FILE *f = fopen(nomFichier, "r");
 
     // Si l'ouverture du fichier a réussi, on continue sinon erreur
-    if (f != NULL) {
+    if (f == NULL) {
+        printf("\nImpossible d'ouvrir le fichier\n");
+    }
 
-        switch (session) {
-            case '4':
-                //on lit le classement de Q1 + positionnement des 5 dernières voitures
+    int lignes, colonnes;
+    fscanf(f, "%d %d", &lignes, &colonnes);
 
-                while (fgets(taille, 2048, f) != NULL) {
+    int **classDepuisFichier = (int **) malloc(lignes * sizeof(int *));
+    for (int i = 0; i < lignes; i++) {
+        classDepuisFichier[i] = (int *) malloc(colonnes * sizeof(int));
+    }
 
-                    printf("%s", taille);
-
-                }
-
-                for(int i = 15; i < 20; i ++){
-                    position[i] = classementFinal[i].vId;
-                }
-
-                break;
-            case '5':
-                //on lit le classement de Q2 + positionnement des 10 autres voitures
-
-                while (fgets(taille, 2048, f) != NULL) {
-
-                    printf("%s", taille);
-
-                }
-
-                for(int i = 10; i < 20; i ++){
-                    position[i] = classementFinal[i].vId;
-                }
-
-                break;
-            case '6':
-                //on lit le classement de Q3
-            case '7':
-
-            case '8':
-
-                while (fgets(taille, 2048, f) != NULL) {
-
-                    printf("%s", taille);
-
-                }
-                break;
-        }
-
-        // Fermeture fichier + vérification erreur
-        if (fclose(f) == EOF) {
-            printf("Fermeture du fichier impossible \n");
-            return -1;
+    for (int i = 0; i < lignes; i++) {
+        for (int j = 0; j < colonnes; j++) {
+            fscanf(f, "%d", &classDepuisFichier[i][j]);
         }
     }
-}
+    // Fermeture fichier + vérification erreur
+    if (fclose(f) == EOF) {
+        printf("Fermeture du fichier impossible \n");
+    }
 
-//session différente , nomdefichier ==> read
+    for (int i = 0; i < lignes; i++) {
+        for (int j = 0; j < colonnes; j++) {
+            printf("%d ", classDepuisFichier[i][j]);
+        }
+        printf("\n");
+    }
+    return classDepuisFichier;
+}
