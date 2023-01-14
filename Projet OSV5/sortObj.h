@@ -7,14 +7,14 @@
 
 //Fonction sortObj (param : pointeur vers un tableau et Longueur)
 //But : trier les temps de tours dans différents secteurs d'une voiture
-Voiture *sortObj(Voiture* array, int len, char session) {
+Voiture *sortObj(Voiture *array, int len, char session) {
 
     int position[20];
 
     static Voiture copie_array[21];
     memcpy(copie_array, array, len * sizeof(Voiture));
     static int array_lect[20][2];
-    int k, r, l ,g ,n = 0;
+    int k, r, l, g, n = 0;
     Voiture voitTemp;
     switch (session) {
         case '1':
@@ -45,7 +45,7 @@ Voiture *sortObj(Voiture* array, int len, char session) {
             //si la voiture est éliminée, son temps est augmenté de 994
             //puis ce temps est incrémenté de 1 pour les voitures éliminées suivantes.
 
-            for(int z = 15; z < 20; z++) {
+            for (int z = 15; z < 20; z++) {
 
                 if (array_lect[z][1] == 1) {
 
@@ -69,11 +69,11 @@ Voiture *sortObj(Voiture* array, int len, char session) {
             }
             //fonction tri de la structure
             for (k = 0; k < len - 1; k++) {
-                for (r = 0; r < len-k-1; r++) {
-                    if (copie_array[r].total > copie_array[r +1].total) {
+                for (r = 0; r < len - k - 1; r++) {
+                    if (copie_array[r].total > copie_array[r + 1].total) {
                         voitTemp = copie_array[r];
-                        copie_array[r] = copie_array[r+1];
-                        copie_array[r+1] = voitTemp;
+                        copie_array[r] = copie_array[r + 1];
+                        copie_array[r + 1] = voitTemp;
                     }
                 }
             }
@@ -92,7 +92,7 @@ Voiture *sortObj(Voiture* array, int len, char session) {
             //si la voiture est éliminée, son temps est augmenté de 994
             //puis ce temps est incrémenté de 1 pour les voitures éliminées suivantes.
 
-            for(int z = 10; z < 20; z++) {
+            for (int z = 10; z < 20; z++) {
 
                 if (array_lect[z][1] == 1) {
 
@@ -116,11 +116,11 @@ Voiture *sortObj(Voiture* array, int len, char session) {
             }
             //fonction tri de la structure
             for (k = 0; k < len - 1; k++) {
-                for (r = 0; r < len-k-1; r++) {
-                    if (copie_array[r].total > copie_array[r +1].total) {
+                for (r = 0; r < len - k - 1; r++) {
+                    if (copie_array[r].total > copie_array[r + 1].total) {
                         voitTemp = copie_array[r];
-                        copie_array[r] = copie_array[r+1];
-                        copie_array[r+1] = voitTemp;
+                        copie_array[r] = copie_array[r + 1];
+                        copie_array[r + 1] = voitTemp;
                     }
                 }
             }
@@ -128,15 +128,13 @@ Voiture *sortObj(Voiture* array, int len, char session) {
             return copie_array;
             break;
         case '7':
-            printf("%s","Course\n");
-            break;
+            printf("%s", "Course en travaux\n");
+            exit(0);
         case '8':
-            printf("%s","Course Sprint\n");
-            break;
+            printf("%s", "Course Sprint en travaux\n");
+            exit(0);
         default:
-            printf("%s", "stop it get some help - Michael Jordan");
+            printf("%s", "Session inconnue\n");
 
     }
 }
-
-//à améliorer plus tard

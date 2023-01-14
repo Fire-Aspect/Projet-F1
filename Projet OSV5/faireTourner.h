@@ -17,8 +17,18 @@ int faireTourner(int tempsSession) {
     srand(time(0));
 
     char session;
-    printf("%s","Veuillez taper quelle session démarrer:\n -P1 = 1\n -P2 = 2\n -P3 = 3\n -Q1 = 4\n -Q2 = 5\n -Q3 = 6\n"
-                " -Course = 7\n -Course Sprint = 8\n");
+    printf("%s", "                                   ##############################################  ###############\n"
+                        "                       ########################################################   ###############\n"
+                        "                     #########################################################  ###############\n"
+                        "                  #########################################################   ###############\n"
+                        "                ################                                            ###############\n"
+                        "              ###############   ########################################  ###############\n"
+                        "           ###############   ########################################  ###############\n"
+                        "         ##############   ########################################   ###############\n"
+                        "       ##############   ##############                             ###############\n"
+                        "     ##############   #############                              ###############\n\n");
+    printf("%s", "Veuillez taper quelle session démarrer:\n -P1 = 1\n -P2 = 2\n -P3 = 3\n -Q1 = 4\n -Q2 = 5\n -Q3 = 6\n"
+                 " -Course = 7\n -Course Sprint = 8\n");
     scanf("%s", &session);
 
     int shmid;
@@ -42,7 +52,7 @@ int faireTourner(int tempsSession) {
         if (fork() == 0) {
             //Fils
             int pidFils = getpid();
-            vieVoiture(circuit, k,pidFils, tempsSession);
+            vieVoiture(circuit, k, tempsSession);
         }
     }
 
@@ -50,17 +60,16 @@ int faireTourner(int tempsSession) {
     time_t secondeDepart;
     time_t secondePendant;
     secondeDepart = time(NULL);
-    do{
+    do {
         sleep(1);
         secondePendant = time(NULL);
         showOutput(sortObj(circuit, 21, session), 21);
         //Patiente 2 secondes avant de re-afficher
         sleep(1);
-    }
-    while (secondePendant <= secondeDepart + tempsSession+1);
+    } while (secondePendant <= secondeDepart + tempsSession + 1);
 
     //écritureFichier();
-    char* nomFichier;
+    char *nomFichier;
     switch (session) {
         case '1':
             nomFichier = "P1";
@@ -88,7 +97,7 @@ int faireTourner(int tempsSession) {
             break;
     }
 
-    ecritureFichier(nomFichier,sortObj(circuit, 21, session),session);
+    ecritureFichier(nomFichier, sortObj(circuit, 21, session), session);
     shmdt(circuit);
     shmctl(shmid, IPC_RMID, NULL);
 

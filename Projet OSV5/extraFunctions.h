@@ -10,10 +10,10 @@
 #define MAX_NUMBERS 3
 #define MAX_VALUE 20
 
-//Fonction vieVoiture (param : )
-//But : Compléter un tableau de 8 cases représentant les temps de tour d'une voiture
+//Fonction vieVoiture
+//But : Compléter un tableau de 10 cases représentant les temps de tour d'une voiture
 
-int vieVoiture(Voiture* array, int numCase,int pid, int tempsSess) {
+int vieVoiture(Voiture *array, int numCase, int tempsSess) {
 
     int numero_Voiture[21] = {44, 63, 1, 11, 55, 16, 4, 3, 14, 31, 10, 22, 5, 18, 6, 23, 77, 24, 47, 9, 999};
     float temps[5] = {};
@@ -29,7 +29,7 @@ int vieVoiture(Voiture* array, int numCase,int pid, int tempsSess) {
     //Boucle de remplissage de tableau
     do {
         int p;
-        for (int j = 0; j < 20; j++){
+        for (int j = 0; j < 20; j++) {
             timeGenerator(temps);
         }
         //Patiente 1 sec avant de refaire un temps
@@ -41,7 +41,7 @@ int vieVoiture(Voiture* array, int numCase,int pid, int tempsSess) {
             switch (i) {
                 case 0:
                     array[numCase].status = 0;
-
+                    //Logique pour aller au stand aléatoirement
                     if (sleep_time == 0) {
                         for (p = 0; p < MAX_NUMBERS; p++) {
                             int rnd = rand() % MAX_VALUE;
@@ -63,6 +63,7 @@ int vieVoiture(Voiture* array, int numCase,int pid, int tempsSess) {
                         break;
                     }
                     break;
+                //Remplissage des temps par secteurs
                 case 1:
                     array[numCase].s1 = temps[0];
                     break;
@@ -101,6 +102,7 @@ int vieVoiture(Voiture* array, int numCase,int pid, int tempsSess) {
                 case 7 :
                     array[numCase].vId = numero_Voiture[numCase];
                     break;
+                //Vérification des best temps de la session
                 case 8:
                     if (array[numCase].s1 < array[20].s1) {
                         array[20].s1 = array[numCase].s1;
@@ -115,6 +117,9 @@ int vieVoiture(Voiture* array, int numCase,int pid, int tempsSess) {
                         array[20].idBest[2] = array[numCase].vId;
                     }
                     break;
+                default:
+                    printf("Erreur fils");
+                    exit(-1);
             }
 
             //aux stands
@@ -144,6 +149,9 @@ int ecritureFichier(char* nomFichier, Voiture* classementFinal, char session) {
                 case 1:
                     classPourOrdi[i][j] = classementFinal[i].eliminated;
                     break;
+                default:
+                    printf("Erreur");
+                    exit(-1);
             }
         }
     }
@@ -153,7 +161,7 @@ int ecritureFichier(char* nomFichier, Voiture* classementFinal, char session) {
 
     //Ouverture du fichier
     //S'il n'arrive pas à ouvrir le fichier, il le cré et il l'ouvre
-    if((f = fopen(nomFichier,"wb"))==NULL){
+    if ((f = fopen(nomFichier, "wb")) == NULL) {
         printf("Impossible d'ouvrir le fichier");
         exit(-1);
     }
@@ -166,7 +174,7 @@ int ecritureFichier(char* nomFichier, Voiture* classementFinal, char session) {
             freopen(fichierAffi, "w", stdout);
             showOutput(classementFinal, 21);
             fclose(stdout);
-            if(fwrite(classPourOrdi,sizeof(int), 20*2, f) != 20*2) {
+            if (fwrite(classPourOrdi, sizeof(int), 20 * 2, f) != 20 * 2) {
                 printf("\nErreur d'écriture\n");
                 exit(-1);
             }
@@ -176,15 +184,15 @@ int ecritureFichier(char* nomFichier, Voiture* classementFinal, char session) {
         case '4':
             //écriture en fichier pour Q1
             //élimination des 5 dernières voitures
-            for(int i = 0; i < 20; i ++){
-                if (i>=15){
+            for (int i = 0; i < 20; i++) {
+                if (i >= 15) {
                     classPourOrdi[i][1] = 1;
                 }
             }
             freopen(fichierAffi, "w", stdout);
             showOutput(classementFinal, 21);
             fclose(stdout);
-            if(fwrite(classPourOrdi,sizeof(int), 20*2, f) != 20*2) {
+            if (fwrite(classPourOrdi, sizeof(int), 20 * 2, f) != 20 * 2) {
                 printf("\nErreur d'écriture\n");
                 exit(-1);
             }
@@ -194,15 +202,15 @@ int ecritureFichier(char* nomFichier, Voiture* classementFinal, char session) {
         case '5':
             //écriture en fichier pour Q2
             //élimination des 10 dernières voitures
-            for(int i = 0; i < 20; i ++){
-                if (i>=10){
+            for (int i = 0; i < 20; i++) {
+                if (i >= 10) {
                     classPourOrdi[i][1] = 1;
                 }
             }
             freopen(fichierAffi, "w", stdout);
             showOutput(classementFinal, 21);
             fclose(stdout);
-            if(fwrite(classPourOrdi,sizeof(int), 20*2, f) != 20*2) {
+            if (fwrite(classPourOrdi, sizeof(int), 20 * 2, f) != 20 * 2) {
                 printf("\nErreur d'écriture\n");
                 exit(-1);
             }
@@ -215,51 +223,54 @@ int ecritureFichier(char* nomFichier, Voiture* classementFinal, char session) {
             freopen(fichierAffi, "w", stdout);
             showOutput(classementFinal, 21);
             fclose(stdout);
-            if(fwrite(classPourOrdi,sizeof(int), 20*2, f) != 20*2) {
+            if (fwrite(classPourOrdi, sizeof(int), 20 * 2, f) != 20 * 2) {
                 printf("\nErreur d'écriture\n");
                 exit(-1);
             }
             fclose(f);
             break;
+        default:
+            printf("Erreur switch");
+            exit(-1);
     }
 }
 
 
 //Fonction pour lire en fichier PROTOTYPE A AMELIORER
 
-int *lectureFichier(char session ) {
+int *lectureFichier(char session) {
     FILE *f;
     char *nomFichier;
     switch (session) {
         case '5':
-            nomFichier ="Q1";
+            nomFichier = "Q1";
             break;
         case '6':
             nomFichier = "Q2";
             break;
         case '7':
-            nomFichier ="Q3";
-            break;
         case '8':
             nomFichier = "Q3";
             break;
+        default:
+            printf("Erreur switch");
+            exit(-1);
     }
     static int classDepuisFichier[20][2];
-    static int* pointClassDepuisFichier = &classDepuisFichier[0][0];
+    static int *pointClassDepuisFichier = &classDepuisFichier[0][0];
 
-    if((f = fopen(nomFichier, "rb"))==NULL){
+    if ((f = fopen(nomFichier, "rb")) == NULL) {
         printf("Impossible d'ouvrir le fichier");
         exit(-1);
     }
 
-    if(fread(classDepuisFichier,sizeof(int), 20*2, f) != 20*2) {
-        if(feof(f)) {
+    if (fread(classDepuisFichier, sizeof(int), 20 * 2, f) != 20 * 2) {
+        if (feof(f)) {
             printf("\nFin prématurée du fichier\n");
             exit(-1);
+        } else {
+            printf("\nErreur de lecture\n");
         }
-
-        else {
-            printf("\nErreur de lecture\n");}
         exit(-1);
     }
 

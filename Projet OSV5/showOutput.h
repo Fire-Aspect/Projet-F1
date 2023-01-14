@@ -50,5 +50,3 @@ void showOutput(Voiture* array, int len) {
 
 
 }
-
-//Tache à réaliser : arrêt aux stands
