@@ -96,6 +96,7 @@ Pour la course du samedi, il n’y a pas d’arrêt obligatoire aux stands. Le t
 - Lors de la course sprint, les 8 premiers reçoivent des points (dans l’ordre décroissant de 8 à 1).
 - Lors de la course du dimanche, les 10 premiers reçoivent des points (25, 20, 15, 10, 8, 6, 5, 3, 2, 1).
 - Lors de la course du dimanche, celui qui réalise le meilleur tour (durant la course) reçoit 1 point au classement, pour autant qu’il soit dans les 10 premiers de la course.
+
 - De plus, il vous est demandé de paramétrer votre programme.
 - En effet, le format des grands prix peut varier (sprint ou non) et les circuits peuvent être de longueur très variable et, dès lors, le nombre de tours pour la course sprint et la course du dimanche varie également (on essaie que le nombre total de kilomètres soit toujours plus ou moins le même pour chacune des courses du calendrier : sprint environ 100-120 km et course du dimanche environ 300-350 km).
 - On vous demande :
