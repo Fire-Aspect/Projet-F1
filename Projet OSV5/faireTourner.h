@@ -1,4 +1,4 @@
-//Mis à jour le 21/12/2022
+//Mis à jour le 14/01/2023
 
 //Différents includes
 #include <stdio.h>
@@ -7,9 +7,7 @@
 #include <sys/ipc.h>
 #include <sys/shm.h>
 #include "timeGen.h"
-#include "structVoiture.h"
-#include "extraFunctions.h"
-#include "showOutput.h"
+#include "sortObj.h"
 
 
 //Fonction faireTourner (param : tempsSession ==> temps de session)
@@ -19,20 +17,29 @@ int faireTourner(int tempsSession) {
     srand(time(0));
 
     char session;
-    printf("%s","Veuillez taper quelle session démarrer:\n -P1 = 1\n -P2 = 2\n -P3 = 3\n -Q1 = 4\n -Q2 = 5\n -Q3 = 6\n"
-                " -Course = 7\n -Course Sprint = 8\n");
+    printf("%s", "                                   ##############################################  ###############\n"
+                        "                       ########################################################   ###############\n"
+                        "                     #########################################################  ###############\n"
+                        "                  #########################################################   ###############\n"
+                        "                ################                                            ###############\n"
+                        "              ###############   ########################################  ###############\n"
+                        "           ###############   ########################################  ###############\n"
+                        "         ##############   ########################################   ###############\n"
+                        "       ##############   ##############                             ###############\n"
+                        "     ##############   #############                              ###############\n\n");
+    printf("%s", "Veuillez taper quelle session démarrer:\n -P1 = 1\n -P2 = 2\n -P3 = 3\n -Q1 = 4\n -Q2 = 5\n -Q3 = 6\n"
+                 " -Course = 7\n -Course Sprint = 8\n");
     scanf("%s", &session);
 
     int shmid;
     Voiture *circuit;    //Création d'un tableau contenant des voitures
     shmid = shmget(69, 21 * sizeof(Voiture), IPC_CREAT | 0666); //Création de la mémoire partagée
-    circuit = (Voiture *)shmat(shmid, 0, 0);     //Liaison de la mémoire partagée à Circuit
-
+    circuit = shmat(shmid, 0, 0);     //Liaison de la mémoire partagée à Circuit
     float test[5] = {};
 
     printf("%d \n", shmid);     //Outil de debug
 
-    //Assignation à la dernière voiture de valeurs différentes de 0
+    //Assignation à la dernière voiture de valeurs différentes de 0.
     circuit[20].vId = 999;
     circuit[20].s1 = 999;
     circuit[20].s2 = 999;
@@ -45,7 +52,7 @@ int faireTourner(int tempsSession) {
         if (fork() == 0) {
             //Fils
             int pidFils = getpid();
-            vieVoiture(circuit, k, pidFils, tempsSession);
+            vieVoiture(circuit, k, tempsSession);
         }
     }
 
@@ -53,25 +60,48 @@ int faireTourner(int tempsSession) {
     time_t secondeDepart;
     time_t secondePendant;
     secondeDepart = time(NULL);
-    do{
+    do {
+        sleep(1);
         secondePendant = time(NULL);
-        printf("\033[2J"); // Clear the terminal window
         showOutput(sortObj(circuit, 21, session), 21);
-        //Patiente 2 secondes avant de ré-afficher
-        sleep(2);
+        //Patiente 2 secondes avant de re-afficher
+        sleep(1);
+    } while (secondePendant <= secondeDepart + tempsSession + 1);
+
+    //écritureFichier();
+    char *nomFichier;
+    switch (session) {
+        case '1':
+            nomFichier = "P1";
+            break;
+        case '2':
+            nomFichier = "P2";
+            break;
+        case '3':
+            nomFichier = "P3";
+            break;
+        case '4':
+            nomFichier = "Q1";
+            break;
+        case '5':
+            nomFichier = "Q2";
+            break;
+        case '6':
+            nomFichier = "Q3";
+            break;
+        case '7':
+            nomFichier = "Course";
+            break;
+        case '8':
+            nomFichier = "CourseSprint";
+            break;
     }
-    while (secondePendant <= secondeDepart + tempsSession+1);
 
-
-    //ecritureFichier();
+    ecritureFichier(nomFichier, sortObj(circuit, 21, session), session);
     shmdt(circuit);
     shmctl(shmid, IPC_RMID, NULL);
 
-    printf("%s\n","Père Fini");
-
-
-
-
+    printf("%s\n", "Père Fini");
 
 }
 

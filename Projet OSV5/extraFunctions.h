@@ -1,60 +1,172 @@
-//Mis à jour le 21/12/2022
+//Mis à jour le 12/01/2023
 
 //Différents includes
-#include<stdio.h>
+#include <stdio.h>
 #include <unistd.h>
 #include <time.h>
-#include "structVoiture.h"
+#include <limits.h>
+#include "showOutput.h"
 
-//Fonction vieVoiture (param : )
-//But : Compléter un tableau de 8 cases représentant les temps de tour d'une voiture
+#define MAX_NUMBERS 4
+#define MAX_VALUE 20
 
-int vieVoiture(Voiture* array, int numCase, int pid, int tempsSess) {
+//Fonction vieVoiture
+//But : Compléter un tableau de 10 cases représentant les temps de tour d'une voiture
+
+int vieVoiture(Voiture *array, int numCase, int tempsSess) {
 
     int numero_Voiture[21] = {44, 63, 1, 11, 55, 16, 4, 3, 14, 31, 10, 22, 5, 18, 6, 23, 77, 24, 47, 9, 999};
     float temps[5] = {};
     time_t secondeDepart;
     time_t secondePendant;
     secondeDepart = time(NULL);
+    int numbers[MAX_NUMBERS];
+    int last_generated = -1;
+    int count[MAX_VALUE] = {0};
+    bool generated[MAX_VALUE] = {false};
+    int stand_time = rand() % 2;
+    int out_rand = rand() % 15;
+    int voitRan = rand() % 20;
 
     //Boucle de remplissage de tableau
     do {
-        for (int j = 0; j < 20; j++){
+        int p;
+        for (int j = 0; j < 20; j++) {
             timeGenerator(temps);
         }
         //Patiente 1 sec avant de refaire un temps
         sleep(1);
         for (int i = 0; i <= 9; i++) {
+            if (array[numCase].eliminated == 1) {
+                break;
+            }
             switch (i) {
                 case 0:
-                    array[numCase].s1 = temps[0];
+                    if (out_rand == 3) {
+                        array[voitRan].status = 2;
+                    }
+                    if (array[numCase].status == 2) {
+                        continue;
+                    }
+                    array[numCase].status = 0;
+                    //Logique pour aller au stand aléatoirement
+                    if (stand_time == 0) {
+                        for (p = 0; p < MAX_NUMBERS; p++) {
+                            int rnd = rand() % MAX_VALUE;
+                            if (rnd != last_generated && (count[rnd] < 3)) {
+                                numbers[p] = rnd;
+                                last_generated = rnd;
+                                count[rnd]++;
+                                if (count[rnd] == 3) generated[rnd] = true;
+                                if (numbers[p] == numCase) {
+                                    array[numCase].status = 1;
+                                }
+
+
+                            } else {
+                                // number already generated
+                                p--;
+                            }
+                        }
+                        break;
+                    }
                     break;
+                //Remplissage des temps par secteurs
                 case 1:
+                    if (array[numCase].status == 2) {
+                        array[numCase].s1 = array[numCase].s1;
+                        break;
+                    }
+                    array[numCase].s1 = temps[0];
+
+                    break;
+                case 2:
+                    if (array[numCase].status == 2) {
+                        array[numCase].s2 = array[numCase].s2;
+                        break;
+                    }
                     array[numCase].s2 = temps[1];
                     break;
-
-                case 2:
-                    array[numCase].s3 = temps[2];
-                    break;
                 case 3:
-                    array[numCase].tTour[0] = temps[3];
+                    if (array[numCase].status == 2) {
+                        array[numCase].s3 = array[numCase].s3;
+                        break;
+                    }
+                    if (array[numCase].status == 1) {
+                        array[numCase].s3 = temps[2] + 25;
+                    } else {
+                        array[numCase].s3 = temps[2];
+                    }
                     break;
                 case 4:
-                    array[numCase].tTour[1] = temps[4];
+                    if (array[numCase].eliminated == 1) {
+                        array[numCase].tTour[0] = 0;
+                        break;
+                    }
+                    if (array[numCase].status == 2) {
+                        array[numCase].tTour[0] = array[numCase].tTour[0];
+                        break;
+                    }
+                    array[numCase].tTour[0] = temps[3];
                     break;
                 case 5:
-                    array[numCase].vId = numero_Voiture[numCase];
+                    if (array[numCase].eliminated == 1) {
+                        array[numCase].tTour[1] = 0;
+                        break;
+                    }
+                    if (array[numCase].status == 2) {
+                        array[numCase].tTour[1] = array[numCase].tTour[1];
+                        break;
+                    }
+                    if (array[numCase].status == 1) {
+                        array[numCase].tTour[1] = temps[4] + 25;
+                        if (array[numCase].tTour[1] > 60) {
+                            array[numCase].tTour[1] -= 60;
+                            array[numCase].tTour[0] += 1;
+                        }
+                    } else {
+                        array[numCase].tTour[1] = temps[4];
+                    }
                     break;
                 case 6:
-                    array[numCase].total = temps[0] + temps[1] + temps[2];
+                    if (array[numCase].status == 2) {
+                        array[numCase].total = array[numCase].s1 +array[numCase].s2 + array[numCase].s3 ;
+                        break;
+                    }
+                    if (array[numCase].status == 1) {
+                        array[numCase].total = temps[0] + temps[1] + temps[2] + 25;
+                    } else {
+                        array[numCase].total = temps[0] + temps[1] + temps[2];
+                    }
                     break;
                 case 7 :
-                    array[numCase].pidFils = pid;
+                    array[numCase].vId = numero_Voiture[numCase];
                     break;
-                case 8 :
-                    array[numCase].out = false;
+                //Vérification des best temps de la session
+                case 8:
+                    if (array[numCase].status == 2 && array[numCase].s1 == 0 && array[numCase].s2 == 0 && array[numCase].s3 == 0) {
+                        array[numCase].total = 980;
+                        continue;
+                    }
+                    if (array[numCase].s1 < array[20].s1) {
+                        array[20].s1 = array[numCase].s1;
+                        array[20].idBest[0] = array[numCase].vId;
+                    }
+                    if (array[numCase].s2 < array[20].s2) {
+                        array[20].s2 = array[numCase].s2;
+                        array[20].idBest[1] = array[numCase].vId;
+                    }
+                    if (array[numCase].s3 < array[20].s3) {
+                        array[20].s3 = array[numCase].s3;
+                        array[20].idBest[2] = array[numCase].vId;
+                    }
                     break;
+                default:
+                    printf("Erreur fils");
+                    exit(-1);
             }
+
+
         }
 
         secondePendant = time(NULL);
@@ -65,108 +177,150 @@ int vieVoiture(Voiture* array, int numCase, int pid, int tempsSess) {
 }
 
 
-//Fonction pour écrire en fichier PROTOTYPE A AMELIORER param : pointeur vers array
+//Fonction pour écrire en fichier
+int ecritureFichier(char *nomFichier, Voiture *classementFinal, char session) {
 
-int ecritureFichier(char * tour, int* classementFinal) {
-
-    // Buffer qui servira a stocker les données d'une période pour ensuite être reécrite
-    char buffer[1024];
-    FILE * f;
-
-    //Si le tour est identifié comme P1, renvoie une valeur nulle
-    if(strcmp(tour , "P1") == 0){
-        //Si il n'arrive pas à ouvrir le fichier, il le créé et il l'ouvre
-        if(!(f = fopen("P1.txt","w")))
-            system("touch P1.txt");
-            f = fopen("P1.txt", "w");
-    }
-
-    //Vérification de la bonne ouverture du fichier sinon erreur
-    if (f == NULL) {
-        printf("Impossible d'ouvrir le fichier\n");
-        exit(-1);
-    }
-
-    //Boucle pour écrire dans le fichier chaque donnée du classement final
+    FILE *f;
+    int classPourOrdi[20][2];
+    // Initialisation des valeurs
     for (int i = 0; i < 20; i++) {
-        //sauvegarde des données dans un buffer local
-        sprintf(buffer, "%d\n", classementFinal[i]);
-        //a partir de ce buffer, écriture en fichier
-        fwrite(buffer, 1, sizeof(buffer), f);
+        for (int j = 0; j < 2; j++) {
+            switch (j) {
+                case 0:
+                    classPourOrdi[i][j] = classementFinal[i].vId;
+                    break;
+                case 1:
+                    classPourOrdi[i][j] = classementFinal[i].eliminated;
+                    break;
+                default:
+                    printf("Erreur");
+                    exit(-1);
+            }
+        }
     }
-    //Ferme le fichier
-    fclose(f);
-    if (fclose(f) == EOF){
-        printf("Impossible de fermer le fichier\n");
+
+    char fichierAffi[15];
+    sprintf(fichierAffi, "A_%s.txt", nomFichier);
+
+    //Ouverture du fichier
+    //S'il n'arrive pas à ouvrir le fichier, il le cré et il l'ouvre
+    if ((f = fopen(nomFichier, "wb")) == NULL) {
+        printf("Impossible d'ouvrir le fichier");
         exit(-1);
+    }
+
+    switch (session) {
+        case '1':
+        case '2':
+        case '3':
+            //écriture en fichier pour P1, P2 et P3
+            freopen(fichierAffi, "w", stdout);
+            showOutput(classementFinal, 21);
+            fclose(stdout);
+            if (fwrite(classPourOrdi, sizeof(int), 20 * 2, f) != 20 * 2) {
+                printf("\nErreur d'écriture\n");
+                exit(-1);
+            }
+            fclose(f);
+            break;
+
+        case '4':
+            //écriture en fichier pour Q1
+            //élimination des 5 dernières voitures
+            for (int i = 0; i < 20; i++) {
+                if (i >= 15) {
+                    classPourOrdi[i][1] = 1;
+                }
+            }
+            freopen(fichierAffi, "w", stdout);
+            showOutput(classementFinal, 21);
+            fclose(stdout);
+            if (fwrite(classPourOrdi, sizeof(int), 20 * 2, f) != 20 * 2) {
+                printf("\nErreur d'écriture\n");
+                exit(-1);
+            }
+            fclose(f);
+            break;
+
+        case '5':
+            //écriture en fichier pour Q2
+            //élimination des 10 dernières voitures
+            for (int i = 0; i < 20; i++) {
+                if (i >= 10) {
+                    classPourOrdi[i][1] = 1;
+                }
+            }
+            freopen(fichierAffi, "w", stdout);
+            showOutput(classementFinal, 21);
+            fclose(stdout);
+            if (fwrite(classPourOrdi, sizeof(int), 20 * 2, f) != 20 * 2) {
+                printf("\nErreur d'écriture\n");
+                exit(-1);
+            }
+            fclose(f);
+            break;
+
+        case '6':
+        case '7':
+        case '8':
+            freopen(fichierAffi, "w", stdout);
+            showOutput(classementFinal, 21);
+            fclose(stdout);
+            if (fwrite(classPourOrdi, sizeof(int), 20 * 2, f) != 20 * 2) {
+                printf("\nErreur d'écriture\n");
+                exit(-1);
+            }
+            fclose(f);
+            break;
+        default:
+            printf("Erreur switch");
+            exit(-1);
     }
 }
 
-//Fonction pour lire en fichier PROTOTYPE A AMELIORER
 
-int lectureFichier(char * tour, int* classementFinal ) {
+//Fonction pour lire en fichier
+
+int *lectureFichier(char session) {
     FILE *f;
-    char *newClassement;
-    char* str = malloc(sizeof(char)*500);
-    int position[20];
-    //char buffer[1024];
-
-    //si le tour est tel ou tel secteur, il continue
-    if (strcmp(tour, "Q2") == 0 || strcmp(tour, "Q3") == 0 || strcmp(tour, "C1") == 0) {
-
-        if (strcmp(tour,"Q2") == 0) {
-            //Si c'est le secteur Q2 il ouvre le fichier de Q1
-            f = fopen("Q1.txt", "r");
-            for (int i = 15; i < 20; i++) {
-                //Voiture[i].status = "O"; explication : on élimine les 5 dernières voitures
-                // Statut passe de en course à out
-            }
-        }
-
-        else if (strcmp(tour, "Q3") == 0) {
-            //Si c'est le secteur Q3 il ouvre le fichier de Q2
-            f = fopen("Q2.txt", "r");
-            for (int i = 10; i < 20; i++) {
-                //Voiture[i].status = "O"; explication : on élimine les 10 dernières voitures
-                // Statut passe de en course à out
-            }
-        }
-        else {
-            //Sinon il ouvre le fichier de Q3
-            f = fopen("Q3.txt", "r");
-        }
-
-        // Vérifie si l'ouverture du fichier a réussi
-        if (f == NULL) {
-            printf("Impossible d'ouvrir le fichier\n");
+    char *nomFichier;
+    switch (session) {
+        case '5':
+            nomFichier = "Q1";
+            break;
+        case '6':
+            nomFichier = "Q2";
+            break;
+        case '7':
+        case '8':
+            nomFichier = "Q3";
+            break;
+        default:
+            printf("Erreur switch");
             exit(-1);
-        }
-
-        //fread(buffer, 1, sizeof(buffer), f);
-        //Pour le moment inutilisé, à voir plus tard
-
-        // Lit et sépare les données du fichier ligne par ligne
-        newClassement = strtok(str, "\n");
-
-        //Tant que il y a des lignes, conversion de chaines de caractères en nombre
-        int i = 0;
-        while (newClassement != NULL) {
-            position[i] = atoi(newClassement);
-            newClassement = strtok(NULL, "\n");
-            i++;
-        }
-        //Boucle qui permet d'attribuer la position de départ à une voiture grâce à son id
-        for(int k = 0; k<20; k++){
-
-            //Voiture[k].vId = pos[k]; //demandez le soucis
-
-        }
-
-        // Ferme le fichier + génération d'erreur au cas où
-        fclose(f);
-        if (fclose(f) == EOF) {
-            printf("Impossible de fermer le fichier\n");
-            exit(-1);
-        }
     }
+    static int classDepuisFichier[20][2];
+    static int *pointClassDepuisFichier = &classDepuisFichier[0][0];
+
+    if ((f = fopen(nomFichier, "rb")) == NULL) {
+        printf("Impossible d'ouvrir le fichier");
+        exit(-1);
+    }
+
+    if (fread(classDepuisFichier, sizeof(int), 20 * 2, f) != 20 * 2) {
+        if (feof(f)) {
+            printf("\nFin prématurée du fichier\n");
+            exit(-1);
+        } else {
+            printf("\nErreur de lecture\n");
+        }
+        exit(-1);
+    }
+
+    // Fermeture fichier + vérification erreur
+    if (fclose(f) == EOF) {
+        printf("Fermeture du fichier impossible \n");
+        exit(-1);
+    }
+    return pointClassDepuisFichier;
 }
