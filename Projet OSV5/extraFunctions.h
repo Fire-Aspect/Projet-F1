@@ -87,11 +87,8 @@ int vieVoiture(Voiture* array, int numCase, int pid, int tempsSess) {
 //Fonction pour écrire en fichier PROTOTYPE À AMÉLIORER param : pointeur vers array
 int ecritureFichier(char* nomFichier, Voiture* classementFinal, char session) {
 
-    int **classPourOrdi;
-    classPourOrdi = (int **) malloc(20 * sizeof(int *));
-    for (int i = 0; i < 20; i++) {
-        classPourOrdi[i] = (int *) malloc(2 * sizeof(int ));
-    }
+    FILE *f;
+    int classPourOrdi[20][2];
     // Initialisation des valeurs
     for (int i = 0; i < 20; i++) {
         for (int j = 0; j < 2; j++) {
@@ -107,15 +104,13 @@ int ecritureFichier(char* nomFichier, Voiture* classementFinal, char session) {
     }
 
     char fichierAffi[15];
-    sprintf(fichierAffi, "A_%s", nomFichier);
+    sprintf(fichierAffi, "A_%s.txt", nomFichier);
+
     //Ouverture du fichier
     //S'il n'arrive pas à ouvrir le fichier, il le cré et il l'ouvre
-    FILE *f = fopen(nomFichier,"w");
-
-    //Vérification de la bonne ouverture du fichier sinon erreur
-    if (f == NULL) {
-        printf("\nImpossible d'ouvrir le fichier\n");
-        return -1;
+    if((f = fopen(nomFichier,"wb"))==NULL){
+        printf("Impossible d'ouvrir le fichier");
+        exit(-1);
     }
 
     switch (session) {
@@ -126,20 +121,29 @@ int ecritureFichier(char* nomFichier, Voiture* classementFinal, char session) {
             freopen(fichierAffi, "w", stdout);
             showOutput(classementFinal, 21);
             fclose(stdout);
-            fwrite(classPourOrdi,sizeof(Voiture), 20, f);
-
+            if(fwrite(classPourOrdi,sizeof(int), 20*2, f) != 20*2) {
+                printf("\nErreur d'écriture\n");
+                exit(-1);
+            }
+            fclose(f);
             break;
 
         case '4':
             //écriture en fichier pour Q1
             //élimination des 5 dernières voitures
-            for(int i = 15; i < 20; i ++){
-                classPourOrdi[i][1] = 1;
+            for(int i = 0; i < 20; i ++){
+                if (i>=15){
+                    classPourOrdi[i][1] = 1;
+                }
             }
             freopen(fichierAffi, "w", stdout);
             showOutput(classementFinal, 21);
             fclose(stdout);
-            fwrite(classPourOrdi,sizeof(Voiture), 20, f);
+            if(fwrite(classPourOrdi,sizeof(int), 20*2, f) != 20*2) {
+                printf("\nErreur d'écriture\n");
+                exit(-1);
+            }
+            fclose(f);
             break;
 
         case '5':
@@ -151,7 +155,11 @@ int ecritureFichier(char* nomFichier, Voiture* classementFinal, char session) {
             freopen(fichierAffi, "w", stdout);
             showOutput(classementFinal, 21);
             fclose(stdout);
-            fwrite(classPourOrdi,sizeof(Voiture), 20, f);
+            if(fwrite(classPourOrdi,sizeof(int), 20*2, f) != 20*2) {
+                printf("\nErreur d'écriture\n");
+                exit(-1);
+            }
+            fclose(f);
             break;
 
         case '6':
@@ -160,71 +168,64 @@ int ecritureFichier(char* nomFichier, Voiture* classementFinal, char session) {
             freopen(fichierAffi, "w", stdout);
             showOutput(classementFinal, 21);
             fclose(stdout);
-            fwrite(classPourOrdi,sizeof(Voiture), 20, f);
+            if(fwrite(classPourOrdi,sizeof(int), 20*2, f) != 20*2) {
+                printf("\nErreur d'écriture\n");
+                exit(-1);
+            }
+            fclose(f);
             break;
     }
 
-    //Ferme le fichier + erreur de fermeture fichier
-    fclose(f);
-
     // Libération de la mémoire allouée
-    for (int i = 0; i < 20; i++) {
+    /*for (int i = 0; i < 20; i++) {
         free(classPourOrdi[i]);
     }
-    free(classPourOrdi);
+    free(classPourOrdi);*/
 }
 
 
 //Fonction pour lire en fichier PROTOTYPE A AMELIORER
 
-int **lectureFichier(char session ) {
-
+int *lectureFichier(char session ) {
+    FILE *f;
     char *nomFichier;
     switch (session) {
         case 5:
-            nomFichier ="Q1.txt";
+            nomFichier ="Q1";
             break;
         case 6:
-            nomFichier = "Q2.txt";
+            nomFichier = "Q2";
             break;
         case 7:
-            nomFichier ="Q3.txt";
+            nomFichier ="Q3";
             break;
         case 8:
-            nomFichier = "Q3.txt";
+            nomFichier = "Q3";
             break;
     }
+    static int classDepuisFichier[20][2];
+    static int* pointClassDepuisFichier = &classDepuisFichier[0][0];
 
-    FILE *f = fopen(nomFichier, "r");
-
-    // Si l'ouverture du fichier a réussi, on continue sinon erreur
-    if (f == NULL) {
-        printf("\nImpossible d'ouvrir le fichier\n");
+    if((f = fopen(nomFichier, "rb"))==NULL){
+        printf("Impossible d'ouvrir le fichier");
+        exit(-1);
     }
 
-    int lignes, colonnes;
-    fscanf(f, "%d %d", &lignes, &colonnes);
-
-    int **classDepuisFichier = (int **) malloc(lignes * sizeof(int *));
-    for (int i = 0; i < lignes; i++) {
-        classDepuisFichier[i] = (int *) malloc(colonnes * sizeof(int));
-    }
-
-    for (int i = 0; i < lignes; i++) {
-        for (int j = 0; j < colonnes; j++) {
-            fscanf(f, "%d", &classDepuisFichier[i][j]);
+    if(fread(classDepuisFichier,sizeof(int), 20*2, f) != 20*2) {
+        if(feof(f)) {
+            printf("\nFin prématurée du fichier\n");
+            exit(-1);
         }
+
+        else {
+            printf("\nErreur de lecture\n");}
+        exit(-1);
     }
+
     // Fermeture fichier + vérification erreur
     if (fclose(f) == EOF) {
         printf("Fermeture du fichier impossible \n");
+        exit(-1);
     }
-
-    for (int i = 0; i < lignes; i++) {
-        for (int j = 0; j < colonnes; j++) {
-            printf("%d ", classDepuisFichier[i][j]);
-        }
-        printf("\n");
-    }
-    return classDepuisFichier;
+    return pointClassDepuisFichier;
 }

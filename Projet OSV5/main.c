@@ -38,6 +38,8 @@ Conserver sur fichier le classement final à la fin de chaque séance ainsi que 
 Savoir si une voiture est aux stands (P)
 Savoir si une voiture est out (abandon de la séance)
 Dans ces 2 derniers cas, on conserve toujours le meilleur temps de la voiture et celle-ci reste dans le classement
+
+NE PAS DELETE
 A la fin de Q1, il reste 15 voitures qualifiées pour Q2 et les 5 dernières sont placées à la fin de la grille de départ (places 16 à 20)
 A la fin de Q2, il reste 10 voitures qualifiées pour Q3 et les 5 dernières sont placées dans les places 11 à 15 de la grille de départ
 Le classement de Q3 attribue les places 1 à 10 de la grille de départ

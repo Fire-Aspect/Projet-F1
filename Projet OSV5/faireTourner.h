@@ -52,42 +52,40 @@ int faireTourner(int tempsSession) {
     time_t secondePendant;
     secondeDepart = time(NULL);
     do{
+        sleep(1);
         secondePendant = time(NULL);
         showOutput(sortObj(circuit, 21, session), 21);
         //Patiente 2 secondes avant de re-afficher
-        sleep(2);
+        sleep(1);
     }
     while (secondePendant <= secondeDepart + tempsSession+1);
-
-    lectureFichier(5);
-
 
     //écritureFichier();
     char* nomFichier;
     switch (session) {
         case '1':
-            nomFichier = "P1.txt";
+            nomFichier = "P1";
             break;
         case '2':
-            nomFichier = "P2.txt";
+            nomFichier = "P2";
             break;
         case '3':
-            nomFichier = "P3.txt";
+            nomFichier = "P3";
             break;
         case '4':
-            nomFichier = "Q1.txt";
+            nomFichier = "Q1";
             break;
         case '5':
-            nomFichier = "Q2.txt";
+            nomFichier = "Q2";
             break;
         case '6':
-            nomFichier = "Q3.txt";
+            nomFichier = "Q3";
             break;
         case '7':
-            nomFichier = "Course.txt";
+            nomFichier = "Course";
             break;
         case '8':
-            nomFichier = "CourseSprint.txt";
+            nomFichier = "CourseSprint";
             break;
     }
 
