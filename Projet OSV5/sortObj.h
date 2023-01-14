@@ -1,4 +1,4 @@
-//Mis à jour le 12/01/2023
+//Mis à jour le 14/01/2023
 
 //Différents includes
 #include <stdio.h>
@@ -21,6 +21,7 @@ Voiture *sortObj(Voiture *array, int len, char session) {
         case '2':
         case '3':
         case '4':
+            //Sessions P1 P2 P3 Q1
             //fonction tri de la structure
             for (k = 0; k < len - 1; k++) {
                 for (r = k + 1; r < len; r++) {
@@ -34,7 +35,7 @@ Voiture *sortObj(Voiture *array, int len, char session) {
             return copie_array;
             break;
         case '5':
-
+            //Session Q2
             //copie mémoire partagée du tableau du classement lu en fichier
             memcpy(array_lect, lectureFichier(session), 20 * 2 * sizeof(int));
             int voitElimQ1[5][2];
@@ -82,6 +83,7 @@ Voiture *sortObj(Voiture *array, int len, char session) {
             break;
 
         case '6':
+            //Session Q3
             //copie mémoire partagée du tableau du classement lu en fichier
             memcpy(array_lect, lectureFichier(session), 20 * 2 * sizeof(int));
             int voitElimQ2[10][2];
@@ -89,7 +91,7 @@ Voiture *sortObj(Voiture *array, int len, char session) {
             int tempsLostQ3 = 989;
 
             //fonction tri de la structure
-            //si la voiture est éliminée, son temps est augmenté de 994
+            //si la voiture est éliminée, son temps est augmenté de 989
             //puis ce temps est incrémenté de 1 pour les voitures éliminées suivantes.
 
             for (int z = 10; z < 20; z++) {

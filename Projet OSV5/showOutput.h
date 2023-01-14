@@ -1,4 +1,4 @@
- //Mis à jour le 12/01/2023
+ //Mis à jour le 14/01/2023
 
 //Différents includes
 #include <stdio.h>
@@ -6,13 +6,12 @@
 #include "structVoiture.h"
 
 //Fonction showOutput (param : structure voiture et longueur de voiture)
-//But : Afficher un tableau avec les temps d'une voiture dans différents secteurs de piste
+//But : Afficher un tableau représentant un classement des voitures trié en fonction du temps
 
 void showOutput(Voiture* array, int len) {
     system("clear");
     int kTemp;
 
-    //Fonction de tri
     Voiture classement[21];
     memcpy(classement, array, len * sizeof(Voiture));
 

@@ -1,4 +1,4 @@
-//Mis à jour le 12/01/2023
+//Mis à jour le 14/01/2023
 
 //Différents includes
 #include <stdio.h>
@@ -134,8 +134,8 @@ int vieVoiture(Voiture *array, int numCase, int tempsSess) {
 }
 
 
-//Fonction pour écrire en fichier PROTOTYPE À AMÉLIORER param : pointeur vers array
-int ecritureFichier(char* nomFichier, Voiture* classementFinal, char session) {
+//Fonction pour écrire en fichier
+int ecritureFichier(char *nomFichier, Voiture *classementFinal, char session) {
 
     FILE *f;
     int classPourOrdi[20][2];
@@ -236,7 +236,7 @@ int ecritureFichier(char* nomFichier, Voiture* classementFinal, char session) {
 }
 
 
-//Fonction pour lire en fichier PROTOTYPE A AMELIORER
+//Fonction pour lire en fichier
 
 int *lectureFichier(char session) {
     FILE *f;

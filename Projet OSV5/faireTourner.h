@@ -1,4 +1,4 @@
-//Mis à jour le 12/01/2023
+//Mis à jour le 14/01/2023
 
 //Différents includes
 #include <stdio.h>
@@ -101,11 +101,7 @@ int faireTourner(int tempsSession) {
     shmdt(circuit);
     shmctl(shmid, IPC_RMID, NULL);
 
-    printf("%s\n","Père Fini");
-
-
-
-
+    printf("%s\n", "Père Fini");
 
 }
 
