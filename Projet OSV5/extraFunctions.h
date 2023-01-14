@@ -1,4 +1,4 @@
-//Mis à jour le 14/01/2023
+//Mis à jour le 12/01/2023
 
 //Différents includes
 #include <stdio.h>
@@ -7,7 +7,7 @@
 #include <limits.h>
 #include "showOutput.h"
 
-#define MAX_NUMBERS 3
+#define MAX_NUMBERS 4
 #define MAX_VALUE 20
 
 //Fonction vieVoiture
@@ -24,7 +24,9 @@ int vieVoiture(Voiture *array, int numCase, int tempsSess) {
     int last_generated = -1;
     int count[MAX_VALUE] = {0};
     bool generated[MAX_VALUE] = {false};
-    int sleep_time = rand() % 2;
+    int stand_time = rand() % 2;
+    int out_rand = rand() % 15;
+    int voitRan = rand() % 20;
 
     //Boucle de remplissage de tableau
     do {
@@ -40,9 +42,15 @@ int vieVoiture(Voiture *array, int numCase, int tempsSess) {
             }
             switch (i) {
                 case 0:
+                    if (out_rand == 3) {
+                        array[voitRan].status = 2;
+                    }
+                    if (array[numCase].status == 2) {
+                        continue;
+                    }
                     array[numCase].status = 0;
                     //Logique pour aller au stand aléatoirement
-                    if (sleep_time == 0) {
+                    if (stand_time == 0) {
                         for (p = 0; p < MAX_NUMBERS; p++) {
                             int rnd = rand() % MAX_VALUE;
                             if (rnd != last_generated && (count[rnd] < 3)) {
@@ -65,12 +73,25 @@ int vieVoiture(Voiture *array, int numCase, int tempsSess) {
                     break;
                 //Remplissage des temps par secteurs
                 case 1:
+                    if (array[numCase].status == 2) {
+                        array[numCase].s1 = array[numCase].s1;
+                        break;
+                    }
                     array[numCase].s1 = temps[0];
+
                     break;
                 case 2:
+                    if (array[numCase].status == 2) {
+                        array[numCase].s2 = array[numCase].s2;
+                        break;
+                    }
                     array[numCase].s2 = temps[1];
                     break;
                 case 3:
+                    if (array[numCase].status == 2) {
+                        array[numCase].s3 = array[numCase].s3;
+                        break;
+                    }
                     if (array[numCase].status == 1) {
                         array[numCase].s3 = temps[2] + 25;
                     } else {
@@ -78,9 +99,25 @@ int vieVoiture(Voiture *array, int numCase, int tempsSess) {
                     }
                     break;
                 case 4:
+                    if (array[numCase].eliminated == 1) {
+                        array[numCase].tTour[0] = 0;
+                        break;
+                    }
+                    if (array[numCase].status == 2) {
+                        array[numCase].tTour[0] = array[numCase].tTour[0];
+                        break;
+                    }
                     array[numCase].tTour[0] = temps[3];
                     break;
                 case 5:
+                    if (array[numCase].eliminated == 1) {
+                        array[numCase].tTour[1] = 0;
+                        break;
+                    }
+                    if (array[numCase].status == 2) {
+                        array[numCase].tTour[1] = array[numCase].tTour[1];
+                        break;
+                    }
                     if (array[numCase].status == 1) {
                         array[numCase].tTour[1] = temps[4] + 25;
                         if (array[numCase].tTour[1] > 60) {
@@ -92,7 +129,10 @@ int vieVoiture(Voiture *array, int numCase, int tempsSess) {
                     }
                     break;
                 case 6:
-
+                    if (array[numCase].status == 2) {
+                        array[numCase].total = array[numCase].s1 +array[numCase].s2 + array[numCase].s3 ;
+                        break;
+                    }
                     if (array[numCase].status == 1) {
                         array[numCase].total = temps[0] + temps[1] + temps[2] + 25;
                     } else {
@@ -104,6 +144,10 @@ int vieVoiture(Voiture *array, int numCase, int tempsSess) {
                     break;
                 //Vérification des best temps de la session
                 case 8:
+                    if (array[numCase].status == 2 && array[numCase].s1 == 0 && array[numCase].s2 == 0 && array[numCase].s3 == 0) {
+                        array[numCase].total = 980;
+                        continue;
+                    }
                     if (array[numCase].s1 < array[20].s1) {
                         array[20].s1 = array[numCase].s1;
                         array[20].idBest[0] = array[numCase].vId;
@@ -122,7 +166,6 @@ int vieVoiture(Voiture *array, int numCase, int tempsSess) {
                     exit(-1);
             }
 
-            //aux stands
 
         }
 

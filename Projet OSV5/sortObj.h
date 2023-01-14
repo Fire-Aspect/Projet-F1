@@ -24,11 +24,11 @@ Voiture *sortObj(Voiture *array, int len, char session) {
             //Sessions P1 P2 P3 Q1
             //fonction tri de la structure
             for (k = 0; k < len - 1; k++) {
-                for (r = k + 1; r < len; r++) {
-                    if (copie_array[k].total > copie_array[r].total) {
-                        voitTemp = copie_array[k];
-                        copie_array[k] = copie_array[r];
-                        copie_array[r] = voitTemp;
+                for (r = 0; r < len-k-1; r++) {
+                    if (copie_array[r].total > copie_array[r +1].total) {
+                        voitTemp = copie_array[r];
+                        copie_array[r] = copie_array[r+1];
+                        copie_array[r+1] = voitTemp;
                     }
                 }
             }
@@ -63,6 +63,8 @@ Voiture *sortObj(Voiture *array, int len, char session) {
                         copie_array[g].s1 = 0;
                         copie_array[g].s2 = 0;
                         copie_array[g].s3 = 0;
+                        copie_array[g].tTour[0] = 0;
+                        copie_array[g].tTour[1] = 0;
                         copie_array[g].eliminated = 1;
                         break;
                     }
@@ -111,6 +113,8 @@ Voiture *sortObj(Voiture *array, int len, char session) {
                         copie_array[g].s1 = 0;
                         copie_array[g].s2 = 0;
                         copie_array[g].s3 = 0;
+                        copie_array[g].tTour[0] = 0;
+                        copie_array[g].tTour[1] = 0;
                         copie_array[g].eliminated = 1;
                         break;
                     }
