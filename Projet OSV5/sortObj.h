@@ -8,6 +8,8 @@
 //Fonction sortObj (param : pointeur vers un tableau et Longueur)
 //But : trier les temps de tours dans différents secteurs d'une voiture
 Voiture *sortObj(Voiture* array, int len, char session) {
+
+    int position[20];
     static Voiture copie_array[21];
     memcpy(copie_array, array, len * sizeof(Voiture));
     static int array_lect[20][2];
