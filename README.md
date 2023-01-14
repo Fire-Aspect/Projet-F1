@@ -8,6 +8,13 @@
 - MOENS PENNEWAERT ANTOINE
 
 ***
+### UTILISATION
+
+- Telecharger le .zip, aller dans ProjetOSV5 et lancer main.c.
+- ATTENTION : le programme ne fonctione que sur linux.
+- Bonne course et que le meilleur gagne !
+
+***
 ### Projet Système TP Janvier 2023
 
 - Le but du projet est de gérer un championnat de Formule 1.
