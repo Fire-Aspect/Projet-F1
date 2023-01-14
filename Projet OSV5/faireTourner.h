@@ -22,11 +22,9 @@ int faireTourner(int tempsSession) {
     scanf("%s", &session);
 
     int shmid;
-    char* suppShmid;
     Voiture *circuit;    //Création d'un tableau contenant des voitures
     shmid = shmget(69, 21 * sizeof(Voiture), IPC_CREAT | 0666); //Création de la mémoire partagée
     circuit = shmat(shmid, 0, 0);     //Liaison de la mémoire partagée à Circuit
-    sprintf(suppShmid, "ipcrm -m %d", shmid);
     float test[5] = {};
 
     printf("%d \n", shmid);     //Outil de debug
@@ -93,7 +91,6 @@ int faireTourner(int tempsSession) {
     ecritureFichier(nomFichier,sortObj(circuit, 21, session),session);
     shmdt(circuit);
     shmctl(shmid, IPC_RMID, NULL);
-    system(suppShmid);
 
     printf("%s\n","Père Fini");
 

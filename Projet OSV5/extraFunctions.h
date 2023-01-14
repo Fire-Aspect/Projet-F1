@@ -194,8 +194,10 @@ int ecritureFichier(char* nomFichier, Voiture* classementFinal, char session) {
         case '5':
             //écriture en fichier pour Q2
             //élimination des 10 dernières voitures
-            for(int i = 10; i < 20; i ++){
-                classPourOrdi[i][1] = 1;
+            for(int i = 0; i < 20; i ++){
+                if (i>=10){
+                    classPourOrdi[i][1] = 1;
+                }
             }
             freopen(fichierAffi, "w", stdout);
             showOutput(classementFinal, 21);
@@ -220,12 +222,6 @@ int ecritureFichier(char* nomFichier, Voiture* classementFinal, char session) {
             fclose(f);
             break;
     }
-
-    // Libération de la mémoire allouée
-    /*for (int i = 0; i < 20; i++) {
-        free(classPourOrdi[i]);
-    }
-    free(classPourOrdi);*/
 }
 
 
@@ -235,16 +231,16 @@ int *lectureFichier(char session ) {
     FILE *f;
     char *nomFichier;
     switch (session) {
-        case 5:
+        case '5':
             nomFichier ="Q1";
             break;
-        case 6:
+        case '6':
             nomFichier = "Q2";
             break;
-        case 7:
+        case '7':
             nomFichier ="Q3";
             break;
-        case 8:
+        case '8':
             nomFichier = "Q3";
             break;
     }

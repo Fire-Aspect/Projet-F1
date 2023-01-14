@@ -10,10 +10,11 @@
 Voiture *sortObj(Voiture* array, int len, char session) {
 
     int position[20];
+
     static Voiture copie_array[21];
     memcpy(copie_array, array, len * sizeof(Voiture));
     static int array_lect[20][2];
-    int k, r, l ,g = 0;
+    int k, r, l ,g ,n = 0;
     Voiture voitTemp;
     switch (session) {
         case '1':
@@ -35,10 +36,9 @@ Voiture *sortObj(Voiture* array, int len, char session) {
         case '5':
 
             //copie mémoire partagée du tableau du classement lu en fichier
-            memcpy(array_lect, lectureFichier(5), 20 * 2 * sizeof(int));
-            int voitElim[5][2];
-            memset(voitElim, 0, sizeof(voitElim));
-            int n = 0;
+            memcpy(array_lect, lectureFichier(session), 20 * 2 * sizeof(int));
+            int voitElimQ1[5][2];
+            memset(voitElimQ1, 0, sizeof(voitElimQ1));
             int tempsLostQ2 = 994;
 
             //fonction tri de la structure
@@ -49,16 +49,16 @@ Voiture *sortObj(Voiture* array, int len, char session) {
 
                 if (array_lect[z][1] == 1) {
 
-                    voitElim[n][0] = array_lect[z][0];
-                    voitElim[n][1] = tempsLostQ2;
+                    voitElimQ1[n][0] = array_lect[z][0];
+                    voitElimQ1[n][1] = tempsLostQ2;
                     n = n + 1;
                     tempsLostQ2 = tempsLostQ2 + 1;
                 }
             }
             for (g = 0; g < len - 1; g++) {
                 for (l = 0; l < 5; l++) {
-                    if (copie_array[g].vId == voitElim[l][0]) {
-                        copie_array[g].total = (float) voitElim[l][1];
+                    if (copie_array[g].vId == voitElimQ1[l][0]) {
+                        copie_array[g].total = (float) voitElimQ1[l][1];
                         copie_array[g].s1 = 0;
                         copie_array[g].s2 = 0;
                         copie_array[g].s3 = 0;
@@ -80,59 +80,52 @@ Voiture *sortObj(Voiture* array, int len, char session) {
 
             return copie_array;
             break;
-        case '6':
-            printf("%s","Q3\n");
-            /*
-            int **copiePourFree = lectureFichier(5);
 
+        case '6':
             //copie mémoire partagée du tableau du classement lu en fichier
-            memcpy(array_lect, copiePourFree, 20 * sizeof(int *));
-            int voitElim[10][2];
-            int p = 0;
-            int tempsLostQ2 = 994;
+            memcpy(array_lect, lectureFichier(session), 20 * 2 * sizeof(int));
+            int voitElimQ2[10][2];
+            memset(voitElimQ2, 0, sizeof(voitElimQ2));
+            int tempsLostQ3 = 989;
 
             //fonction tri de la structure
             //si la voiture est éliminée, son temps est augmenté de 994
             //puis ce temps est incrémenté de 1 pour les voitures éliminées suivantes.
 
-            for(int y = 10; y < 20; y++) {
+            for(int z = 10; z < 20; z++) {
 
-                if (array_lect[y][1] == 1) {
+                if (array_lect[z][1] == 1) {
 
-                    voitElim[p][0] = array_lect[y][0];
-                    voitElim[p][1] = tempsLostQ2;
-                    p = p + 1;
-                    tempsLostQ2 = tempsLostQ2 + 1;
+                    voitElimQ2[n][0] = array_lect[z][0];
+                    voitElimQ2[n][1] = tempsLostQ3;
+                    n = n + 1;
+                    tempsLostQ3 = tempsLostQ3 + 1;
                 }
             }
-
-            //fonction tri de la structure
-            for (k = 0; k < len - 1; k++) {
-                for (l = 0; l < 5; l++) {
-                    if (copie_array[k].vId == voitElim[l][0]) {
-                        copie_array[k].total = voitElim[l][1];
-                        copie_array[k].s1 = 0;
-                        copie_array[k].s2 = 0;
-                        copie_array[k].s3 = 0;
-                        copie_array[k].status = 2;
+            for (g = 0; g < len - 1; g++) {
+                for (l = 0; l < 10; l++) {
+                    if (copie_array[g].vId == voitElimQ2[l][0]) {
+                        copie_array[g].total = (float) voitElimQ2[l][1];
+                        copie_array[g].s1 = 0;
+                        copie_array[g].s2 = 0;
+                        copie_array[g].s3 = 0;
+                        copie_array[g].eliminated = 1;
                         break;
                     }
                 }
-                for (r = k + 1; r < len; r++) {
-                    if (copie_array[k].total > copie_array[r].total) {
-                        voitTemp = copie_array[k];
-                        copie_array[k] = copie_array[r];
-                        copie_array[r] = voitTemp;
+            }
+            //fonction tri de la structure
+            for (k = 0; k < len - 1; k++) {
+                for (r = 0; r < len-k-1; r++) {
+                    if (copie_array[r].total > copie_array[r +1].total) {
+                        voitTemp = copie_array[r];
+                        copie_array[r] = copie_array[r+1];
+                        copie_array[r+1] = voitTemp;
                     }
                 }
             }
 
             return copie_array;
-            for (int i = 0; i < 20; i++) {
-                free(copiePourFree[i]);
-            }
-            free(copiePourFree);
-            */
             break;
         case '7':
             printf("%s","Course\n");
