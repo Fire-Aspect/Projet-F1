@@ -17,7 +17,8 @@ typedef struct {
     float tTour[2];
     int pidFils;
     int idBest[3];
-    int status;
+    int status; // STAND, OUT, EN COURSE
+    int eliminated; // éliminé de la course
 
 } Voiture;
 
