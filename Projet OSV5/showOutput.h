@@ -27,15 +27,15 @@ void showOutput(Voiture* array, int len) {
     for (int i = 0; i < len-1; ++i) {
 
         if(i == 0){
-            printf("| %-6d | %-12.3f | %-12.3f | %-12.3f | %.0f%s%-13.3f |                     | %-7d |\n", classement[i].vId,
+            printf("| %-6d | %-12.3f | %-12.3f | %-12.3f | %.0f%s%-13.3f |                     | %-7d |%d\n", classement[i].vId,
                    classement[i].s1, classement[i].s2, classement[i].s3, classement[i].tTour[0], ".",
-                   classement[i].tTour[1], classement[i].status);
+                   classement[i].tTour[1], classement[i].status, classement[i].eliminated);
         }
         else{
             kTemp = i-1;
-            printf("| %-6d | %-12.3f | %-12.3f | %-12.3f | %.0f%s%-13.3f | +%-18.3f | %-7d |\n", classement[i].vId,
+            printf("| %-6d | %-12.3f | %-12.3f | %-12.3f | %.0f%s%-13.3f | +%-18.3f | %-7d |%d\n", classement[i].vId,
                    classement[i].s1, classement[i].s2, classement[i].s3, classement[i].tTour[0], ".",
-                   classement[i].tTour[1], fabsf(classement[i].total - classement[kTemp].total), classement[i].status);
+                   classement[i].tTour[1], fabsf(classement[i].total - classement[kTemp].total), classement[i].status, classement[i].eliminated);
         }
     }
 

@@ -4,7 +4,11 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <time.h>
+#include <limits.h>
 #include "showOutput.h"
+
+#define MAX_NUMBERS 3
+#define MAX_VALUE 20
 
 //Fonction vieVoiture (param : )
 //But : Compléter un tableau de 8 cases représentant les temps de tour d'une voiture
@@ -16,9 +20,15 @@ int vieVoiture(Voiture* array, int numCase, int pid, int tempsSess) {
     time_t secondeDepart;
     time_t secondePendant;
     secondeDepart = time(NULL);
+    int numbers[MAX_NUMBERS];
+    int last_generated = -1;
+    int count[MAX_VALUE] = {0};
+    bool generated[MAX_VALUE] = {false};
+    int sleep_time = rand() % 2;
 
     //Boucle de remplissage de tableau
     do {
+        int p;
         for (int j = 0; j < 20; j++){
             timeGenerator(temps);
         }
@@ -27,32 +37,77 @@ int vieVoiture(Voiture* array, int numCase, int pid, int tempsSess) {
         for (int i = 0; i <= 10; i++) {
             switch (i) {
                 case 0:
-                    array[numCase].s1 = temps[0];
+                    if (array[numCase].eliminated == 1) {
+                        continue;
+                    }
+                    array[numCase].eliminated = 0;
+                    array[numCase].status = 0;
+
+                    if (sleep_time == 0) {
+                        for (p = 0; p < MAX_NUMBERS; p++) {
+                            int rnd = rand() % MAX_VALUE;
+                            if (rnd != last_generated && (count[rnd] < 3)) {
+                                numbers[p] = rnd;
+                                last_generated = rnd;
+                                count[rnd]++;
+                                if (count[rnd] == 3) generated[rnd] = true;
+                                if (numbers[p] == numCase) {
+                                    array[numCase].status = 1;
+                                }
+
+
+                            } else {
+                                // number already generated
+                                p--;
+                            }
+                        }
+                        break;
+                    }
                     break;
                 case 1:
-                    array[numCase].s2 = temps[1];
+                    if (array[numCase].eliminated == 1) {
+                        array[numCase].s1 = 0;
+                        break;
+                    }
+                    array[numCase].s1 = temps[0];
                     break;
                 case 2:
-                    array[numCase].s3 = temps[2];
+                    array[numCase].s2 = temps[1];
                     break;
                 case 3:
-                    array[numCase].tTour[0] = temps[3];
+                    if (array[numCase].status == 1) {
+                        array[numCase].s3 = temps[2] + 25;
+                    } else {
+                        array[numCase].s3 = temps[2];
+                    }
                     break;
                 case 4:
-                    array[numCase].tTour[1] = temps[4];
+                    array[numCase].tTour[0] = temps[3];
                     break;
                 case 5:
-                    array[numCase].vId = numero_Voiture[numCase];
+                    if (array[numCase].status == 1) {
+                        array[numCase].tTour[1] = temps[4] + 25;
+                        if (array[numCase].tTour[1] > 60) {
+                            array[numCase].tTour[1] -= 60;
+                            array[numCase].tTour[0] += 1;
+                        }
+                    } else {
+                        array[numCase].tTour[1] = temps[4];
+                    }
                     break;
                 case 6:
-                    array[numCase].total = temps[0] + temps[1] + temps[2];
+
+                    if (array[numCase].status == 1) {
+                        array[numCase].total = temps[0] + temps[1] + temps[2] + 25;
+                    } else {
+                        array[numCase].total = temps[0] + temps[1] + temps[2];
+                    }
                     break;
                 case 7 :
-                    array[numCase].pidFils = pid;
+                    array[numCase].vId = numero_Voiture[numCase];
                     break;
                 case 8 :
-                    //statut de la voiture : 0 COURSE 1 PIT-STANDS 2 OUT
-                    array[numCase].status = 0;
+                    array[numCase].pidFils = pid;
                     break;
                 case 9:
                     if (array[numCase].s1 < array[20].s1) {
@@ -68,6 +123,8 @@ int vieVoiture(Voiture* array, int numCase, int pid, int tempsSess) {
                         array[20].idBest[2] = array[numCase].vId;
                     }
                     break;
+                default:
+                    continue;
             }
 
             //aux stands
