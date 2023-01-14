@@ -15,6 +15,7 @@ Voiture *sortObj(Voiture* array, int len, char session) {
         case '2':
         case '3':
         case '4':
+
             memcpy(copie_array, array, len * sizeof(Voiture));
             int k, r;
             Voiture tempQ1[21];               // Structure Voiture temporaire pour faire le tri
@@ -32,10 +33,63 @@ Voiture *sortObj(Voiture* array, int len, char session) {
             return copie_array;
             break;
         case '5':
-            printf("%s","Q2\n");
+
+            /*memcpy(array_lect, lectureFichier(5), 20 * sizeof(int*));
+
+            int n, m;
+            Voiture tempQ2[16];               // Structure Voiture temporaire pour faire le tri
+
+            float tempsLostQ2 = 994;
+
+            //fonction tri de la structure
+            for (n = 0; n < len - 1; n++) {
+                for (m = n + 1; n < len; m++) {
+
+                    if (copie_array[m].eliminated == 1){
+
+                        copie_array[m].total = tempsLostQ2;
+                        tempsLostQ2 = tempsLostQ2 + 1;
+
+                    }
+                    if (copie_array[n].total > copie_array[m].total) {
+                        tempQ2[15] = copie_array[n];
+                        copie_array[n] = copie_array[m];
+                        copie_array[m] = tempQ2[15];
+                    }
+                }
+            }
+            return copie_array;*/
+
+
             break;
         case '6':
             printf("%s","Q3\n");
+            /*
+            memcpy(copie_array, array, len * sizeof(Voiture));
+            int s, t;
+            Voiture tempQ3[16];               // Structure Voiture temporaire pour faire le tri
+
+            float tempsLostQ3 = 990;
+
+            //fonction tri de la structure
+            for (n = 0; n < len - 1; n++) {
+                for (m = n + 1; n < len; m++) {
+
+                    if (copie_array[m].eliminated == 1){
+
+                        copie_array[m].total = tempsLostQ3;
+                        tempsLostQ3 = tempsLostQ3 + 1;
+
+                    }
+                    if (copie_array[n].total > copie_array[m].total) {
+                        tempQ2[15] = copie_array[n];
+                        copie_array[n] = copie_array[m];
+                        copie_array[m] = tempQ2[15];
+                    }
+                }
+            }
+            return copie_array;
+            */
             break;
         case '7':
             printf("%s","Course\n");

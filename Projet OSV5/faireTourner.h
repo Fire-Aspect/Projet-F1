@@ -30,7 +30,7 @@ int faireTourner(int tempsSession) {
 
     printf("%d \n", shmid);     //Outil de debug
 
-    //Assignation à la dernière voiture de valeurs différentes de 0
+    //Assignation à la dernière voiture de valeurs différentes de 0.
     circuit[20].vId = 999;
     circuit[20].s1 = 999;
     circuit[20].s2 = 999;
@@ -54,7 +54,7 @@ int faireTourner(int tempsSession) {
     do{
         secondePendant = time(NULL);
         showOutput(sortObj(circuit, 21, session), 21);
-        //Patiente 2 secondes avant de ré-afficher
+        //Patiente 2 secondes avant de re-afficher
         sleep(2);
     }
     while (secondePendant <= secondeDepart + tempsSession+1);
@@ -62,7 +62,7 @@ int faireTourner(int tempsSession) {
     lectureFichier(5);
 
 
-    //ecritureFichier();
+    //écritureFichier();
     char* nomFichier;
     switch (session) {
         case '1':
@@ -78,13 +78,13 @@ int faireTourner(int tempsSession) {
             nomFichier = "Q1.txt";
             break;
         case '5':
-            strcpy(nomFichier, "Q2.txt");
+            nomFichier = "Q2.txt";
             break;
         case '6':
-            strcpy(nomFichier, "Q3.txt");
+            nomFichier = "Q3.txt";
             break;
         case '7':
-            strcpy(nomFichier, "Course.txt");
+            nomFichier = "Course.txt";
             break;
         case '8':
             nomFichier = "CourseSprint.txt";

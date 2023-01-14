@@ -109,7 +109,7 @@ int ecritureFichier(char* nomFichier, Voiture* classementFinal, char session) {
     char fichierAffi[15];
     sprintf(fichierAffi, "A_%s", nomFichier);
     //Ouverture du fichier
-    //Si il n'arrive pas à ouvrir le fichier, il le créé et il l'ouvre
+    //S'il n'arrive pas à ouvrir le fichier, il le cré et il l'ouvre
     FILE *f = fopen(nomFichier,"w");
 
     //Vérification de la bonne ouverture du fichier sinon erreur
