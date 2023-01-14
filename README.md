@@ -1,14 +1,21 @@
 ## Projet-F1
 ***
+### Créateurs : 
 
+- IGLESIAS CARLOS
+- IV ANTHONY
+- KALINOWSKA ARTHUR
+- MOENS PENNEWAERT ANTOINE
+
+***
 ### Projet Système TP Janvier 2023
 
-Le but du projet est de gérer un championnat de Formule 1.
-Le championnat se compose d’une vingtaine de grands prix (entre 20 et 25). Chaque grand prix se déroule sur un week-end, typiquement du vendredi au dimanche.
-Il vous est demandé de gérer les grands prix depuis les séances d’essais du vendredi jusqu’à la course du dimanche, en passant par les essais du samedi et la séance de qualifications.
-Il y a 20 voitures engagées dans un grand prix.
-Leurs numéros sont : 44, 63, 1, 11, 55, 16, 4, 3, 14, 31, 10, 22, 5, 18, 6, 23, 77, 24, 47, 9.
-Un circuit de F1 est divisé en 3 secteurs (S1, S2, S3).
+- Le but du projet est de gérer un championnat de Formule 1.
+- Le championnat se compose d’une vingtaine de grands prix (entre 20 et 25). Chaque grand prix se déroule sur un week-end, typiquement du vendredi au dimanche.
+- Il vous est demandé de gérer les grands prix depuis les séances d’essais du vendredi jusqu’à la course du dimanche, en passant par les essais du samedi et la séance de qualifications.
+- Il y a 20 voitures engagées dans un grand prix.
+- Leurs numéros sont : 44, 63, 1, 11, 55, 16, 4, 3, 14, 31, 10, 22, 5, 18, 6, 23, 77, 24, 47, 9.
+- Un circuit de F1 est divisé en 3 secteurs (S1, S2, S3).
 
 ***
 ### Il y a 2 formats de week-end.
@@ -84,14 +91,14 @@ Pour la course du samedi, il n’y a pas d’arrêt obligatoire aux stands. Le t
 
 ## Gestion du championnat
 
-On vous demande de gérer l’évolution du classement des pilotes (voitures) tout au long de la saison.
+- On vous demande de gérer l’évolution du classement des pilotes (voitures) tout au long de la saison.
 
-Lors de la course sprint, les 8 premiers reçoivent des points (dans l’ordre décroissant de 8 à 1).
-Lors de la course du dimanche, les 10 premiers reçoivent des points (25, 20, 15, 10, 8, 6, 5, 3, 2, 1).
-Lors de la course du dimanche, celui qui réalise le meilleur tour (durant la course) reçoit 1 point au classement, pour autant qu’il soit dans les 10 premiers de la course.
-De plus, il vous est demandé de paramétrer votre programme.
-En effet, le format des grands prix peut varier (sprint ou non) et les circuits peuvent être de longueur très variable et, dès lors, le nombre de tours pour la course sprint et la course du dimanche varie également (on essaie que le nombre total de kilomètres soit toujours plus ou moins le même pour chacune des courses du calendrier : sprint environ 100-120 km et course du dimanche environ 300-350 km).
-On vous demande :
+- Lors de la course sprint, les 8 premiers reçoivent des points (dans l’ordre décroissant de 8 à 1).
+- Lors de la course du dimanche, les 10 premiers reçoivent des points (25, 20, 15, 10, 8, 6, 5, 3, 2, 1).
+- Lors de la course du dimanche, celui qui réalise le meilleur tour (durant la course) reçoit 1 point au classement, pour autant qu’il soit dans les 10 premiers de la course.
+- De plus, il vous est demandé de paramétrer votre programme.
+- En effet, le format des grands prix peut varier (sprint ou non) et les circuits peuvent être de longueur très variable et, dès lors, le nombre de tours pour la course sprint et la course du dimanche varie également (on essaie que le nombre total de kilomètres soit toujours plus ou moins le même pour chacune des courses du calendrier : sprint environ 100-120 km et course du dimanche environ 300-350 km).
+- On vous demande :
 - De réaliser le programme en C sous Linux
 - D’utiliser la mémoire partagée comme moyen de communication inter-processus
 - D’utiliser les sémaphores pour synchroniser l’accès à la mémoire partagée
