@@ -13,7 +13,7 @@ Voiture *sortObj(Voiture* array, int len, char session) {
     static Voiture copie_array[21];
     memcpy(copie_array, array, len * sizeof(Voiture));
     static int array_lect[20][2];
-    int k, r, l;
+    int k, r, l ,g = 0;
     Voiture voitTemp;
     switch (session) {
         case '1':
@@ -55,24 +55,25 @@ Voiture *sortObj(Voiture* array, int len, char session) {
                     tempsLostQ2 = tempsLostQ2 + 1;
                 }
             }
-
-            //fonction tri de la structure
-            for (k = 0; k < len - 1; k++) {
+            for (g = 0; g < len - 1; g++) {
                 for (l = 0; l < 5; l++) {
-                    if (copie_array[k].vId == voitElim[l][0]) {
-                        copie_array[k].total = (float) voitElim[l][1];
-                        copie_array[k].s1 = 0;
-                        copie_array[k].s2 = 0;
-                        copie_array[k].s3 = 0;
-                        copie_array[k].eliminated = 1;
+                    if (copie_array[g].vId == voitElim[l][0]) {
+                        copie_array[g].total = (float) voitElim[l][1];
+                        copie_array[g].s1 = 0;
+                        copie_array[g].s2 = 0;
+                        copie_array[g].s3 = 0;
+                        copie_array[g].eliminated = 1;
                         break;
                     }
                 }
-                for (r = k + 1; r < len; r++) {
-                    if (copie_array[k].total > copie_array[r].total) {
-                        voitTemp = copie_array[k];
-                        copie_array[k] = copie_array[r];
-                        copie_array[r] = voitTemp;
+            }
+            //fonction tri de la structure
+            for (k = 0; k < len - 1; k++) {
+                for (r = 0; r < len-k-1; r++) {
+                    if (copie_array[r].total > copie_array[r +1].total) {
+                        voitTemp = copie_array[r];
+                        copie_array[r] = copie_array[r+1];
+                        copie_array[r+1] = voitTemp;
                     }
                 }
             }

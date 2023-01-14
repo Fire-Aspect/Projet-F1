@@ -13,7 +13,7 @@
 //Fonction vieVoiture (param : )
 //But : Compléter un tableau de 8 cases représentant les temps de tour d'une voiture
 
-int vieVoiture(Voiture* array, int numCase, int pid, int tempsSess) {
+int vieVoiture(Voiture* array, int numCase,int pid, int tempsSess) {
 
     int numero_Voiture[21] = {44, 63, 1, 11, 55, 16, 4, 3, 14, 31, 10, 22, 5, 18, 6, 23, 77, 24, 47, 9, 999};
     float temps[5] = {};
@@ -37,10 +37,6 @@ int vieVoiture(Voiture* array, int numCase, int pid, int tempsSess) {
         for (int i = 0; i <= 10; i++) {
             switch (i) {
                 case 0:
-                    if (array[numCase].eliminated == 1) {
-                        continue;
-                    }
-                    array[numCase].eliminated = 0;
                     array[numCase].status = 0;
 
                     if (sleep_time == 0) {
@@ -106,10 +102,7 @@ int vieVoiture(Voiture* array, int numCase, int pid, int tempsSess) {
                 case 7 :
                     array[numCase].vId = numero_Voiture[numCase];
                     break;
-                case 8 :
-                    array[numCase].pidFils = pid;
-                    break;
-                case 9:
+                case 8:
                     if (array[numCase].s1 < array[20].s1) {
                         array[20].s1 = array[numCase].s1;
                         array[20].idBest[0] = array[numCase].vId;
