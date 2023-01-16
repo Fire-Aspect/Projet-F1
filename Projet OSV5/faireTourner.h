@@ -130,7 +130,7 @@ int faireTourner() {
         do {
             sleep(1);
             secondePendant = time(NULL);
-            showOutput(sortObj(circuit, 21, session), 21);
+            showOutput(sortObj(circuit, 21, session), 21, session);
             //Patiente 2 secondes avant de re-afficher
             sleep(1);
         } while (secondePendant <= secondeDepart + tempsSession + 1);
@@ -138,7 +138,7 @@ int faireTourner() {
     else {
         do {
             sleep(1);
-            showOutput(sortObj(circuit, 21, session), 21);
+            showOutput(sortObj(circuit, 21, session), 21, session);
             //Patiente 2 secondes avant de re-afficher
             sleep(1);
         } while (!tlmATerminer(toursParcourus, nbrTour));

@@ -13,6 +13,16 @@
 //Fonction vieVoiture
 //But : Compléter un tableau de 10 cases représentant les temps de tour d'une voiture
 
+float* conversionMinute(float temps) {
+    static float conv[2];
+    conv[0] = (int)temps / 60;
+    conv[1] = temps - (conv[0]*60);
+
+
+    return conv;
+}
+
+
 int vieVoiture(Voiture *circuit, int numCase, int tempsSess, char session, int nbrTour, int *nbrTourTotal) {
 
     int numero_Voiture[21] = {44, 63, 1, 11, 55, 16, 4, 3, 14, 31, 10, 22, 5, 18, 6, 23, 77, 24, 47, 9, 999};
@@ -28,6 +38,10 @@ int vieVoiture(Voiture *circuit, int numCase, int tempsSess, char session, int n
     int out_rand = rand() % 40;
     int voitRan = rand() % 20;
 
+    for (int z = 0; z < 20; z++) {
+        circuit[z].bestToursPerso = 9999;
+    }
+
     //Regarde si on est en session de course ou non
     if (session != '7' && session != '8') {
         //Boucle de remplissage de tableau
@@ -39,9 +53,9 @@ int vieVoiture(Voiture *circuit, int numCase, int tempsSess, char session, int n
 
 
             //Patiente 1 sec avant de refaire un temps
-            sleep(1);
+            sleep(1.3);
 
-            for (int i = 0; i <= 9; i++) {
+            for (int i = 0; i <= 8; i++) {
                 if (circuit[numCase].eliminated == 1) {
                     break;
                 }
@@ -54,6 +68,7 @@ int vieVoiture(Voiture *circuit, int numCase, int tempsSess, char session, int n
                             continue;
                         }
                         circuit[numCase].status = 0;
+
                         //Logique pour aller au stand aléatoirement
                         if (stand_time == 0) {
                             for (p = 0; p < MAX_NUMBERS; p++) {
@@ -109,10 +124,10 @@ int vieVoiture(Voiture *circuit, int numCase, int tempsSess, char session, int n
                             break;
                         }
                         if (circuit[numCase].status == 2) {
-                            circuit[numCase].tTour[0] = circuit[numCase].tTour[0];
+                            circuit[numCase].tTour[0] = conversionMinute(circuit[numCase].bestToursPerso)[0];
                             break;
                         }
-                        circuit[numCase].tTour[0] = temps[3];
+                        circuit[numCase].tTour[0] = conversionMinute(circuit[numCase].bestToursPerso)[0];
                         break;
                     case 5:
                         if (circuit[numCase].eliminated == 1) {
@@ -120,18 +135,11 @@ int vieVoiture(Voiture *circuit, int numCase, int tempsSess, char session, int n
                             break;
                         }
                         if (circuit[numCase].status == 2) {
-                            circuit[numCase].tTour[1] = circuit[numCase].tTour[1];
+                            circuit[numCase].tTour[1] = conversionMinute(circuit[numCase].bestToursPerso)[1];
                             break;
                         }
-                        if (circuit[numCase].status == 1) {
-                            circuit[numCase].tTour[1] = temps[4] + 25;
-                            if (circuit[numCase].tTour[1] > 60) {
-                                circuit[numCase].tTour[1] -= 60;
-                                circuit[numCase].tTour[0] += 1;
-                            }
-                        } else {
-                            circuit[numCase].tTour[1] = temps[4];
-                        }
+                        circuit[numCase].tTour[1] = conversionMinute(circuit[numCase].bestToursPerso)[1];
+
                         break;
                     case 6:
                         if (circuit[numCase].status == 2) {
@@ -141,7 +149,14 @@ int vieVoiture(Voiture *circuit, int numCase, int tempsSess, char session, int n
                         if (circuit[numCase].status == 1) {
                             circuit[numCase].total = temps[0] + temps[1] + temps[2] + 25;
                         } else {
+                            if (circuit[numCase].bestToursPerso < circuit[numCase].total) {
+                                circuit[numCase].total = circuit[numCase].bestToursPerso;
+                            }
                             circuit[numCase].total = temps[0] + temps[1] + temps[2];
+                        }
+                        // Best Tour
+                        if (circuit[numCase].total < circuit[numCase].bestToursPerso) {
+                            circuit[numCase].bestToursPerso = circuit[numCase].total;
                         }
                         break;
                     case 7 :
@@ -152,8 +167,13 @@ int vieVoiture(Voiture *circuit, int numCase, int tempsSess, char session, int n
                         if (circuit[numCase].status == 2 && circuit[numCase].s1 == 0 && circuit[numCase].s2 == 0 &&
                             circuit[numCase].s3 == 0) {
                             circuit[numCase].total = 980;
+                            circuit[numCase].tTour[0] = 0;
+                            circuit[numCase].tTour[1] = 0;
+
+
                             continue;
                         }
+                        // Best S1, S2, S3
                         if (circuit[numCase].s1 < circuit[20].s1) {
                             circuit[20].s1 = circuit[numCase].s1;
                             circuit[20].idBest[0] = circuit[numCase].vId;
@@ -354,9 +374,8 @@ int ecritureFichier(char *nomFichier, Voiture *classementFinal, char session) {
         case '3':
             //écriture en fichier pour P1, P2 et P3
             freopen(fichierAffi, "w", stdout);
-            showOutput(classementFinal, 21);
+            showOutput(classementFinal, 21, session);
             fclose(stdout);
-            //gestion d'erreur d'écriture
             if (fwrite(classPourOrdi, sizeof(int), 20 * 2, f) != 20 * 2) {
                 printf("\nErreur d'écriture\n");
                 exit(-1);
@@ -373,9 +392,8 @@ int ecritureFichier(char *nomFichier, Voiture *classementFinal, char session) {
                 }
             }
             freopen(fichierAffi, "w", stdout);
-            showOutput(classementFinal, 21);
+            showOutput(classementFinal, 21, session);
             fclose(stdout);
-            //gestion d'erreur d'écriture
             if (fwrite(classPourOrdi, sizeof(int), 20 * 2, f) != 20 * 2) {
                 printf("\nErreur d'écriture\n");
                 exit(-1);
@@ -392,9 +410,8 @@ int ecritureFichier(char *nomFichier, Voiture *classementFinal, char session) {
                 }
             }
             freopen(fichierAffi, "w", stdout);
-            showOutput(classementFinal, 21);
+            showOutput(classementFinal, 21, session);
             fclose(stdout);
-            //gestion d'erreur d'écriture
             if (fwrite(classPourOrdi, sizeof(int), 20 * 2, f) != 20 * 2) {
                 printf("\nErreur d'écriture\n");
                 exit(-1);
@@ -406,9 +423,8 @@ int ecritureFichier(char *nomFichier, Voiture *classementFinal, char session) {
         case '7':
         case '8':
             freopen(fichierAffi, "w", stdout);
-            showOutput(classementFinal, 21);
+            showOutput(classementFinal, 21, session);
             fclose(stdout);
-            //gestion d'erreur d'écriture
             if (fwrite(classPourOrdi, sizeof(int), 20 * 2, f) != 20 * 2) {
                 printf("\nErreur d'écriture\n");
                 exit(-1);
@@ -445,13 +461,11 @@ int *lectureFichier(char session) {
     static int classDepuisFichier[20][2];
     static int *pointClassDepuisFichier = &classDepuisFichier[0][0];
 
-    //gestion d'erreur d'ouverture
     if ((f = fopen(nomFichier, "rb")) == NULL) {
         printf("Impossible d'ouvrir le fichier");
         exit(-1);
     }
 
-    //gestion d'erreurs de lecture
     if (fread(classDepuisFichier, sizeof(int), 20 * 2, f) != 20 * 2) {
         if (feof(f)) {
             printf("\nFin prématurée du fichier\n");

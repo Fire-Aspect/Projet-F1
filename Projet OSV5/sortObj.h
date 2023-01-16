@@ -24,8 +24,8 @@ Voiture *sortObj(Voiture *array, int len, char session) {
             //Sessions P1 P2 P3 Q1
             //fonction tri de la structure
             for (k = 0; k < len - 1; k++) {
-                for (r = 0; r < len-k-1; r++) {
-                    if (copie_array[r].total > copie_array[r +1].total) {
+                for (r = 0; r < len-k-2; r++) {
+                    if (copie_array[r].bestToursPerso > copie_array[r +1].bestToursPerso) {
                         voitTemp = copie_array[r];
                         copie_array[r] = copie_array[r+1];
                         copie_array[r+1] = voitTemp;

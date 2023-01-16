@@ -8,8 +8,8 @@
 //Fonction showOutput (param : structure voiture et longueur de voiture)
 //But : Afficher un tableau représentant un classement des voitures trié en fonction du temps
 
-void showOutput(Voiture* array, int len) {
-    system("clear");
+void showOutput(Voiture* array, int len, char session) {
+    //system("clear");
     int kTemp;
 
     Voiture classement[21];
@@ -37,55 +37,111 @@ void showOutput(Voiture* array, int len) {
                     printf("| %-6d | %-12.3f | %-12.3f | %-12.3f | %.0f%s%-13.3f | +%-18.3f | \033[31;1m%-10s\033[0m |%-7d\n",
                            classement[i].vId,
                            classement[i].s1, classement[i].s2, classement[i].s3, classement[i].tTour[0], ".",
-                           classement[i].tTour[1], fabsf(classement[i].total - classement[kTemp].total), "ELIMINATED",
+                           classement[i].tTour[1], fabsf(classement[i].bestToursPerso - classement[kTemp].bestToursPerso), "ELIMINATED",
                            classement[i].eliminated);
                 }
 
 
         } else {
-            if (classement[i].status == 0) {
-                if (i == 0) {
-                    printf("| %-6d | %-12.3f | %-12.3f | %-12.3f | %.0f%s%-13.3f |                     | \033[0;32m%-10s\033[0m |%-7d\n",
-                           classement[i].vId,
-                           classement[i].s1, classement[i].s2, classement[i].s3, classement[i].tTour[0], ".",
-                           classement[i].tTour[1], "EN COURSE", classement[i].status);
-                } else {
-                    kTemp = i - 1;
-                    printf("| %-6d | %-12.3f | %-12.3f | %-12.3f | %.0f%s%-13.3f | +%-18.3f | \033[0;32m%-10s\033[0m |%-7d\n",
-                           classement[i].vId,
-                           classement[i].s1, classement[i].s2, classement[i].s3, classement[i].tTour[0], ".",
-                           classement[i].tTour[1], fabsf(classement[i].total - classement[kTemp].total), "EN COURSE",
-                           classement[i].status);
+            if (session != 7) {
+                if (classement[i].status == 0) {
+                    if (i == 0) {
+                        printf("| %-6d | %-12.3f | %-12.3f | %-12.3f | %.0f%s%-13.3f |                     | \033[0;32m%-10s\033[0m |%-7d | %-7.3f | %-7.3f\n",
+                               classement[i].vId,
+                               classement[i].s1, classement[i].s2, classement[i].s3, classement[i].tTour[0], ".",
+                               classement[i].tTour[1], "EN COURSE", classement[i].status, classement[i].total,
+                               classement[i].bestToursPerso);
+                    } else {
+                        kTemp = i - 1;
+                        printf("| %-6d | %-12.3f | %-12.3f | %-12.3f | %.0f%s%-13.3f | +%-18.3f | \033[0;32m%-10s\033[0m |%-7d | %-7.3f | %-7.3f\n",
+                               classement[i].vId,
+                               classement[i].s1, classement[i].s2, classement[i].s3, classement[i].tTour[0], ".",
+                               classement[i].tTour[1], fabsf(classement[i].bestToursPerso - classement[kTemp].bestToursPerso),
+                               "EN COURSE",
+                               classement[i].status, classement[i].total, classement[i].bestToursPerso);
+                    }
                 }
-            }
-            if (classement[i].status == 1) {
-                if (i == 0) {
-                    printf("| %-6d | %-12.3f | %-12.3f | %-12.3f | %.0f%s%-13.3f |                     | \033[0;29m%-10s\033[0m |%-7d\n",
-                           classement[i].vId,
-                           classement[i].s1, classement[i].s2, classement[i].s3, classement[i].tTour[0], ".",
-                           classement[i].tTour[1], "STANDS", classement[i].status);
-                } else {
-                    kTemp = i - 1;
-                    printf("| %-6d | %-12.3f | %-12.3f | %-12.3f | %.0f%s%-13.3f | +%-18.3f | \033[0;13m%-10s\033[0m |%-7d\n",
-                           classement[i].vId,
-                           classement[i].s1, classement[i].s2, classement[i].s3, classement[i].tTour[0], ".",
-                           classement[i].tTour[1], fabsf(classement[i].total - classement[kTemp].total), "STANDS",
-                           classement[i].status);
+                if (classement[i].status == 1) {
+                    if (i == 0) {
+                        printf("| %-6d | %-12.3f | %-12.3f | %-12.3f | %.0f%s%-13.3f |                     | \033[0;29m%-10s\033[0m |%-7d | %-7.3f | %-7.3f\n",
+                               classement[i].vId,
+                               classement[i].s1, classement[i].s2, classement[i].s3, classement[i].tTour[0], ".",
+                               classement[i].tTour[1], "STANDS", classement[i].status, classement[i].total,
+                               classement[i].bestToursPerso);
+                    } else {
+                        kTemp = i - 1;
+                        printf("| %-6d | %-12.3f | %-12.3f | %-12.3f | %.0f%s%-13.3f | +%-18.3f | \033[0;13m%-10s\033[0m |%-7d | %-7.3f | %-7.3f\n",
+                               classement[i].vId,
+                               classement[i].s1, classement[i].s2, classement[i].s3, classement[i].tTour[0], ".",
+                               classement[i].tTour[1], fabsf(classement[i].bestToursPerso - classement[kTemp].bestToursPerso), "STANDS",
+                               classement[i].status, classement[i].total, classement[i].bestToursPerso);
+                    }
                 }
-            }
-            if (classement[i].status == 2) {
-                if (i == 0) {
-                    printf("| %-6d | %-12.3f | %-12.3f | %-12.3f | %.0f%s%-13.3f |                     | \033[1;31m%-10s\033[0m |%-7d\n",
-                           classement[i].vId,
-                           classement[i].s1, classement[i].s2, classement[i].s3, classement[i].tTour[0], ".",
-                           classement[i].tTour[1], "OUT", classement[i].status);
-                } else {
-                    kTemp = i - 1;
-                    printf("| %-6d | %-12.3f | %-12.3f | %-12.3f | %.0f%s%-13.3f | +%-18.3f | \033[31;1m%-10s\033[0m |%-7d\n",
-                           classement[i].vId,
-                           classement[i].s1, classement[i].s2, classement[i].s3, classement[i].tTour[0], ".",
-                           classement[i].tTour[1], fabsf(classement[i].total - classement[kTemp].total), "OUT",
-                           classement[i].status);
+                if (classement[i].status == 2) {
+                    if (i == 0) {
+                        printf("| %-6d | %-12.3f | %-12.3f | %-12.3f | %.0f%s%-13.3f |                     | \033[1;31m%-10s\033[0m |%-7d | %-7.3f | %-7.3f\n",
+                               classement[i].vId,
+                               classement[i].s1, classement[i].s2, classement[i].s3, classement[i].tTour[0], ".",
+                               classement[i].tTour[1], "OUT", classement[i].status, classement[i].total,
+                               classement[i].bestToursPerso);
+                    } else {
+                        kTemp = i - 1;
+                        printf("| %-6d | %-12.3f | %-12.3f | %-12.3f | %.0f%s%-13.3f | +%-18.3f | \033[31;1m%-10s\033[0m |%-7d | %-7.3f | %-7.3f\n",
+                               classement[i].vId,
+                               classement[i].s1, classement[i].s2, classement[i].s3, classement[i].tTour[0], ".",
+                               classement[i].tTour[1], fabsf(classement[i].bestToursPerso - classement[kTemp].bestToursPerso), "OUT",
+                               classement[i].status, classement[i].total, classement[i].bestToursPerso);
+                    }
+                }
+            } else {
+                if (classement[i].status == 0) {
+                    if (i == 0) {
+                        printf("| %-6d | %-12.3f | %-12.3f | %-12.3f | %.0f%s%-13.3f |                     | \033[0;32m%-10s\033[0m |%-7d | %-7.3f | %-7.3f\n",
+                               classement[i].vId,
+                               classement[i].s1, classement[i].s2, classement[i].s3, classement[i].tTour[0], ".",
+                               classement[i].tTour[1], "EN COURSE", classement[i].status, classement[i].total,
+                               classement[i].bestToursPerso);
+                    } else {
+                        kTemp = i - 1;
+                        printf("| %-6d | %-12.3f | %-12.3f | %-12.3f | %.0f%s%-13.3f | +%-18.3f | \033[0;32m%-10s\033[0m |%-7d | %-7.3f | %-7.3f\n",
+                               classement[i].vId,
+                               classement[i].s1, classement[i].s2, classement[i].s3, classement[i].tTour[0], ".",
+                               classement[i].tTour[1], fabsf(classement[i].total - classement[kTemp].total),
+                               "EN COURSE",
+                               classement[i].status, classement[i].total, classement[i].bestToursPerso);
+                    }
+                }
+                if (classement[i].status == 1) {
+                    if (i == 0) {
+                        printf("| %-6d | %-12.3f | %-12.3f | %-12.3f | %.0f%s%-13.3f |                     | \033[0;29m%-10s\033[0m |%-7d | %-7.3f | %-7.3f\n",
+                               classement[i].vId,
+                               classement[i].s1, classement[i].s2, classement[i].s3, classement[i].tTour[0], ".",
+                               classement[i].tTour[1], "STANDS", classement[i].status, classement[i].total,
+                               classement[i].bestToursPerso);
+                    } else {
+                        kTemp = i - 1;
+                        printf("| %-6d | %-12.3f | %-12.3f | %-12.3f | %.0f%s%-13.3f | +%-18.3f | \033[0;13m%-10s\033[0m |%-7d | %-7.3f | %-7.3f\n",
+                               classement[i].vId,
+                               classement[i].s1, classement[i].s2, classement[i].s3, classement[i].tTour[0], ".",
+                               classement[i].tTour[1], fabsf(classement[i].total - classement[kTemp].total), "STANDS",
+                               classement[i].status, classement[i].total, classement[i].bestToursPerso);
+                    }
+                }
+                if (classement[i].status == 2) {
+                    if (i == 0) {
+                        printf("| %-6d | %-12.3f | %-12.3f | %-12.3f | %.0f%s%-13.3f |                     | \033[1;31m%-10s\033[0m |%-7d | %-7.3f | %-7.3f\n",
+                               classement[i].vId,
+                               classement[i].s1, classement[i].s2, classement[i].s3, classement[i].tTour[0], ".",
+                               classement[i].tTour[1], "OUT", classement[i].status, classement[i].total,
+                               classement[i].bestToursPerso);
+                    } else {
+                        kTemp = i - 1;
+                        printf("| %-6d | %-12.3f | %-12.3f | %-12.3f | %.0f%s%-13.3f | +%-18.3f | \033[31;1m%-10s\033[0m |%-7d | %-7.3f | %-7.3f\n",
+                               classement[i].vId,
+                               classement[i].s1, classement[i].s2, classement[i].s3, classement[i].tTour[0], ".",
+                               classement[i].tTour[1], fabsf(classement[i].total - classement[kTemp].total), "OUT",
+                               classement[i].status, classement[i].total, classement[i].bestToursPerso);
+                    }
                 }
             }
         }
@@ -95,7 +151,7 @@ void showOutput(Voiture* array, int len) {
 
 
 
-    printf("| %-s%-6s%s | \033[0;36m#%-11d\033[0m | \033[0;36m#%-11d\033[0m | \033[0;36m#%-11d\033[0m |\n", "\033[1;31m", "Best", "\033[0m", classement[20].idBest[0], classement[20].idBest[1], classement[20].idBest[2]);
+    printf("| %-s%-6s%s | \033[0;36m#%-11.0f\033[0m | \033[0;36m#%-11.0f\033[0m | \033[0;36m#%-11.0f\033[0m |\n", "\033[1;31m", "Best", "\033[0m", classement[20].idBest[0], classement[20].idBest[1], classement[20].idBest[2]);
     printf("| %-6s | %-12.3f | %-12.3f | %-12.3f |\n", " ", classement[20].s1, classement[20].s2, classement[20].s3);
     printf("%s", "+=====================================================+\n");
 
