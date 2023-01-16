@@ -15,6 +15,7 @@ typedef struct {
     float s3;
     float total;
     float tTour[2];
+    float bestToursPerso;
     int pidFils;
     int idBest[3];
     int status; // STAND, OUT, EN COURSE

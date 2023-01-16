@@ -10,11 +10,11 @@
 Voiture *sortObj(Voiture *array, int len, char session) {
 
     int position[20];
-
     static Voiture copie_array[21];
     memcpy(copie_array, array, len * sizeof(Voiture));
     static int array_lect[20][2];
     int k, r, l, g, n = 0;
+    bool depart = true;
     Voiture voitTemp;
     switch (session) {
         case '1':
@@ -134,11 +134,11 @@ Voiture *sortObj(Voiture *array, int len, char session) {
             return copie_array;
             break;
         case '7':
-            printf("%s", "Course en travaux\n");
-            exit(0);
+            return array;
+            break;
         case '8':
-            printf("%s", "Course Sprint en travaux\n");
-            exit(0);
+            return copie_array;
+            break;
         default:
             printf("%s", "Session inconnue\n");
 

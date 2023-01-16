@@ -19,7 +19,9 @@ int main() {
     srand(time(0));
 
 
-    faireTourner(20);
+    faireTourner();
+
+    printf("%s", "Session terminée");
 
     return 0;
 }

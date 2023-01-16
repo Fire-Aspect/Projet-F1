@@ -13,7 +13,7 @@
 //Fonction vieVoiture
 //But : Compléter un tableau de 10 cases représentant les temps de tour d'une voiture
 
-int vieVoiture(Voiture *array, int numCase, int tempsSess) {
+int vieVoiture(Voiture *circuit, int numCase, int tempsSess, char session, int nbrTour, int *nbrTourTotal) {
 
     int numero_Voiture[21] = {44, 63, 1, 11, 55, 16, 4, 3, 14, 31, 10, 22, 5, 18, 6, 23, 77, 24, 47, 9, 999};
     float temps[5] = {};
@@ -28,151 +28,290 @@ int vieVoiture(Voiture *array, int numCase, int tempsSess) {
     int out_rand = rand() % 15;
     int voitRan = rand() % 20;
 
-    //Boucle de remplissage de tableau
-    do {
-        int p;
-        for (int j = 0; j < 20; j++) {
-            timeGenerator(temps);
-        }
-        //Patiente 1 sec avant de refaire un temps
-        sleep(1);
-        for (int i = 0; i <= 9; i++) {
-            if (array[numCase].eliminated == 1) {
-                break;
+    //Regarde si on est en session de course ou non
+    if (session != '7' && session != '8') {
+        //Boucle de remplissage de tableau
+        do {
+            int p;
+            for (int j = 0; j < 20; j++) {
+                timeGenerator(temps);
             }
-            switch (i) {
-                case 0:
-                    if (out_rand == 3) {
-                        array[voitRan].status = 2;
-                    }
-                    if (array[numCase].status == 2) {
-                        continue;
-                    }
-                    array[numCase].status = 0;
-                    //Logique pour aller au stand aléatoirement
-                    if (stand_time == 0) {
-                        for (p = 0; p < MAX_NUMBERS; p++) {
-                            int rnd = rand() % MAX_VALUE;
-                            if (rnd != last_generated && (count[rnd] < 3)) {
-                                numbers[p] = rnd;
-                                last_generated = rnd;
-                                count[rnd]++;
-                                if (count[rnd] == 3) generated[rnd] = true;
-                                if (numbers[p] == numCase) {
-                                    array[numCase].status = 1;
+
+
+            //Patiente 1 sec avant de refaire un temps
+            sleep(1);
+
+            for (int i = 0; i <= 9; i++) {
+                if (circuit[numCase].eliminated == 1) {
+                    break;
+                }
+                switch (i) {
+                    case 0:
+                        if (out_rand == 3) {
+                            circuit[voitRan].status = 2;
+                        }
+                        if (circuit[numCase].status == 2) {
+                            continue;
+                        }
+                        circuit[numCase].status = 0;
+                        //Logique pour aller au stand aléatoirement
+                        if (stand_time == 0) {
+                            for (p = 0; p < MAX_NUMBERS; p++) {
+                                int rnd = rand() % MAX_VALUE;
+                                if (rnd != last_generated && (count[rnd] < 3)) {
+                                    numbers[p] = rnd;
+                                    last_generated = rnd;
+                                    count[rnd]++;
+                                    if (count[rnd] == 3) generated[rnd] = true;
+                                    if (numbers[p] == numCase) {
+                                        circuit[numCase].status = 1;
+                                    }
+
+
+                                } else {
+                                    // number already generated
+                                    p--;
                                 }
-
-
-                            } else {
-                                // number already generated
-                                p--;
                             }
+                            break;
                         }
                         break;
-                    }
-                    break;
-                //Remplissage des temps par secteurs
-                case 1:
-                    if (array[numCase].status == 2) {
-                        array[numCase].s1 = array[numCase].s1;
-                        break;
-                    }
-                    array[numCase].s1 = temps[0];
+                        //Remplissage des temps par secteurs
+                    case 1:
+                        if (circuit[numCase].status == 2) {
+                            circuit[numCase].s1 = circuit[numCase].s1;
+                            break;
+                        }
+                        circuit[numCase].s1 = temps[0];
 
-                    break;
-                case 2:
-                    if (array[numCase].status == 2) {
-                        array[numCase].s2 = array[numCase].s2;
                         break;
-                    }
-                    array[numCase].s2 = temps[1];
-                    break;
-                case 3:
-                    if (array[numCase].status == 2) {
-                        array[numCase].s3 = array[numCase].s3;
-                        break;
-                    }
-                    if (array[numCase].status == 1) {
-                        array[numCase].s3 = temps[2] + 25;
-                    } else {
-                        array[numCase].s3 = temps[2];
-                    }
-                    break;
-                case 4:
-                    if (array[numCase].eliminated == 1) {
-                        array[numCase].tTour[0] = 0;
-                        break;
-                    }
-                    if (array[numCase].status == 2) {
-                        array[numCase].tTour[0] = array[numCase].tTour[0];
-                        break;
-                    }
-                    array[numCase].tTour[0] = temps[3];
-                    break;
-                case 5:
-                    if (array[numCase].eliminated == 1) {
-                        array[numCase].tTour[1] = 0;
-                        break;
-                    }
-                    if (array[numCase].status == 2) {
-                        array[numCase].tTour[1] = array[numCase].tTour[1];
-                        break;
-                    }
-                    if (array[numCase].status == 1) {
-                        array[numCase].tTour[1] = temps[4] + 25;
-                        if (array[numCase].tTour[1] > 60) {
-                            array[numCase].tTour[1] -= 60;
-                            array[numCase].tTour[0] += 1;
+                    case 2:
+                        if (circuit[numCase].status == 2) {
+                            circuit[numCase].s2 = circuit[numCase].s2;
+                            break;
                         }
-                    } else {
-                        array[numCase].tTour[1] = temps[4];
-                    }
-                    break;
-                case 6:
-                    if (array[numCase].status == 2) {
-                        array[numCase].total = array[numCase].s1 +array[numCase].s2 + array[numCase].s3 ;
+                        circuit[numCase].s2 = temps[1];
                         break;
-                    }
-                    if (array[numCase].status == 1) {
-                        array[numCase].total = temps[0] + temps[1] + temps[2] + 25;
-                    } else {
-                        array[numCase].total = temps[0] + temps[1] + temps[2];
-                    }
-                    break;
-                case 7 :
-                    array[numCase].vId = numero_Voiture[numCase];
-                    break;
-                //Vérification des best temps de la session
-                case 8:
-                    if (array[numCase].status == 2 && array[numCase].s1 == 0 && array[numCase].s2 == 0 && array[numCase].s3 == 0) {
-                        array[numCase].total = 980;
-                        continue;
-                    }
-                    if (array[numCase].s1 < array[20].s1) {
-                        array[20].s1 = array[numCase].s1;
-                        array[20].idBest[0] = array[numCase].vId;
-                    }
-                    if (array[numCase].s2 < array[20].s2) {
-                        array[20].s2 = array[numCase].s2;
-                        array[20].idBest[1] = array[numCase].vId;
-                    }
-                    if (array[numCase].s3 < array[20].s3) {
-                        array[20].s3 = array[numCase].s3;
-                        array[20].idBest[2] = array[numCase].vId;
-                    }
-                    break;
-                default:
-                    printf("Erreur fils");
-                    exit(-1);
+                    case 3:
+                        if (circuit[numCase].status == 2) {
+                            circuit[numCase].s3 = circuit[numCase].s3;
+                            break;
+                        }
+                        if (circuit[numCase].status == 1) {
+                            circuit[numCase].s3 = temps[2] + 25;
+                        } else {
+                            circuit[numCase].s3 = temps[2];
+                        }
+                        break;
+                    case 4:
+                        if (circuit[numCase].eliminated == 1) {
+                            circuit[numCase].tTour[0] = 0;
+                            break;
+                        }
+                        if (circuit[numCase].status == 2) {
+                            circuit[numCase].tTour[0] = circuit[numCase].tTour[0];
+                            break;
+                        }
+                        circuit[numCase].tTour[0] = temps[3];
+                        break;
+                    case 5:
+                        if (circuit[numCase].eliminated == 1) {
+                            circuit[numCase].tTour[1] = 0;
+                            break;
+                        }
+                        if (circuit[numCase].status == 2) {
+                            circuit[numCase].tTour[1] = circuit[numCase].tTour[1];
+                            break;
+                        }
+                        if (circuit[numCase].status == 1) {
+                            circuit[numCase].tTour[1] = temps[4] + 25;
+                            if (circuit[numCase].tTour[1] > 60) {
+                                circuit[numCase].tTour[1] -= 60;
+                                circuit[numCase].tTour[0] += 1;
+                            }
+                        } else {
+                            circuit[numCase].tTour[1] = temps[4];
+                        }
+                        break;
+                    case 6:
+                        if (circuit[numCase].status == 2) {
+                            circuit[numCase].total = circuit[numCase].s1 + circuit[numCase].s2 + circuit[numCase].s3;
+                            break;
+                        }
+                        if (circuit[numCase].status == 1) {
+                            circuit[numCase].total = temps[0] + temps[1] + temps[2] + 25;
+                        } else {
+                            circuit[numCase].total = temps[0] + temps[1] + temps[2];
+                        }
+                        break;
+                    case 7 :
+                        circuit[numCase].vId = numero_Voiture[numCase];
+                        break;
+                        //Vérification des best temps de la session
+                    case 8:
+                        if (circuit[numCase].status == 2 && circuit[numCase].s1 == 0 && circuit[numCase].s2 == 0 &&
+                            circuit[numCase].s3 == 0) {
+                            circuit[numCase].total = 980;
+                            continue;
+                        }
+                        if (circuit[numCase].s1 < circuit[20].s1) {
+                            circuit[20].s1 = circuit[numCase].s1;
+                            circuit[20].idBest[0] = circuit[numCase].vId;
+                        }
+                        if (circuit[numCase].s2 < circuit[20].s2) {
+                            circuit[20].s2 = circuit[numCase].s2;
+                            circuit[20].idBest[1] = circuit[numCase].vId;
+                        }
+                        if (circuit[numCase].s3 < circuit[20].s3) {
+                            circuit[20].s3 = circuit[numCase].s3;
+                            circuit[20].idBest[2] = circuit[numCase].vId;
+                        }
+                        break;
+                    default:
+                        printf("Erreur fils");
+                        exit(-1);
+                }
+            }
+            secondePendant = time(NULL);
+
+
+        } while (secondePendant <= secondeDepart + tempsSess);
+    }
+    else {
+        do {
+            int p;
+            for (int j = 0; j < 20; j++) {
+                timeGenerator(temps);
             }
 
+            //Patiente 1 sec avant de refaire un temps
+            sleep(1);
 
-        }
+            for (int i = 0; i <= 9; i++) {
+                switch (i) {
+                    case 0:
+                        if (out_rand == 3) {
+                            circuit[voitRan].status = 2;
+                        }
+                        if (circuit[numCase].status == 2) {
+                            continue;
+                        }
+                        circuit[numCase].status = 0;
+                        //Logique pour aller au stand aléatoirement
+                        if (stand_time == 0) {
+                            for (p = 0; p < MAX_NUMBERS; p++) {
+                                int rnd = rand() % MAX_VALUE;
+                                if (rnd != last_generated && (count[rnd] < 3)) {
+                                    numbers[p] = rnd;
+                                    last_generated = rnd;
+                                    count[rnd]++;
+                                    if (count[rnd] == 3) generated[rnd] = true;
+                                    if (numbers[p] == numCase) {
+                                        circuit[numCase].status = 1;
+                                    }
 
-        secondePendant = time(NULL);
+                                } else {
+                                    // number already generated
+                                    p--;
+                                }
+                            }
+                            break;
+                        }
+                        break;
+                        //Remplissage des temps par secteurs
+                    case 1:
+                        if (circuit[numCase].status == 2) {
+                            circuit[numCase].s1 = circuit[numCase].s1;
+                            break;
+                        }
+                        circuit[numCase].s1 = temps[0];
 
-    } while (secondePendant <= secondeDepart + tempsSess);
+                        break;
+                    case 2:
+                        if (circuit[numCase].status == 2) {
+                            circuit[numCase].s2 = circuit[numCase].s2;
+                            break;
+                        }
+                        circuit[numCase].s2 = temps[1];
+                        break;
+                    case 3:
+                        if (circuit[numCase].status == 2) {
+                            circuit[numCase].s3 = circuit[numCase].s3;
+                            break;
+                        }
+                        if (circuit[numCase].status == 1) {
+                            circuit[numCase].s3 = temps[2] + 25;
+                        } else {
+                            circuit[numCase].s3 = temps[2];
+                        }
+                        break;
+                    case 4:
+                            circuit[numCase].tTour[0] = 0;
+                        if (circuit[numCase].status == 2) {
+                            circuit[numCase].tTour[0] = circuit[numCase].tTour[0];
+                            break;
+                        }
+                        circuit[numCase].tTour[0] = temps[3];
+                        break;
+                    case 5:
+                        circuit[numCase].tTour[1] = 0;
 
+                        if (circuit[numCase].status == 2) {
+                            circuit[numCase].tTour[1] = circuit[numCase].tTour[1];
+                            break;
+                        }
+                        if (circuit[numCase].status == 1) {
+                            circuit[numCase].tTour[1] = temps[4] + 25;
+                            if (circuit[numCase].tTour[1] > 60) {
+                                circuit[numCase].tTour[1] -= 60;
+                                circuit[numCase].tTour[0] += 1;
+                            }
+                        } else {
+                            circuit[numCase].tTour[1] = temps[4];
+                        }
+                        break;
+                    case 6:
+                        if (circuit[numCase].status == 2) {
+                            circuit[numCase].total = circuit[numCase].s1 + circuit[numCase].s2 + circuit[numCase].s3;
+                            break;
+                        }
+                        if (circuit[numCase].status == 1) {
+                            circuit[numCase].total = temps[0] + temps[1] + temps[2] + 25;
+                        } else {
+                            circuit[numCase].total = temps[0] + temps[1] + temps[2];
+                        }
+                        break;
+                    case 7 :
+                        circuit[numCase].vId = numero_Voiture[numCase];
+                        break;
+                        //Vérification des best temps de la session
+                    case 8:
+                        if (circuit[numCase].status == 2 && circuit[numCase].s1 == 0 && circuit[numCase].s2 == 0 &&
+                            circuit[numCase].s3 == 0) {
+                            circuit[numCase].total = 980;
+                            continue;
+                        }
+                        if (circuit[numCase].s1 < circuit[20].s1) {
+                            circuit[20].s1 = circuit[numCase].s1;
+                            circuit[20].idBest[0] = circuit[numCase].vId;
+                        }
+                        if (circuit[numCase].s2 < circuit[20].s2) {
+                            circuit[20].s2 = circuit[numCase].s2;
+                            circuit[20].idBest[1] = circuit[numCase].vId;
+                        }
+                        if (circuit[numCase].s3 < circuit[20].s3) {
+                            circuit[20].s3 = circuit[numCase].s3;
+                            circuit[20].idBest[2] = circuit[numCase].vId;
+                        }
+                        break;
+                    default:
+                        printf("Erreur fils");
+                        exit(-1);
+                }
+            }
+            nbrTourTotal[numCase]++;
+        } while (nbrTourTotal[numCase] <= nbrTour);
+    }
     exit(0);
 }
 
@@ -323,4 +462,172 @@ int *lectureFichier(char session) {
         exit(-1);
     }
     return pointClassDepuisFichier;
+}
+
+//fonction pour renvoyer le nombre de tours en fonction du circuit choisi pour la course du Dimanche
+
+int combienDeToursCourse(int parcours) {
+    int nbTours;
+    switch (parcours) {
+        case 1:
+            nbTours = ceil(325/5.411);
+            break;
+        case 2:
+            nbTours = ceil(325/6.174);
+            break;
+        case 3:
+            nbTours = ceil(325/5.303);
+            break;
+        case 4:
+            nbTours = ceil(325/4.909);
+            break;
+        case 5:
+            nbTours = ceil(325/5.410);
+            break;
+        case 6:
+            nbTours = ceil(325/4.675);
+            break;
+        case 7:
+            nbTours = ceil(325/3.367);
+            break;
+        case 8:
+            nbTours = ceil(325/6.003);
+            break;
+        case 9:
+            nbTours = ceil(325/4.361);
+            break;
+        case 10:
+            nbTours = ceil(325/5.891);
+            break;
+        case 11:
+            nbTours = ceil(325/4.318);
+            break;
+        case 12:
+            nbTours = ceil(325/5.800);
+            break;
+        case 13:
+            nbTours = ceil(325/4.381);
+            break;
+        case 14:
+            nbTours = ceil(325/6.947);
+            break;
+        case 15:
+            nbTours = ceil(325/4.259);
+            break;
+        case 16:
+            nbTours = ceil(325/5.793);
+            break;
+        case 17:
+            nbTours = ceil(325/5.063);
+            break;
+        case 18:
+            nbTours = ceil(325/5.807);
+            break;
+        case 19:
+            nbTours = ceil(325/5.513);
+            break;
+        case 20:
+            nbTours = ceil(325/4.304);
+            break;
+        case 21:
+            nbTours = ceil(325/5.411);
+            break;
+        case 22:
+            nbTours = ceil(325/5.281);
+            break;
+        default:
+            printf("Parcours inconnu");
+            exit(-1);
+    }
+    return nbTours;
+}
+
+//fonction pour renvoyer le nombre de tours en fonction du circuit choisi pour la course sprint
+
+int combienDeToursCourseSprint(int parcours) {
+    int nbTours;
+    switch (parcours) {
+        case 1:
+            nbTours = ceil(100/5.411);
+            break;
+        case 2:
+            nbTours = ceil(100/6.174);
+            break;
+        case 3:
+            nbTours = ceil(100/5.303);
+            break;
+        case 4:
+            nbTours = ceil(100/4.909);
+            break;
+        case 5:
+            nbTours = ceil(100/5.410);
+            break;
+        case 6:
+            nbTours = ceil(100/4.675);
+            break;
+        case 7:
+            nbTours = ceil(100/3.367);
+            break;
+        case 8:
+            nbTours = ceil(100/6.003);
+            break;
+        case 9:
+            nbTours = ceil(100/4.361);
+            break;
+        case 10:
+            nbTours = ceil(100/5.891);
+            break;
+        case 11:
+            nbTours = ceil(100/4.318);
+            break;
+        case 12:
+            nbTours = ceil(100/5.800);
+            break;
+        case 13:
+            nbTours = ceil(100/4.381);
+            break;
+        case 14:
+            nbTours = ceil(100/6.947);
+            break;
+        case 15:
+            nbTours = ceil(100/4.259);
+            break;
+        case 16:
+            nbTours = ceil(100/5.793);
+            break;
+        case 17:
+            nbTours = ceil(100/5.063);
+            break;
+        case 18:
+            nbTours = ceil(100/5.807);
+            break;
+        case 19:
+            nbTours = ceil(100/5.513);
+            break;
+        case 20:
+            nbTours = ceil(100/4.304);
+            break;
+        case 21:
+            nbTours = ceil(100/5.411);
+            break;
+        case 22:
+            nbTours = ceil(100/5.281);
+            break;
+        default:
+            printf("Parcours inconnu");
+            exit(-1);
+    }
+    return nbTours;
+}
+
+// booléen pour savoir quand une voiture a fini son nombre de tours total
+
+bool tlmATerminer(const int *nbrToursEffectuer, int nbrTours) {
+    int voitureArrivees = 0;
+    for (int i = 0; i < 20; i++) {
+        if (nbrToursEffectuer[i] > nbrTours) {
+            voitureArrivees++;
+        }
+    }
+    return voitureArrivees == 20;
 }
