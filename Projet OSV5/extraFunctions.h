@@ -25,7 +25,7 @@ int vieVoiture(Voiture *circuit, int numCase, int tempsSess, char session, int n
     int count[MAX_VALUE] = {0};
     bool generated[MAX_VALUE] = {false};
     int stand_time = rand() % 2;
-    int out_rand = rand() % 15;
+    int out_rand = rand() % 40;
     int voitRan = rand() % 20;
 
     //Regarde si on est en session de course ou non
