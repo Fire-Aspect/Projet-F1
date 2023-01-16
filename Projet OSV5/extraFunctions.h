@@ -356,6 +356,7 @@ int ecritureFichier(char *nomFichier, Voiture *classementFinal, char session) {
             freopen(fichierAffi, "w", stdout);
             showOutput(classementFinal, 21);
             fclose(stdout);
+            //gestion d'erreur d'écriture
             if (fwrite(classPourOrdi, sizeof(int), 20 * 2, f) != 20 * 2) {
                 printf("\nErreur d'écriture\n");
                 exit(-1);
@@ -374,6 +375,7 @@ int ecritureFichier(char *nomFichier, Voiture *classementFinal, char session) {
             freopen(fichierAffi, "w", stdout);
             showOutput(classementFinal, 21);
             fclose(stdout);
+            //gestion d'erreur d'écriture
             if (fwrite(classPourOrdi, sizeof(int), 20 * 2, f) != 20 * 2) {
                 printf("\nErreur d'écriture\n");
                 exit(-1);
@@ -392,6 +394,7 @@ int ecritureFichier(char *nomFichier, Voiture *classementFinal, char session) {
             freopen(fichierAffi, "w", stdout);
             showOutput(classementFinal, 21);
             fclose(stdout);
+            //gestion d'erreur d'écriture
             if (fwrite(classPourOrdi, sizeof(int), 20 * 2, f) != 20 * 2) {
                 printf("\nErreur d'écriture\n");
                 exit(-1);
@@ -405,6 +408,7 @@ int ecritureFichier(char *nomFichier, Voiture *classementFinal, char session) {
             freopen(fichierAffi, "w", stdout);
             showOutput(classementFinal, 21);
             fclose(stdout);
+            //gestion d'erreur d'écriture
             if (fwrite(classPourOrdi, sizeof(int), 20 * 2, f) != 20 * 2) {
                 printf("\nErreur d'écriture\n");
                 exit(-1);
@@ -441,11 +445,13 @@ int *lectureFichier(char session) {
     static int classDepuisFichier[20][2];
     static int *pointClassDepuisFichier = &classDepuisFichier[0][0];
 
+    //gestion d'erreur d'ouverture
     if ((f = fopen(nomFichier, "rb")) == NULL) {
         printf("Impossible d'ouvrir le fichier");
         exit(-1);
     }
 
+    //gestion d'erreurs de lecture
     if (fread(classDepuisFichier, sizeof(int), 20 * 2, f) != 20 * 2) {
         if (feof(f)) {
             printf("\nFin prématurée du fichier\n");
