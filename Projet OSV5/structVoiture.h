@@ -18,7 +18,7 @@ typedef struct {
     float bestToursPerso; // Meilleur tour d'une voiture
     float tempsDeriere1er; // Temps derrière la première voiture ==> Pour les dépassements
     int pidFils;
-    int idBest[3];
+    int idBest[3]; // Best S1 S2 S3
     int status; // STAND, OUT, EN COURSE
     int eliminated; // éliminé de la course
 

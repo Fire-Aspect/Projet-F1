@@ -425,6 +425,7 @@ int ecritureFichier(char *nomFichier, Voiture *classementFinal, char session) {
         case '6':
         case '7':
         case '8':
+            //écriture en fichier pour Q3 et les courses
             freopen(fichierAffi, "w", stdout);
             showOutput(classementFinal, 21, session);
             fclose(stdout);

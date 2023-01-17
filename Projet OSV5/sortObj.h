@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include "extraFunctions.h"
 
-//Fonction sortObj (param : pointeur vers un tableau et Longueur)
+//Fonction sortObj
 //But : trier les temps de tours dans différents secteurs d'une voiture
 Voiture *sortObj(Voiture *array, int len, char session, int *nbrTourFait,bool depart) {
 
@@ -49,16 +49,16 @@ Voiture *sortObj(Voiture *array, int len, char session, int *nbrTourFait,bool de
             break;
         case '5':
             //Session Q2
+
             //copie mémoire partagée du tableau du classement lu en fichier
             memcpy(array_lect, lectureFichier(session), 20 * 2 * sizeof(int));
             int voitElimQ1[5][2];
             memset(voitElimQ1, 0, sizeof(voitElimQ1));
-            int tempsLostQ2 = 994;
 
             //fonction tri de la structure
             //si la voiture est éliminée, son temps est augmenté de 994
             //puis ce temps est incrémenté de 1 pour les voitures éliminées suivantes.
-
+            int tempsLostQ2 = 994;
             for (int z = 15; z < 20; z++) {
 
                 if (array_lect[z][1] == 1) {
@@ -69,6 +69,7 @@ Voiture *sortObj(Voiture *array, int len, char session, int *nbrTourFait,bool de
                     tempsLostQ2 = tempsLostQ2 + 1;
                 }
             }
+            //mise à zéro de tous les champs du tableau pour signifier l'élimination
             for (g = 0; g < len - 1; g++) {
                 for (l = 0; l < 5; l++) {
                     if (copie_array[g].vId == voitElimQ1[l][0]) {
@@ -103,12 +104,12 @@ Voiture *sortObj(Voiture *array, int len, char session, int *nbrTourFait,bool de
             memcpy(array_lect, lectureFichier(session), 20 * 2 * sizeof(int));
             int voitElimQ2[10][2];
             memset(voitElimQ2, 0, sizeof(voitElimQ2));
-            int tempsLostQ3 = 989;
+
 
             //fonction tri de la structure
             //si la voiture est éliminée, son temps est augmenté de 989
             //puis ce temps est incrémenté de 1 pour les voitures éliminées suivantes.
-
+            int tempsLostQ3 = 989;
             for (int z = 10; z < 20; z++) {
 
                 if (array_lect[z][1] == 1) {
@@ -119,6 +120,7 @@ Voiture *sortObj(Voiture *array, int len, char session, int *nbrTourFait,bool de
                     tempsLostQ3 = tempsLostQ3 + 1;
                 }
             }
+            //mise à zéro de tous les champs du tableau pour signifier l'élimination
             for (g = 0; g < len - 1; g++) {
                 for (l = 0; l < 10; l++) {
                     if (copie_array[g].vId == voitElimQ2[l][0]) {

@@ -6,7 +6,7 @@
 #include "structVoiture.h"
 
 //Fonction showOutput (param : structure voiture et longueur de voiture)
-//But : Afficher un tableau représentant un classement des voitures trié en fonction du temps
+//But : Afficher un tableau représentant un classement des voitures trié en fonction du temps et en fonction de la session choisi
 
 void showOutput(Voiture* array, int len, char session) {
     //system("clear");
