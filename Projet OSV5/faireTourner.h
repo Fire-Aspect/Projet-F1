@@ -6,9 +6,10 @@
 #include <stdlib.h>
 #include <sys/ipc.h>
 #include <sys/shm.h>
+#include <pthread.h>
 #include "timeGen.h"
 #include "sortObj.h"
-
+#include "sema.h"
 
 //Fonction faireTourner (param : tempsSession ==> temps de session)
 //But : Faire tourner plusieurs voitures
@@ -105,6 +106,11 @@ int faireTourner() {
     shmidTours = shmget(70, 20 * sizeof(int), IPC_CREAT | 0666);
     toursParcourus = shmat(shmidTours, 0, 0);     //Liaison de la mémoire partagée à toursParcourus
 
+
+    // Création des sémaphores
+
+    init_semaphore();
+
     //Assignation à la dernière voiture de valeurs différentes de 0.
     circuit[20].vId = 999;
     circuit[20].s1 = 999;
@@ -115,14 +121,20 @@ int faireTourner() {
     float tempsDebug[5];
 
 
-    //Boucle de création de fils (20)
-    for (int k = 0; k < 20; k++) {
-        timeGenerator(tempsDebug);
-        if (fork() == 0) {
-            //Fils
-            vieVoiture(circuit, k, tempsSession, session, nbrTour,toursParcourus);
+        //Boucle de création de fils (20)
+        for (int k = 0; k < 20; k++) {
+            sem_wait(&sem);
+            timeGenerator(tempsDebug);
+            if (fork() == 0) {
+                //Fils
+                vieVoiture(circuit, k, tempsSession, session, nbrTour, toursParcourus);
+            }
+            counter++;
+            sem_post(&sem);
         }
-    }
+
+
+
 
     //Fonction d'affichage
     if (session != '7' && session != '8') {
@@ -139,17 +151,28 @@ int faireTourner() {
                 sleep(1);
             }
             else{
-                sleep(1);
+                while (counter < 20) {
+                    sem_wait(&sem);
+                    sem_post(&sem);
+                }
+                sem_wait(&sem);
+
                 secondePendant = time(NULL);
                 showOutput(sortObj(circuit, 21, session,toursParcourus,depart), 21, session);
                 //Patiente 2 secondes avant de re-afficher
-                sleep(1);
+                sleep(2);
+                sem_post(&sem);
+
             }
         } while (secondePendant <= secondeDepart + tempsSession + 1);
     }
     else {
         do {
             sleep(1);
+            sem_wait(&sem);
+            showOutput(sortObj(circuit, 21, session, toursParcourus, depart), 21, session);
+            sem_post(&sem);
+
             showOutput(sortObj(circuit, 21, session, toursParcourus,depart), 21, session);
             //Patiente 2 secondes avant de re-afficher
             sleep(1);
@@ -159,10 +182,18 @@ int faireTourner() {
     //écritureFichier();
     ecritureFichier(nomFichier, sortObj(circuit, 21, session,toursParcourus,depart), session);
 
+
+    // déstruction des sémaphores
+    sem_destroy(&sem);
+
     //libération de la mémoire partagée
     shmdt(toursParcourus);
-    shmctl(shmidTours, IPC_RMID, NULL);
     shmdt(circuit);
+
+    shmctl(shmidTours, IPC_RMID, NULL);
     shmctl(shmidCircuit, IPC_RMID, NULL);
+
+
+
 }
 

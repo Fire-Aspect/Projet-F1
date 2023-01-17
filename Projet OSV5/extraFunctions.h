@@ -51,7 +51,6 @@ int vieVoiture(Voiture *circuit, int numCase, int tempsSess, char session, int n
                 timeGenerator(temps);
             }
 
-
             //Patiente 1 sec avant de refaire un temps
             sleep(1.5);
 
@@ -143,7 +142,7 @@ int vieVoiture(Voiture *circuit, int numCase, int tempsSess, char session, int n
                         break;
                     case 6:
                         if (circuit[numCase].status == 2) {
-                            circuit[numCase].total = circuit[numCase].s1 + circuit[numCase].s2 + circuit[numCase].s3;
+                            circuit[numCase].total = circuit[numCase].bestToursPerso;
                             break;
                         }
                         if (circuit[numCase].status == 1) {

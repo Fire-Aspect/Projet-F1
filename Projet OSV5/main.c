@@ -18,7 +18,6 @@ int main() {
 
     srand(time(0));
 
-
     faireTourner();
 
     printf("%s", "Session terminée");

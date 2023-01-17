@@ -28,17 +28,16 @@ void showOutput(Voiture* array, int len, char session) {
         if (classement[i].eliminated == 1) {
 
                 if (i == 0) {
-                    printf("| %-6d | %-12.3f | %-12.3f | %-12.3f | %.0f%s%-13.3f |                     | \033[1;31m%-10s\033[0m |%-7d\n",
+                    printf("| %-6d | %-12.3f | %-12.3f | %-12.3f | %.0f%s%-13.3f |                     | \033[1;31m%-10s\033[0m |\n",
                            classement[i].vId,
                            classement[i].s1, classement[i].s2, classement[i].s3, classement[i].tTour[0], ".",
-                           classement[i].tTour[1], "ELIMINATED", classement[i].eliminated);
+                           classement[i].tTour[1], "ELIMINATED");
                 } else {
                     kTemp = i - 1;
-                    printf("| %-6d | %-12.3f | %-12.3f | %-12.3f | %.0f%s%-13.3f | +%-18.3f | \033[31;1m%-10s\033[0m |%-7d\n",
+                    printf("| %-6d | %-12.3f | %-12.3f | %-12.3f | %.0f%s%-13.3f | +%-18.3f | \033[31;1m%-10s\033[0m |\n",
                            classement[i].vId,
                            classement[i].s1, classement[i].s2, classement[i].s3, classement[i].tTour[0], ".",
-                           classement[i].tTour[1], fabsf(classement[i].bestToursPerso - classement[kTemp].bestToursPerso), "ELIMINATED",
-                           classement[i].eliminated);
+                           classement[i].tTour[1], fabsf(classement[i].bestToursPerso - classement[kTemp].bestToursPerso), "ELIMINATED");
                 }
 
 
