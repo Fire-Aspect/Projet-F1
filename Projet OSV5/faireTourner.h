@@ -21,6 +21,7 @@ int faireTourner() {
     int nbrTour = 0;
     char *nomFichier;
     char parcours[2];
+    bool depart = 1;
 
     printf("%s", "                                   ##############################################  ###############\n"
                         "                       ########################################################   ###############\n"
@@ -128,32 +129,39 @@ int faireTourner() {
         time_t secondePendant;
         secondeDepart = time(NULL);
         do {
-            sleep(1);
-            secondePendant = time(NULL);
-            showOutput(sortObj(circuit, 21, session), 21, session);
-            //Patiente 2 secondes avant de re-afficher
-            sleep(1);
+            if (depart){
+                sleep(1);
+                secondePendant = time(NULL);
+                showOutput(sortObj(circuit, 21, session,toursParcourus,depart), 21, session);
+                depart = 0;
+                //Patiente 2 secondes avant de re-afficher
+                sleep(1);
+            }
+            else{
+                sleep(1);
+                secondePendant = time(NULL);
+                showOutput(sortObj(circuit, 21, session,toursParcourus,depart), 21, session);
+                //Patiente 2 secondes avant de re-afficher
+                sleep(1);
+            }
         } while (secondePendant <= secondeDepart + tempsSession + 1);
     }
     else {
         do {
             sleep(1);
-            showOutput(sortObj(circuit, 21, session), 21, session);
+            showOutput(sortObj(circuit, 21, session, toursParcourus,depart), 21, session);
             //Patiente 2 secondes avant de re-afficher
             sleep(1);
         } while (!tlmATerminer(toursParcourus, nbrTour));
     }
 
     //écritureFichier();
-    ecritureFichier(nomFichier, sortObj(circuit, 21, session), session);
+    ecritureFichier(nomFichier, sortObj(circuit, 21, session,toursParcourus,depart), session);
 
     //libération de la mémoire partagée
     shmdt(toursParcourus);
     shmctl(shmidTours, IPC_RMID, NULL);
     shmdt(circuit);
     shmctl(shmidCircuit, IPC_RMID, NULL);
-
-
-
 }
 

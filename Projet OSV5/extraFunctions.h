@@ -53,7 +53,7 @@ int vieVoiture(Voiture *circuit, int numCase, int tempsSess, char session, int n
 
 
             //Patiente 1 sec avant de refaire un temps
-            sleep(1.3);
+            sleep(1.5);
 
             for (int i = 0; i <= 8; i++) {
                 if (circuit[numCase].eliminated == 1) {
@@ -205,9 +205,9 @@ int vieVoiture(Voiture *circuit, int numCase, int tempsSess, char session, int n
             }
 
             //Patiente 1 sec avant de refaire un temps
-            sleep(1);
+            sleep(1.5);
 
-            for (int i = 0; i <= 9; i++) {
+            for (int i = 0; i <= 8; i++) {
                 switch (i) {
                     case 0:
                         if (out_rand == 3) {
@@ -376,6 +376,7 @@ int ecritureFichier(char *nomFichier, Voiture *classementFinal, char session) {
             freopen(fichierAffi, "w", stdout);
             showOutput(classementFinal, 21, session);
             fclose(stdout);
+            //gestion d'erreur d'écriture
             if (fwrite(classPourOrdi, sizeof(int), 20 * 2, f) != 20 * 2) {
                 printf("\nErreur d'écriture\n");
                 exit(-1);
@@ -394,6 +395,7 @@ int ecritureFichier(char *nomFichier, Voiture *classementFinal, char session) {
             freopen(fichierAffi, "w", stdout);
             showOutput(classementFinal, 21, session);
             fclose(stdout);
+            //gestion d'erreur d'écriture
             if (fwrite(classPourOrdi, sizeof(int), 20 * 2, f) != 20 * 2) {
                 printf("\nErreur d'écriture\n");
                 exit(-1);
@@ -412,6 +414,7 @@ int ecritureFichier(char *nomFichier, Voiture *classementFinal, char session) {
             freopen(fichierAffi, "w", stdout);
             showOutput(classementFinal, 21, session);
             fclose(stdout);
+            //gestion d'erreur d'écriture
             if (fwrite(classPourOrdi, sizeof(int), 20 * 2, f) != 20 * 2) {
                 printf("\nErreur d'écriture\n");
                 exit(-1);
@@ -425,6 +428,7 @@ int ecritureFichier(char *nomFichier, Voiture *classementFinal, char session) {
             freopen(fichierAffi, "w", stdout);
             showOutput(classementFinal, 21, session);
             fclose(stdout);
+            //gestion d'erreur d'écriture
             if (fwrite(classPourOrdi, sizeof(int), 20 * 2, f) != 20 * 2) {
                 printf("\nErreur d'écriture\n");
                 exit(-1);
@@ -461,11 +465,13 @@ int *lectureFichier(char session) {
     static int classDepuisFichier[20][2];
     static int *pointClassDepuisFichier = &classDepuisFichier[0][0];
 
+    //gestion d'erreur d'ouverture
     if ((f = fopen(nomFichier, "rb")) == NULL) {
         printf("Impossible d'ouvrir le fichier");
         exit(-1);
     }
 
+    //gestion d'erreurs de lecture
     if (fread(classDepuisFichier, sizeof(int), 20 * 2, f) != 20 * 2) {
         if (feof(f)) {
             printf("\nFin prématurée du fichier\n");
@@ -641,7 +647,6 @@ int combienDeToursCourseSprint(int parcours) {
 }
 
 // booléen pour savoir quand une voiture a fini son nombre de tours total
-
 bool tlmATerminer(const int *nbrToursEffectuer, int nbrTours) {
     int voitureArrivees = 0;
     for (int i = 0; i < 20; i++) {
@@ -650,4 +655,11 @@ bool tlmATerminer(const int *nbrToursEffectuer, int nbrTours) {
         }
     }
     return voitureArrivees == 20;
+}
+
+int comparer(const void *a, const void *b) {
+    Voiture *voitureA = (Voiture *) a;
+    Voiture *voitureB = (Voiture *) b;
+    return (int)(voitureA->tempsDeriere1er - voitureB->tempsDeriere1er);
+
 }

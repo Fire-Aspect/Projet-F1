@@ -7,21 +7,34 @@
 
 //Fonction sortObj (param : pointeur vers un tableau et Longueur)
 //But : trier les temps de tours dans différents secteurs d'une voiture
-Voiture *sortObj(Voiture *array, int len, char session) {
+Voiture *sortObj(Voiture *array, int len, char session, int *nbrTourFait,bool depart) {
 
     int position[20];
     static Voiture copie_array[21];
     memcpy(copie_array, array, len * sizeof(Voiture));
     static int array_lect[20][2];
     int k, r, l, g, n = 0;
-    bool depart = true;
     Voiture voitTemp;
+    float temps1erPlace;
     switch (session) {
         case '1':
         case '2':
         case '3':
+            //Sessions P1 P2 P3
+            //fonction tri de la structure
+            for (k = 0; k < len - 1; k++) {
+                for (r = 0; r < len-k-1; r++) {
+                    if (copie_array[r].total > copie_array[r +1].total) {
+                        voitTemp = copie_array[r];
+                        copie_array[r] = copie_array[r+1];
+                        copie_array[r+1] = voitTemp;
+                    }
+                }
+            }
+            return copie_array;
+            break;
         case '4':
-            //Sessions P1 P2 P3 Q1
+            //Sessions Q1
             //fonction tri de la structure
             for (k = 0; k < len - 1; k++) {
                 for (r = 0; r < len-k-2; r++) {
@@ -59,7 +72,7 @@ Voiture *sortObj(Voiture *array, int len, char session) {
             for (g = 0; g < len - 1; g++) {
                 for (l = 0; l < 5; l++) {
                     if (copie_array[g].vId == voitElimQ1[l][0]) {
-                        copie_array[g].total = (float) voitElimQ1[l][1];
+                        copie_array[g].bestToursPerso = (float) voitElimQ1[l][1];
                         copie_array[g].s1 = 0;
                         copie_array[g].s2 = 0;
                         copie_array[g].s3 = 0;
@@ -72,8 +85,8 @@ Voiture *sortObj(Voiture *array, int len, char session) {
             }
             //fonction tri de la structure
             for (k = 0; k < len - 1; k++) {
-                for (r = 0; r < len - k - 1; r++) {
-                    if (copie_array[r].total > copie_array[r + 1].total) {
+                for (r = 0; r < len - k - 2; r++) {
+                    if (copie_array[r].bestToursPerso > copie_array[r + 1].bestToursPerso) {
                         voitTemp = copie_array[r];
                         copie_array[r] = copie_array[r + 1];
                         copie_array[r + 1] = voitTemp;
@@ -109,7 +122,7 @@ Voiture *sortObj(Voiture *array, int len, char session) {
             for (g = 0; g < len - 1; g++) {
                 for (l = 0; l < 10; l++) {
                     if (copie_array[g].vId == voitElimQ2[l][0]) {
-                        copie_array[g].total = (float) voitElimQ2[l][1];
+                        copie_array[g].bestToursPerso = (float) voitElimQ2[l][1];
                         copie_array[g].s1 = 0;
                         copie_array[g].s2 = 0;
                         copie_array[g].s3 = 0;
@@ -122,8 +135,8 @@ Voiture *sortObj(Voiture *array, int len, char session) {
             }
             //fonction tri de la structure
             for (k = 0; k < len - 1; k++) {
-                for (r = 0; r < len - k - 1; r++) {
-                    if (copie_array[r].total > copie_array[r + 1].total) {
+                for (r = 0; r < len - k - 2; r++) {
+                    if (copie_array[r].bestToursPerso > copie_array[r + 1].bestToursPerso) {
                         voitTemp = copie_array[r];
                         copie_array[r] = copie_array[r + 1];
                         copie_array[r + 1] = voitTemp;
@@ -134,7 +147,67 @@ Voiture *sortObj(Voiture *array, int len, char session) {
             return copie_array;
             break;
         case '7':
-            return array;
+            //Session Course
+            memcpy(array_lect, lectureFichier(session), 20 * 2 * sizeof(int));
+            if (depart){
+                for (int z = 0; z < 20; z++) {
+                    for (int b = 0; b < 20; b++) {
+                        if (copie_array[z].vId == array_lect[b][0]) {
+                            position[b] = copie_array[z].vId;
+                            array[z].tempsDeriere1er = (float)b;
+                            copie_array[z].tempsDeriere1er = (float)b;
+                            copie_array[z].s1 = 0;
+                            copie_array[z].s2 = 0;
+                            copie_array[z].s3 = 0;
+                            copie_array[z].tTour[0] = 0;
+                            copie_array[z].tTour[1] = 0;
+                            copie_array[z].eliminated = 0;
+                            copie_array[z].bestToursPerso = 0;
+                            copie_array[z].status = 0;
+                            copie_array[z].total = b;
+                            //nbrTourFait[z] = 0;
+                            break;
+                        }
+                    }
+                }
+
+                for (k = 0; k < len - 1; k++) {
+                    for (r = 0; r < len-k-1; r++) {
+                        if (copie_array[r].total > copie_array[r +1].total) {
+                            voitTemp = copie_array[r];
+                            copie_array[r] = copie_array[r+1];
+                            copie_array[r+1] = voitTemp;
+                        }
+                    }
+                }
+                return copie_array;
+            }
+            else {
+                //Temps de la première place
+                for (int z = 0; z < 20; z++) {
+                    if (copie_array[z].vId == position[0]) {
+                       temps1erPlace = copie_array[z].total;
+                    }
+                }
+                for (int z = 0; z < 20; z++){
+                    array[z].tempsDeriere1er = copie_array[z].total + array[z].tempsDeriere1er - temps1erPlace;
+                }
+                qsort(copie_array, 20, sizeof(Voiture), comparer);
+                for (int z = 0; z < 20; z++) {
+                    position[z] = copie_array[z].vId;
+                }
+                /*for (k = 0; k < len - 1; k++) {
+                    for (r = 0; r < len - k - 1; r++) {
+                        if ((copie_array[r].total + copie_array[r].tempsDeriere1er) >
+                            (copie_array[r + 1].total + copie_array[r + 1].tempsDeriere1er)) {
+                            voitTemp = copie_array[r];
+                            copie_array[r] = copie_array[r + 1];
+                            copie_array[r + 1] = voitTemp;
+                        }
+                    }
+                }*/
+            }
+            return copie_array;
             break;
         case '8':
             return copie_array;

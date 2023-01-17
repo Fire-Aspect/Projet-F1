@@ -14,8 +14,9 @@ typedef struct {
     float s2;
     float s3;
     float total;
-    float tTour[2];
-    float bestToursPerso;
+    float tTour[2]; // Tour en minute et en secondes
+    float bestToursPerso; // Meilleur tour d'une voiture
+    float tempsDeriere1er; // Temps derrière la première voiture ==> Pour les dépassements
     int pidFils;
     int idBest[3];
     int status; // STAND, OUT, EN COURSE
@@ -24,4 +25,4 @@ typedef struct {
 } Voiture;
 
 
-#endif //PROJET_FORMULE_1_STRUCTVOITURE_HPUT_H
+#endif //PROJET_FORMULE_1_STRUCTVOITURE_H
