@@ -268,16 +268,16 @@ int vieVoiture(Voiture *circuit, int numCase, int tempsSess, char session, int n
                     case 4:
                             circuit[numCase].tTour[0] = 0;
                         if (circuit[numCase].status == 2) {
-                            circuit[numCase].tTour[0] = circuit[numCase].tTour[0];
+                            circuit[numCase].tTour[0] = conversionMinute(circuit[numCase].total)[0];
                             break;
                         }
-                        circuit[numCase].tTour[0] = temps[3];
+                        circuit[numCase].tTour[0] = conversionMinute(circuit[numCase].total)[0];
                         break;
                     case 5:
                         circuit[numCase].tTour[1] = 0;
 
                         if (circuit[numCase].status == 2) {
-                            circuit[numCase].tTour[1] = circuit[numCase].tTour[1];
+                            circuit[numCase].tTour[1] = conversionMinute(circuit[numCase].total)[1];
                             break;
                         }
                         if (circuit[numCase].status == 1) {
