@@ -490,7 +490,8 @@ int *lectureFichier(char session) {
     return pointClassDepuisFichier;
 }
 
-//fonction pour renvoyer le nombre de tours en fonction du circuit choisi pour la course du Dimanche
+//fonction pour renvoyer le nombre de tours en fonction du circuit choisi pour la course du dimanche
+//Circuits tirés du site web : https://www.eurosport.fr/formule-1/circuits-dates-et-horaires-des-gp-chaine-tv-calendrier-toutes-les-infos-sur-la-saison-2022-de-formul_sto8797513/story.shtml
 
 int combienDeToursCourse(int parcours) {
     int nbTours;
