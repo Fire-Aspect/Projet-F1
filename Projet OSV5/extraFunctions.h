@@ -52,7 +52,7 @@ int vieVoiture(Voiture *circuit, int numCase, int tempsSess, char session, int n
             }
 
             //Patiente 1 sec avant de refaire un temps
-            sleep(1.5);
+            sleep(1.6);
 
             for (int i = 0; i <= 8; i++) {
                 if (circuit[numCase].eliminated == 1) {
@@ -118,46 +118,83 @@ int vieVoiture(Voiture *circuit, int numCase, int tempsSess, char session, int n
                         }
                         break;
                     case 4:
-                        if (circuit[numCase].eliminated == 1) {
-                            circuit[numCase].tTour[0] = 0;
+                        if (session == '1' || session == '2' || session == '3') {
+                            if (circuit[numCase].status == 2) {
+                                circuit[numCase].total = circuit[numCase].total;
+                                break;
+                            }
+                            if (circuit[numCase].status == 1) {
+                                circuit[numCase].total = temps[0] + temps[1] + temps[2] + 25;
+                                break;
+                            }
+                            circuit[numCase].total= temps[0] + temps[1] + temps[2];
+
                             break;
+                        } else {
+                            if (circuit[numCase].status == 2) {
+                                circuit[numCase].total = circuit[numCase].bestToursPerso;
+                                break;
+                            }
+                            if (circuit[numCase].status == 1) {
+                                circuit[numCase].total = temps[0] + temps[1] + temps[2] + 25;
+                                break;
+                            } else {
+                                if (circuit[numCase].bestToursPerso < circuit[numCase].total) {
+                                    circuit[numCase].total = circuit[numCase].bestToursPerso;
+                                    break;
+                                }
+                                circuit[numCase].total = temps[0] + temps[1] + temps[2];
+                                break;
+                            }
                         }
-                        if (circuit[numCase].status == 2) {
+                    case 5:
+                        if (session == '1' || session == '2' || session == '3') {
+                            if (circuit[numCase].status == 2) {
+                                circuit[numCase].tTour[0] = conversionMinute(circuit[numCase].total)[0];
+                                break;
+                            }
+                            circuit[numCase].tTour[0] = conversionMinute(circuit[numCase].total)[0];
+                            break;
+                        } else {
+                            if (circuit[numCase].eliminated == 1) {
+                                circuit[numCase].tTour[0] = 0;
+                                break;
+                            }
+                            if (circuit[numCase].status == 2) {
+                                circuit[numCase].tTour[0] = conversionMinute(circuit[numCase].bestToursPerso)[0];
+                                break;
+                            }
                             circuit[numCase].tTour[0] = conversionMinute(circuit[numCase].bestToursPerso)[0];
                             break;
                         }
-                        circuit[numCase].tTour[0] = conversionMinute(circuit[numCase].bestToursPerso)[0];
-                        break;
-                    case 5:
-                        if (circuit[numCase].eliminated == 1) {
-                            circuit[numCase].tTour[1] = 0;
-                            break;
-                        }
-                        if (circuit[numCase].status == 2) {
-                            circuit[numCase].tTour[1] = conversionMinute(circuit[numCase].bestToursPerso)[1];
-                            break;
-                        }
-                        circuit[numCase].tTour[1] = conversionMinute(circuit[numCase].bestToursPerso)[1];
-
-                        break;
                     case 6:
-                        if (circuit[numCase].status == 2) {
-                            circuit[numCase].total = circuit[numCase].bestToursPerso;
+                        if (session == '1' || session == '2' || session == '3') {
+                            if (circuit[numCase].status == 2) {
+                                circuit[numCase].tTour[1] = conversionMinute(circuit[numCase].total)[1];
+                                break;
+                            }
+                            circuit[numCase].tTour[1] = conversionMinute(circuit[numCase].total)[1];
+                            break;
+                            if (circuit[numCase].status == 1) {
+                                circuit[numCase].tTour[1] = conversionMinute(circuit[numCase].total)[1];
+                                break;
+                            }
+                        } else {
+                            if (circuit[numCase].eliminated == 1) {
+                                circuit[numCase].tTour[1] = 0;
+                                break;
+                            }
+                            if (circuit[numCase].status == 2) {
+                                circuit[numCase].tTour[1] = conversionMinute(circuit[numCase].bestToursPerso)[1];
+                                break;
+                            }
+                            circuit[numCase].tTour[1] = conversionMinute(circuit[numCase].bestToursPerso)[1];
+                            // Best Tour
+                            if (circuit[numCase].total < circuit[numCase].bestToursPerso) {
+                                circuit[numCase].bestToursPerso = circuit[numCase].total;
+                            }
                             break;
                         }
-                        if (circuit[numCase].status == 1) {
-                            circuit[numCase].total = temps[0] + temps[1] + temps[2] + 25;
-                        } else {
-                            if (circuit[numCase].bestToursPerso < circuit[numCase].total) {
-                                circuit[numCase].total = circuit[numCase].bestToursPerso;
-                            }
-                            circuit[numCase].total = temps[0] + temps[1] + temps[2];
-                        }
-                        // Best Tour
-                        if (circuit[numCase].total < circuit[numCase].bestToursPerso) {
-                            circuit[numCase].bestToursPerso = circuit[numCase].total;
-                        }
-                        break;
                     case 7 :
                         circuit[numCase].vId = numero_Voiture[numCase];
                         break;
@@ -280,11 +317,8 @@ int vieVoiture(Voiture *circuit, int numCase, int tempsSess, char session, int n
                             break;
                         }
                         if (circuit[numCase].status == 1) {
-                            circuit[numCase].tTour[1] = temps[4] + 25;
-                            if (circuit[numCase].tTour[1] > 60) {
-                                circuit[numCase].tTour[1] -= 60;
-                                circuit[numCase].tTour[0] += 1;
-                            }
+                            circuit[numCase].tTour[1] = conversionMinute(circuit[numCase].total)[1];
+                            break;
                         } else {
                             circuit[numCase].tTour[1] = temps[4];
                         }

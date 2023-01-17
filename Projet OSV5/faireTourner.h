@@ -107,9 +107,7 @@ int faireTourner() {
     toursParcourus = shmat(shmidTours, 0, 0);     //Liaison de la mémoire partagée à toursParcourus
 
 
-    // Création des sémaphores
 
-    init_semaphore();
 
     //Assignation à la dernière voiture de valeurs différentes de 0.
     circuit[20].vId = 999;
@@ -120,6 +118,8 @@ int faireTourner() {
 
     float tempsDebug[5];
 
+    // Initialisation de sémaphore
+    init_semaphore();
 
         //Boucle de création de fils (20)
         for (int k = 0; k < 20; k++) {
@@ -127,7 +127,8 @@ int faireTourner() {
             timeGenerator(tempsDebug);
             if (fork() == 0) {
                 //Fils
-                vieVoiture(circuit, k, tempsSession, session, nbrTour, toursParcourus);
+                vieVoiture(circuit, k, tempsSession, session, nbrTour, toursParcourus); // écrire dans le segment de mémoire partagée
+
             }
             counter++;
             sem_post(&sem);
@@ -148,19 +149,22 @@ int faireTourner() {
                 showOutput(sortObj(circuit, 21, session,toursParcourus,depart), 21, session);
                 depart = 0;
                 //Patiente 2 secondes avant de re-afficher
-                sleep(1);
+                sleep(2.3);
             }
             else{
                 while (counter < 20) {
                     sem_wait(&sem);
                     sem_post(&sem);
+                    // wait ou faire quelque chose d'autre
                 }
                 sem_wait(&sem);
-
+                // accès au segment de la mémoire partagée
+                // copie des données
+                sleep(1);
                 secondePendant = time(NULL);
                 showOutput(sortObj(circuit, 21, session,toursParcourus,depart), 21, session);
                 //Patiente 2 secondes avant de re-afficher
-                sleep(2);
+                sleep(2.3);
                 sem_post(&sem);
 
             }

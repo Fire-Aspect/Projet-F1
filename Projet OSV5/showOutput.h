@@ -42,7 +42,7 @@ void showOutput(Voiture* array, int len, char session) {
 
 
         } else {
-            if (session != 7) {
+            if (session == 4 || session == 5 || session == 6) {
                 if (classement[i].status == 0) {
                     if (i == 0) {
                         printf("| %-6d | %-12.3f | %-12.3f | %-12.3f | %.0f%s%-13.3f |                     | \033[0;32m%-10s\033[0m |\n",
