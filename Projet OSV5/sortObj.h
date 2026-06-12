@@ -9,8 +9,6 @@
 //But : trier les temps de tours dans différents secteurs d'une voiture
 Voiture *sortObj(Voiture *array, int len, char session) {
 
-    int position[20];
-
     static Voiture copie_array[21];
     memcpy(copie_array, array, len * sizeof(Voiture));
     static int array_lect[20][2];
@@ -134,13 +132,35 @@ Voiture *sortObj(Voiture *array, int len, char session) {
             return copie_array;
             break;
         case '7':
-            printf("%s", "Course en travaux\n");
-            exit(0);
-        case '8':
-            printf("%s", "Course Sprint en travaux\n");
-            exit(0);
+        case '8': {
+            //Courses : classement par tours bouclés puis temps cumulé ; OUT en fin
+            float rang[21];
+            float rangTemp;
+            for (g = 0; g < len - 1; g++) {
+                rang[g] = copie_array[g].cumul - (float) copie_array[g].laps * 10000.0f;
+                if (copie_array[g].status == 2) {
+                    rang[g] += 10000000.0f;   //abandons classés en fin
+                }
+                //la colonne "différence" affiche l'écart de temps cumulé
+                copie_array[g].total = copie_array[g].cumul;
+            }
+            for (k = 0; k < len - 2; k++) {
+                for (r = 0; r < len - k - 2; r++) {
+                    if (rang[r] > rang[r + 1]) {
+                        voitTemp = copie_array[r];
+                        copie_array[r] = copie_array[r + 1];
+                        copie_array[r + 1] = voitTemp;
+                        rangTemp = rang[r];
+                        rang[r] = rang[r + 1];
+                        rang[r + 1] = rangTemp;
+                    }
+                }
+            }
+            return copie_array;
+        }
         default:
             printf("%s", "Session inconnue\n");
-
+            return NULL;
     }
+    return NULL;
 }
